@@ -21,17 +21,17 @@ class ResearchAgent:
 
         for result in results[: task.max_sources]:
             source = Source(
-                title=result["title"],
-                url=result["url"],
-                publisher=result["publisher"],
+                title=str(result["title"]),
+                url=str(result["url"]),
+                publisher=str(result["publisher"]),
                 retrieved_at=retrieved_at,
             )
 
             evidence.append(
                 Evidence(
                     source=source,
-                    excerpt=result["excerpt"],
-                    relevance=1.0,
+                    excerpt=str(result["excerpt"]),
+                    relevance=float(result.get("relevance", 0.0)),
                 )
             )
 

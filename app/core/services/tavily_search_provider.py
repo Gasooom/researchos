@@ -1,6 +1,7 @@
 """Tavily-backed search provider for ResearchOS."""
 
 from typing import Protocol
+from urllib.parse import urlparse
 
 from app.core.config import Settings
 from app.core.services.search_provider import SearchProvider
@@ -21,19 +22,27 @@ class TavilySearchProvider(SearchProvider):
     def __init__(self, client: TavilyClient) -> None:
         self.client = client
 
-    def search(self, query: str) -> list[dict[str, str]]:
+    def search(self, query: str) -> list[dict[str, str | float]]:
         """Search Tavily and normalize the returned results."""
         response = self.client.search(query)
 
-        return [
-            {
-                "title": result["title"],
-                "url": result["url"],
-                "publisher": "Tavily",
-                "excerpt": result["content"],
-            }
-            for result in response.get("results", [])
-        ]
+        normalized_results: list[dict[str, str | float]] = []
+
+        for result in response.get("results", []):
+            parsed_url = urlparse(result["url"])
+            publisher = parsed_url.netloc or "unknown"
+
+            normalized_results.append(
+                {
+                    "title": result["title"],
+                    "url": result["url"],
+                    "publisher": publisher,
+                    "excerpt": result["content"],
+                    "relevance": float(result.get("score", 0.0)),
+                }
+            )
+
+        return normalized_results
 
 
 def create_tavily_search_provider(settings: Settings) -> TavilySearchProvider:

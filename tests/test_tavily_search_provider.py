@@ -12,11 +12,13 @@ class FakeTavilyClient:
                     "title": "AI Agent Reliability",
                     "url": "https://example.com/reliability",
                     "content": ("AI agent reliability depends on robust evaluation."),
+                    "score": 0.92,
                 },
                 {
                     "title": "Evaluating AI Agents",
-                    "url": "https://example.com/evaluation",
+                    "url": "https://research.example.org/evaluation",
                     "content": "Agent evaluation should measure groundedness.",
+                    "score": 0.81,
                 },
             ]
         }
@@ -37,14 +39,16 @@ def test_tavily_provider_normalizes_results() -> None:
         {
             "title": "AI Agent Reliability",
             "url": "https://example.com/reliability",
-            "publisher": "Tavily",
+            "publisher": "example.com",
             "excerpt": ("AI agent reliability depends on robust evaluation."),
+            "relevance": 0.92,
         },
         {
             "title": "Evaluating AI Agents",
-            "url": "https://example.com/evaluation",
-            "publisher": "Tavily",
+            "url": "https://research.example.org/evaluation",
+            "publisher": "research.example.org",
             "excerpt": "Agent evaluation should measure groundedness.",
+            "relevance": 0.81,
         },
     ]
 
@@ -76,30 +80,21 @@ def test_tavily_provider_handles_empty_results() -> None:
     assert provider.search("AI agent reliability") == []
 
 
-def test_tavily_provider_works_with_real_client_shape(
-    monkeypatch,
-) -> None:
-    class FakeClient:
+def test_tavily_provider_uses_zero_when_score_is_missing() -> None:
+    class MissingScoreClient:
         def search(self, query: str) -> dict:
             return {
                 "results": [
                     {
                         "title": "AI Agent Reliability",
                         "url": "https://example.com/reliability",
-                        "content": "Reliability depends on strong evaluation.",
+                        "content": "Reliability requires evaluation.",
                     }
                 ]
             }
 
-    provider = TavilySearchProvider(client=FakeClient())
+    provider = TavilySearchProvider(client=MissingScoreClient())
 
     results = provider.search("AI agent reliability")
 
-    assert results == [
-        {
-            "title": "AI Agent Reliability",
-            "url": "https://example.com/reliability",
-            "publisher": "Tavily",
-            "excerpt": "Reliability depends on strong evaluation.",
-        }
-    ]
+    assert results[0]["relevance"] == 0.0

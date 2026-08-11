@@ -8,13 +8,14 @@ from app.core.services.research_agent import ResearchAgent
 class StubSearchProvider:
     """Deterministic search provider for research-agent tests."""
 
-    def search(self, query: str) -> list[dict[str, str]]:
+    def search(self, query: str) -> list[dict[str, str | float]]:
         return [
             {
                 "title": "AI Agent Reliability",
                 "url": "https://example.com/reliability",
                 "publisher": "Example Research",
                 "excerpt": "AI agent reliability depends on robust evaluation.",
+                "relevance": 0.92,
             }
         ]
 
@@ -45,7 +46,7 @@ def test_research_agent_returns_evidence_for_task() -> None:
     assert result.source.publisher == "Example Research"
     assert result.source.retrieved_at.tzinfo is not None
     assert result.excerpt == ("AI agent reliability depends on robust evaluation.")
-    assert result.relevance == 1.0
+    assert result.relevance == 0.92
 
 
 def test_research_agent_passes_task_objective_to_search_provider() -> None:
@@ -53,7 +54,7 @@ def test_research_agent_passes_task_objective_to_search_provider() -> None:
         def __init__(self) -> None:
             self.query = None
 
-        def search(self, query: str) -> list[dict[str, str]]:
+        def search(self, query: str) -> list[dict[str, str | float]]:
             self.query = query
             return []
 
@@ -73,13 +74,14 @@ def test_research_agent_passes_task_objective_to_search_provider() -> None:
 
 def test_research_agent_rejects_invalid_search_result() -> None:
     class InvalidSearchProvider:
-        def search(self, query: str) -> list[dict[str, str]]:
+        def search(self, query: str) -> list[dict[str, str | float]]:
             return [
                 {
                     "title": "",
                     "url": "https://example.com/reliability",
                     "publisher": "Example Research",
                     "excerpt": "Invalid evidence.",
+                    "relevance": 0.92,
                 }
             ]
 
@@ -97,13 +99,14 @@ def test_research_agent_rejects_invalid_search_result() -> None:
 
 def test_research_agent_respects_max_sources() -> None:
     class MultiResultSearchProvider:
-        def search(self, query: str) -> list[dict[str, str]]:
+        def search(self, query: str) -> list[dict[str, str | float]]:
             return [
                 {
                     "title": f"Source {index}",
                     "url": f"https://example.com/{index}",
                     "publisher": "Example Research",
                     "excerpt": f"Research excerpt {index}.",
+                    "relevance": 0.9 - (index * 0.1),
                 }
                 for index in range(5)
             ]
@@ -121,3 +124,5 @@ def test_research_agent_respects_max_sources() -> None:
     assert len(evidence) == 2
     assert evidence[0].source.title == "Source 0"
     assert evidence[1].source.title == "Source 1"
+    assert evidence[0].relevance == 0.9
+    assert evidence[1].relevance == 0.8
