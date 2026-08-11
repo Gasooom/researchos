@@ -7,6 +7,7 @@ from app.core.models.research import (
     Claim,
     Evidence,
     ResearchRequest,
+    ResearchResult,
     ResearchTask,
     Source,
 )
@@ -300,4 +301,111 @@ def test_claim_rejects_missing_evidence() -> None:
         Claim(
             statement="Agent reliability remains a deployment challenge.",
             evidence=[],
+        )
+
+
+def test_research_result_accepts_valid_data() -> None:
+    source = Source(
+        title="AI Agent Reliability",
+        url="https://example.com/research",
+        publisher="Example Research",
+        retrieved_at=datetime.now(UTC),
+    )
+
+    evidence = Evidence(
+        source=source,
+        excerpt="Agent reliability remains an important deployment challenge.",
+        relevance=0.92,
+    )
+
+    claim = Claim(
+        statement="Agent reliability remains a deployment challenge.",
+        evidence=[evidence],
+    )
+
+    result = ResearchResult(
+        question="What are the main challenges of AI agent reliability?",
+        claims=[claim],
+        sources=[source],
+    )
+
+    assert result.question == "What are the main challenges of AI agent reliability?"
+    assert result.claims == [claim]
+    assert result.sources == [source]
+
+
+def test_research_result_rejects_empty_question() -> None:
+    source = Source(
+        title="AI Agent Reliability",
+        url="https://example.com/research",
+        publisher="Example Research",
+        retrieved_at=datetime.now(UTC),
+    )
+
+    evidence = Evidence(
+        source=source,
+        excerpt="Relevant evidence.",
+        relevance=0.92,
+    )
+
+    claim = Claim(
+        statement="Agent reliability remains a deployment challenge.",
+        evidence=[evidence],
+    )
+
+    with pytest.raises(ValidationError):
+        ResearchResult(
+            question="",
+            claims=[claim],
+            sources=[source],
+        )
+
+    with pytest.raises(ValidationError):
+        ResearchResult(
+            question="   ",
+            claims=[claim],
+            sources=[source],
+        )
+
+
+def test_research_result_rejects_missing_claims() -> None:
+    source = Source(
+        title="AI Agent Reliability",
+        url="https://example.com/research",
+        publisher="Example Research",
+        retrieved_at=datetime.now(UTC),
+    )
+
+    with pytest.raises(ValidationError):
+        ResearchResult(
+            question="What are the main challenges of AI agent reliability?",
+            claims=[],
+            sources=[source],
+        )
+
+
+def test_research_result_rejects_missing_sources() -> None:
+    source = Source(
+        title="AI Agent Reliability",
+        url="https://example.com/research",
+        publisher="Example Research",
+        retrieved_at=datetime.now(UTC),
+    )
+
+    evidence = Evidence(
+        source=source,
+        excerpt="Relevant evidence.",
+        relevance=0.92,
+    )
+
+    claim = Claim(
+        statement="Agent reliability remains a deployment challenge.",
+        evidence=[evidence],
+    )
+
+    with pytest.raises(ValidationError):
+        ResearchResult(
+            question="What are the main challenges of AI agent reliability?",
+            claims=[claim],
+            sources=[],
         )

@@ -107,3 +107,22 @@ class Claim(BaseModel):
             raise ValueError("statement must not be empty")
 
         return value
+
+
+class ResearchResult(BaseModel):
+    """The structured result produced by a research run."""
+
+    question: str = Field(min_length=1)
+    claims: list[Claim] = Field(min_length=1)
+    sources: list[Source] = Field(min_length=1)
+
+    @field_validator("question")
+    @classmethod
+    def validate_question(cls, value: str) -> str:
+        """Reject questions that contain only whitespace."""
+        value = value.strip()
+
+        if not value:
+            raise ValueError("question must not be empty")
+
+        return value
