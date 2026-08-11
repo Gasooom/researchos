@@ -89,3 +89,21 @@ class Evidence(BaseModel):
             raise ValueError("excerpt must not be empty")
 
         return value
+
+
+class Claim(BaseModel):
+    """A research statement supported by one or more evidence items."""
+
+    statement: str = Field(min_length=1)
+    evidence: list[Evidence] = Field(min_length=1)
+
+    @field_validator("statement")
+    @classmethod
+    def validate_statement(cls, value: str) -> str:
+        """Reject statements that contain only whitespace."""
+        value = value.strip()
+
+        if not value:
+            raise ValueError("statement must not be empty")
+
+        return value

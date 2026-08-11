@@ -4,6 +4,7 @@ import pytest
 from pydantic import ValidationError
 
 from app.core.models.research import (
+    Claim,
     Evidence,
     ResearchRequest,
     ResearchTask,
@@ -241,4 +242,62 @@ def test_evidence_rejects_invalid_source() -> None:
             },
             excerpt="Relevant evidence.",
             relevance=0.92,
+        )
+
+
+def test_claim_accepts_valid_data() -> None:
+    source = Source(
+        title="AI Agent Reliability",
+        url="https://example.com/research",
+        publisher="Example Research",
+        retrieved_at=datetime.now(UTC),
+    )
+
+    evidence = Evidence(
+        source=source,
+        excerpt="Agent reliability remains an important deployment challenge.",
+        relevance=0.92,
+    )
+
+    claim = Claim(
+        statement="Agent reliability remains a deployment challenge.",
+        evidence=[evidence],
+    )
+
+    assert claim.statement == "Agent reliability remains a deployment challenge."
+    assert claim.evidence == [evidence]
+
+
+def test_claim_rejects_empty_statement() -> None:
+    source = Source(
+        title="AI Agent Reliability",
+        url="https://example.com/research",
+        publisher="Example Research",
+        retrieved_at=datetime.now(UTC),
+    )
+
+    evidence = Evidence(
+        source=source,
+        excerpt="Relevant evidence.",
+        relevance=0.92,
+    )
+
+    with pytest.raises(ValidationError):
+        Claim(
+            statement="",
+            evidence=[evidence],
+        )
+
+    with pytest.raises(ValidationError):
+        Claim(
+            statement="   ",
+            evidence=[evidence],
+        )
+
+
+def test_claim_rejects_missing_evidence() -> None:
+    with pytest.raises(ValidationError):
+        Claim(
+            statement="Agent reliability remains a deployment challenge.",
+            evidence=[],
         )
