@@ -124,3 +124,34 @@ def test_llm_planner_rejects_empty_task_type() -> None:
 
     with pytest.raises(ValidationError):
         planner.plan(request)
+
+
+def test_llm_planner_works_with_provider_adapter() -> None:
+    from app.core.services.llm_provider import LLMProviderAdapter
+
+    class FakeClient:
+        def generate(self, prompt: str) -> list[dict[str, str]]:
+            return [
+                {
+                    "objective": "Research AI agent reliability.",
+                    "task_type": "research",
+                }
+            ]
+
+    provider = LLMProviderAdapter(client=FakeClient())
+    planner = LLMPlanner(provider=provider)
+
+    request = ResearchRequest(
+        question="How reliable are AI agents?",
+        max_sources=5,
+    )
+
+    tasks = planner.plan(request)
+
+    assert tasks == [
+        ResearchTask(
+            objective="Research AI agent reliability.",
+            task_type="research",
+            max_sources=5,
+        )
+    ]
