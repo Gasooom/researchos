@@ -11,7 +11,7 @@ def test_settings_use_development_defaults(monkeypatch) -> None:
     assert settings.log_level == "INFO"
 
 
-def test_settings_read_environment_variables(monkeypatch) -> None:
+def test_settings_use_environment_values(monkeypatch) -> None:
     monkeypatch.setenv("APP_ENV", "testing")
     monkeypatch.setenv("LOG_LEVEL", "DEBUG")
 
@@ -31,3 +31,17 @@ def test_get_settings_returns_cached_instance(monkeypatch) -> None:
     second = get_settings()
 
     assert first is second
+
+
+def test_settings_tavily_key_defaults_to_none() -> None:
+    settings = Settings()
+
+    assert settings.tavily_api_key is None
+
+
+def test_settings_accept_tavily_api_key(monkeypatch) -> None:
+    monkeypatch.setenv("TAVILY_API_KEY", "test-key")
+
+    settings = Settings()
+
+    assert settings.tavily_api_key == "test-key"
