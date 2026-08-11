@@ -1,17 +1,9 @@
 """Research execution services for ResearchOS."""
 
 from datetime import UTC, datetime
-from typing import Protocol
 
 from app.core.models.research import Evidence, ResearchTask, Source
-
-
-class SearchProvider(Protocol):
-    """Protocol for providers capable of searching for research evidence."""
-
-    def search(self, query: str) -> list[dict[str, str]]:
-        """Return structured search results for a query."""
-        ...
+from app.core.services.search_provider import SearchProvider
 
 
 class ResearchAgent:
