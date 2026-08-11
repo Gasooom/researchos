@@ -3,7 +3,12 @@ from datetime import UTC, datetime
 import pytest
 from pydantic import ValidationError
 
-from app.core.models.research import ResearchRequest, ResearchTask, Source
+from app.core.models.research import (
+    Evidence,
+    ResearchRequest,
+    ResearchTask,
+    Source,
+)
 
 
 def test_research_request_uses_defaults() -> None:
@@ -154,4 +159,86 @@ def test_source_rejects_naive_datetime() -> None:
             url="https://example.com/research",
             publisher="Example Research",
             retrieved_at=datetime(2026, 8, 11, 0, 0),
+        )
+
+
+def test_evidence_accepts_valid_data() -> None:
+    source = Source(
+        title="AI Agent Reliability",
+        url="https://example.com/research",
+        publisher="Example Research",
+        retrieved_at=datetime.now(UTC),
+    )
+
+    evidence = Evidence(
+        source=source,
+        excerpt="Agent reliability remains an important deployment challenge.",
+        relevance=0.92,
+    )
+
+    assert evidence.source == source
+    assert (
+        evidence.excerpt
+        == "Agent reliability remains an important deployment challenge."
+    )
+    assert evidence.relevance == 0.92
+
+
+def test_evidence_rejects_empty_excerpt() -> None:
+    source = Source(
+        title="AI Agent Reliability",
+        url="https://example.com/research",
+        publisher="Example Research",
+        retrieved_at=datetime.now(UTC),
+    )
+
+    with pytest.raises(ValidationError):
+        Evidence(
+            source=source,
+            excerpt="",
+            relevance=0.92,
+        )
+
+    with pytest.raises(ValidationError):
+        Evidence(
+            source=source,
+            excerpt="   ",
+            relevance=0.92,
+        )
+
+
+def test_evidence_rejects_invalid_relevance() -> None:
+    source = Source(
+        title="AI Agent Reliability",
+        url="https://example.com/research",
+        publisher="Example Research",
+        retrieved_at=datetime.now(UTC),
+    )
+
+    with pytest.raises(ValidationError):
+        Evidence(
+            source=source,
+            excerpt="Relevant evidence.",
+            relevance=-0.1,
+        )
+
+    with pytest.raises(ValidationError):
+        Evidence(
+            source=source,
+            excerpt="Relevant evidence.",
+            relevance=1.1,
+        )
+
+
+def test_evidence_rejects_invalid_source() -> None:
+    with pytest.raises(ValidationError):
+        Evidence(
+            source={
+                "title": "AI Agent Reliability",
+                "url": "not-a-valid-url",
+                "publisher": "Example Research",
+                "retrieved_at": datetime.now(UTC),
+            },
+            excerpt="Relevant evidence.",
+            relevance=0.92,
         )

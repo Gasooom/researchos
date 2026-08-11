@@ -70,3 +70,22 @@ class Source(BaseModel):
             raise ValueError("retrieved_at must be timezone-aware")
 
         return value
+
+
+class Evidence(BaseModel):
+    """A relevant passage extracted from a research source."""
+
+    source: Source
+    excerpt: str = Field(min_length=1)
+    relevance: float = Field(ge=0.0, le=1.0)
+
+    @field_validator("excerpt")
+    @classmethod
+    def validate_excerpt(cls, value: str) -> str:
+        """Reject excerpts that contain only whitespace."""
+        value = value.strip()
+
+        if not value:
+            raise ValueError("excerpt must not be empty")
+
+        return value
