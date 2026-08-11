@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "researchos"
+version = "0.1.0"
+description = "An evidence-grounded multi-agent research system."
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "pydantic>=2.13,<3.0",
+    "pydantic-settings>=2.15,<3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.1,<10.0",
+    "ruff>=0.16,<0.17",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
