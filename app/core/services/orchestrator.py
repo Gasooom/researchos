@@ -8,19 +8,19 @@ from app.core.services.claim_support_classifier import (
 )
 from app.core.services.evidence_extractor import EvidenceExtractor
 from app.core.services.planning import PlannerStrategy
-from app.core.services.research_agent import ResearchAgent
+from app.core.services.run_executor import ResearchRunExecutor
 from app.core.services.source_collector import SourceCollector
 from app.core.services.source_deduplicator import SourceDeduplicator
 from app.core.services.source_selector import SourceSelector
 
 
 class ResearchOrchestrator:
-    """Coordinate planning, retrieval, evidence, and claim construction."""
+    """Coordinate planning, execution, evidence, and claim construction."""
 
     def __init__(
         self,
         planner: PlannerStrategy,
-        research_agent: ResearchAgent,
+        run_executor: ResearchRunExecutor,
         source_collector: SourceCollector,
         source_deduplicator: SourceDeduplicator,
         source_selector: SourceSelector,
@@ -30,7 +30,7 @@ class ResearchOrchestrator:
         claim_review_router: ClaimReviewRouter,
     ) -> None:
         self.planner = planner
-        self.research_agent = research_agent
+        self.run_executor = run_executor
         self.source_collector = source_collector
         self.source_deduplicator = source_deduplicator
         self.source_selector = source_selector
@@ -42,11 +42,9 @@ class ResearchOrchestrator:
     def run(self, request: ResearchRequest) -> ResearchResult:
         """Execute a complete research workflow."""
         tasks = self.planner.plan(request)
+        outcome = self.run_executor.execute(tasks)
 
-        all_evidence = []
-
-        for task in tasks:
-            all_evidence.extend(self.research_agent.research(task))
+        all_evidence = outcome.evidence
 
         source_results = [
             {

@@ -12,13 +12,17 @@ from app.core.services.claim_support_classifier import (
 )
 from app.core.services.evidence_extractor import EvidenceExtractor
 from app.core.services.orchestrator import ResearchOrchestrator
+from app.core.services.reliable_research_agent import ReliableResearchAgent
 from app.core.services.research_agent import ResearchAgent
+from app.core.services.run_executor import ResearchRunExecutor
 from app.core.services.source_collector import SourceCollector
 from app.core.services.source_deduplicator import SourceDeduplicator
 from app.core.services.source_selector import SourceSelector
 
 
 class StubPlanner:
+    """Deterministic planner for orchestration tests."""
+
     def plan(self, request: ResearchRequest) -> list[ResearchTask]:
         return [
             ResearchTask(
@@ -30,6 +34,8 @@ class StubPlanner:
 
 
 class StubSearchProvider:
+    """Deterministic search provider for orchestration tests."""
+
     def search(self, query: str) -> list[dict[str, str | float]]:
         return [
             {
@@ -50,6 +56,8 @@ class StubSearchProvider:
 
 
 class StubClock:
+    """Deterministic clock for orchestration tests."""
+
     def now(self) -> datetime:
         return datetime(
             2026,
@@ -62,9 +70,13 @@ class StubClock:
 
 
 def build_orchestrator() -> ResearchOrchestrator:
+    """Build a fully deterministic research orchestrator."""
+    research_agent = ResearchAgent(StubSearchProvider())
+    reliable_agent = ReliableResearchAgent(research_agent)
+
     return ResearchOrchestrator(
         planner=StubPlanner(),
-        research_agent=ResearchAgent(StubSearchProvider()),
+        run_executor=ResearchRunExecutor(reliable_agent),
         source_collector=SourceCollector(StubClock()),
         source_deduplicator=SourceDeduplicator(),
         source_selector=SourceSelector(max_sources=2),
