@@ -1,6 +1,6 @@
 """Research run execution services for ResearchOS."""
 
-from app.core.models.research import ResearchTask
+from app.core.models.research import Evidence, ResearchTask
 from app.core.models.run import (
     ResearchRunFailure,
     ResearchRunOutcome,
@@ -22,7 +22,7 @@ class ResearchRunExecutor:
         """Execute all tasks and preserve successful evidence."""
         completed_tasks = 0
         failures: list[ResearchRunFailure] = []
-        evidence = []
+        evidence: list[Evidence] = []
 
         for task in tasks:
             try:

@@ -1,12 +1,23 @@
 """Research orchestration services for ResearchOS."""
 
-from app.core.models.research import Claim, ResearchRequest, ResearchResult
+from app.core.models.research import (
+    Claim,
+    Evidence,
+    ResearchRequest,
+    ResearchResult,
+)
+from app.core.models.run import (
+    ResearchRunFailure,
+    ResearchRunOutcome,
+    ResearchRunStatus,
+)
 from app.core.services.claim_grounder import ClaimGrounder
 from app.core.services.claim_review import ClaimReviewRouter
 from app.core.services.claim_support_classifier import (
     ClaimSupportClassifier,
 )
 from app.core.services.evidence_extractor import EvidenceExtractor
+from app.core.services.multi_agent_coordinator import MultiAgentCoordinator
 from app.core.services.planning import PlannerStrategy
 from app.core.services.run_executor import ResearchRunExecutor
 from app.core.services.source_collector import SourceCollector
@@ -28,6 +39,7 @@ class ResearchOrchestrator:
         claim_grounder: ClaimGrounder,
         claim_support_classifier: ClaimSupportClassifier,
         claim_review_router: ClaimReviewRouter,
+        multi_agent_coordinator: MultiAgentCoordinator | None = None,
     ) -> None:
         self.planner = planner
         self.run_executor = run_executor
@@ -38,14 +50,83 @@ class ResearchOrchestrator:
         self.claim_grounder = claim_grounder
         self.claim_support_classifier = claim_support_classifier
         self.claim_review_router = claim_review_router
+        self.multi_agent_coordinator = multi_agent_coordinator
 
     def run(self, request: ResearchRequest) -> ResearchResult:
         """Execute a complete research workflow."""
         tasks = self.planner.plan(request)
+
+        if self.multi_agent_coordinator is not None:
+            return self._run_multi_agent(request, tasks)
+
         outcome = self.run_executor.execute(tasks)
 
-        all_evidence = outcome.evidence
+        return self._build_result(
+            request=request,
+            all_evidence=outcome.evidence,
+            execution=outcome,
+        )
 
+    def _run_multi_agent(
+        self,
+        request: ResearchRequest,
+        tasks: list,
+    ) -> ResearchResult:
+        """Execute all planned tasks through the multi-agent coordinator."""
+        if not tasks:
+            raise ValueError("planner returned no research tasks")
+
+        all_evidence: list[Evidence] = []
+        failures: list[ResearchRunFailure] = []
+        completed_tasks = 0
+
+        for task in tasks:
+            try:
+                result = self.multi_agent_coordinator.execute(task)
+                all_evidence.extend(result.evidence)
+                completed_tasks += 1
+            except Exception as exc:
+                failures.append(
+                    ResearchRunFailure(
+                        task_objective=task.objective,
+                        error_type=type(exc).__name__,
+                        message=str(exc),
+                    )
+                )
+
+        failed_tasks = len(failures)
+
+        if failed_tasks == 0:
+            status = ResearchRunStatus.SUCCESS
+        elif completed_tasks == 0:
+            status = ResearchRunStatus.FAILED
+        else:
+            status = ResearchRunStatus.PARTIAL
+
+        execution = ResearchRunOutcome(
+            status=status,
+            completed_tasks=completed_tasks,
+            failed_tasks=failed_tasks,
+            failures=failures,
+            evidence=all_evidence,
+        )
+
+        if not all_evidence:
+            raise ValueError("multi-agent execution returned no evidence")
+
+        return self._build_result(
+            request=request,
+            all_evidence=all_evidence,
+            execution=execution,
+        )
+
+    def _build_result(
+        self,
+        request: ResearchRequest,
+        all_evidence: list[Evidence],
+        execution: ResearchRunOutcome,
+    ) -> ResearchResult:
+        """Build sources, claims, and the final research result."""
         source_results = [
             {
                 "title": evidence.source.title,
@@ -84,4 +165,5 @@ class ResearchOrchestrator:
             question=request.question,
             claims=claims,
             sources=sources,
+            execution=execution,
         )

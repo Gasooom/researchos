@@ -1,10 +1,9 @@
 """Research run execution models for ResearchOS."""
 
 from enum import StrEnum
+from typing import Any
 
 from pydantic import BaseModel, Field
-
-from app.core.models.research import Evidence
 
 
 class ResearchRunStatus(StrEnum):
@@ -30,4 +29,4 @@ class ResearchRunOutcome(BaseModel):
     completed_tasks: int = Field(ge=0)
     failed_tasks: int = Field(ge=0)
     failures: list[ResearchRunFailure] = Field(default_factory=list)
-    evidence: list[Evidence] = Field(default_factory=list)
+    evidence: list[Any] = Field(default_factory=list)

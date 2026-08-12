@@ -4,6 +4,8 @@ from datetime import datetime
 
 from pydantic import AnyHttpUrl, BaseModel, Field, field_validator
 
+from app.core.models.run import ResearchRunOutcome
+
 
 class ResearchRequest(BaseModel):
     """A user's request for a research task."""
@@ -115,6 +117,7 @@ class ResearchResult(BaseModel):
     question: str = Field(min_length=1)
     claims: list[Claim] = Field(min_length=1)
     sources: list[Source] = Field(min_length=1)
+    execution: ResearchRunOutcome | None = None
 
     @field_validator("question")
     @classmethod
