@@ -4,20 +4,28 @@ from app.core.models.research import Evidence, Source
 
 
 class EvidenceExtractor:
-    """Create validated evidence from a source and supporting excerpt."""
+    """Extract a bounded supporting excerpt from source content."""
 
     def extract(
         self,
         source: Source,
-        excerpt: str,
+        content: str,
         relevance: float,
+        max_length: int = 500,
     ) -> Evidence:
-        """Create validated evidence from extracted source content."""
-        if not excerpt.strip():
-            raise ValueError("excerpt must not be empty")
+        """Create evidence using a bounded excerpt from source content."""
+        content = content.strip()
+
+        if not content:
+            raise ValueError("content must not be empty")
+
+        if max_length < 1:
+            raise ValueError("max_length must be at least 1")
+
+        excerpt = content[:max_length].strip()
 
         return Evidence(
             source=source,
-            excerpt=excerpt.strip(),
+            excerpt=excerpt,
             relevance=relevance,
         )

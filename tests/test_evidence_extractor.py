@@ -22,14 +22,14 @@ def make_source() -> Source:
     )
 
 
-def test_extractor_returns_evidence() -> None:
+def test_extractor_returns_evidence_from_content() -> None:
     extractor = EvidenceExtractor()
 
     source = make_source()
 
     evidence = extractor.extract(
         source=source,
-        excerpt="AI agents can fail unpredictably during multi-step tasks.",
+        content="AI agents can fail unpredictably during multi-step tasks.",
         relevance=0.91,
     )
 
@@ -40,42 +40,60 @@ def test_extractor_returns_evidence() -> None:
     )
 
 
-def test_extractor_preserves_source_metadata() -> None:
+def test_extractor_trims_content() -> None:
     extractor = EvidenceExtractor()
 
     source = make_source()
 
     evidence = extractor.extract(
         source=source,
-        excerpt="Reliability requires strong evaluation.",
+        content="  Reliability requires strong evaluation.  ",
         relevance=0.84,
     )
 
-    assert evidence.source == source
+    assert evidence.excerpt == "Reliability requires strong evaluation."
 
 
-def test_extractor_preserves_relevance() -> None:
+def test_extractor_limits_excerpt_length() -> None:
     extractor = EvidenceExtractor()
 
     source = make_source()
+
+    content = "A" * 100
 
     evidence = extractor.extract(
         source=source,
-        excerpt="Reliability requires strong evaluation.",
+        content=content,
         relevance=0.73,
+        max_length=25,
     )
 
-    assert evidence.relevance == 0.73
+    assert evidence.excerpt == "A" * 25
+    assert len(evidence.excerpt) == 25
 
 
-def test_extractor_rejects_empty_excerpt() -> None:
+def test_extractor_rejects_empty_content() -> None:
     extractor = EvidenceExtractor()
 
     source = make_source()
 
-    with pytest.raises(ValueError, match="excerpt must not be empty"):
+    with pytest.raises(ValueError, match="content must not be empty"):
         extractor.extract(
             source=source,
-            excerpt="",
+            content="   ",
             relevance=0.8,
+        )
+
+
+def test_extractor_rejects_invalid_max_length() -> None:
+    extractor = EvidenceExtractor()
+
+    source = make_source()
+
+    with pytest.raises(ValueError, match="max_length"):
+        extractor.extract(
+            source=source,
+            content="Reliability requires evaluation.",
+            relevance=0.8,
+            max_length=0,
         )
