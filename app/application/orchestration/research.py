@@ -1,5 +1,7 @@
 """Research orchestration services for ResearchOS."""
 
+from datetime import UTC, datetime
+
 from app.application.claims.grounder import ClaimGrounder
 from app.application.claims.support_classifier import (
     ClaimSupportClassifier,
@@ -23,10 +25,13 @@ from app.domain.runs.models import (
     ResearchRunOutcome,
     ResearchRunStatus,
 )
+from app.domain.runs.record import ResearchRunRecord
+from app.domain.runs.repository import ResearchRunRepository
+from app.infrastructure.telemetry.run_observer import RunObserver
 
 
 class ResearchOrchestrator:
-    """Coordinate planning, execution, evidence, and claim construction."""
+    """Coordinate planning, execution, persistence, and observability."""
 
     def __init__(
         self,
@@ -40,6 +45,8 @@ class ResearchOrchestrator:
         claim_support_classifier: ClaimSupportClassifier,
         claim_review_router: ClaimReviewRouter,
         multi_agent_coordinator: MultiAgentCoordinator | None = None,
+        run_repository: ResearchRunRepository | None = None,
+        run_observer: RunObserver | None = None,
     ) -> None:
         self.planner = planner
         self.run_executor = run_executor
@@ -51,27 +58,69 @@ class ResearchOrchestrator:
         self.claim_support_classifier = claim_support_classifier
         self.claim_review_router = claim_review_router
         self.multi_agent_coordinator = multi_agent_coordinator
+        self.run_repository = run_repository
+        self.run_observer = run_observer
 
     def run(self, request: ResearchRequest) -> ResearchResult:
         """Execute a complete research workflow."""
+        started_at = datetime.now(UTC)
         tasks = self.planner.plan(request)
 
         if self.multi_agent_coordinator is not None:
-            return self._run_multi_agent(request, tasks)
+            result, outcome = self._run_multi_agent(
+                request=request,
+                tasks=tasks,
+            )
+        else:
+            outcome = self.run_executor.execute(tasks)
 
-        outcome = self.run_executor.execute(tasks)
+            result = self._build_result(
+                request=request,
+                all_evidence=outcome.evidence,
+                execution=outcome,
+            )
 
-        return self._build_result(
-            request=request,
-            all_evidence=outcome.evidence,
-            execution=outcome,
+        self._persist_run(
+            started_at=started_at,
+            outcome=outcome,
+        )
+
+        return result
+
+    def _persist_run(
+        self,
+        started_at: datetime,
+        outcome: ResearchRunOutcome,
+    ) -> None:
+        """Persist a completed run and its operational observation."""
+        if self.run_repository is None:
+            return
+
+        completed_at = datetime.now(UTC)
+        duration_seconds = (completed_at - started_at).total_seconds()
+
+        observation = None
+
+        if self.run_observer is not None:
+            observation = self.run_observer.observe(
+                outcome=outcome,
+                duration_seconds=duration_seconds,
+            )
+
+        self.run_repository.save(
+            ResearchRunRecord(
+                created_at=started_at,
+                completed_at=completed_at,
+                outcome=outcome,
+                observation=observation,
+            )
         )
 
     def _run_multi_agent(
         self,
         request: ResearchRequest,
         tasks: list,
-    ) -> ResearchResult:
+    ) -> tuple[ResearchResult, ResearchRunOutcome]:
         """Execute all planned tasks through the multi-agent coordinator."""
         if not tasks:
             raise ValueError("planner returned no research tasks")
@@ -103,7 +152,7 @@ class ResearchOrchestrator:
         else:
             status = ResearchRunStatus.PARTIAL
 
-        execution = ResearchRunOutcome(
+        outcome = ResearchRunOutcome(
             status=status,
             completed_tasks=completed_tasks,
             failed_tasks=failed_tasks,
@@ -114,11 +163,13 @@ class ResearchOrchestrator:
         if not all_evidence:
             raise ValueError("multi-agent execution returned no evidence")
 
-        return self._build_result(
+        research_result = self._build_result(
             request=request,
             all_evidence=all_evidence,
-            execution=execution,
+            execution=outcome,
         )
+
+        return research_result, outcome
 
     def _build_result(
         self,

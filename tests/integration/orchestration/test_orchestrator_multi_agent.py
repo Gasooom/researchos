@@ -21,6 +21,9 @@ from app.domain.research.models import (
 )
 from app.domain.research.multi_agent import MultiAgentResearchResult
 from app.domain.research.synthesis import SynthesisResult
+from app.infrastructure.persistence.in_memory_run_repository import (
+    InMemoryResearchRunRepository,
+)
 
 
 class StubPlanner:
@@ -77,7 +80,9 @@ class StubCoordinator(MultiAgentCoordinator):
 
         analysis = AnalysisResult(
             summary=f"Analysis for {task.objective}.",
-            key_points=[f"Key point for {task.objective}."],
+            key_points=[
+                f"Key point for {task.objective}.",
+            ],
             confidence=0.94,
         )
 
@@ -112,6 +117,7 @@ class StubClock:
 
 def build_orchestrator(
     failing_objectives: set[str] | None = None,
+    run_repository: InMemoryResearchRunRepository | None = None,
 ) -> ResearchOrchestrator:
     return ResearchOrchestrator(
         planner=StubPlanner(),
@@ -128,6 +134,7 @@ def build_orchestrator(
         multi_agent_coordinator=StubCoordinator(
             failing_objectives=failing_objectives,
         ),
+        run_repository=run_repository,
     )
 
 
@@ -161,7 +168,7 @@ def test_orchestrator_preserves_successful_tasks_after_failure() -> None:
     assert result.execution.completed_tasks == 2
     assert result.execution.failed_tasks == 1
     assert len(result.execution.failures) == 1
-    assert result.execution.failures[0].task_objective == "Research evaluation"
+    assert result.execution.failures[0].task_objective == ("Research evaluation")
     assert len(result.execution.evidence) == 2
     assert len(result.claims) == 2
 
@@ -179,3 +186,28 @@ def test_orchestrator_records_multi_agent_failure_details() -> None:
 
     assert failure.error_type == "RuntimeError"
     assert failure.message == "failed task: Research deployment"
+
+
+def test_orchestrator_persists_partial_multi_agent_run() -> None:
+    repository = InMemoryResearchRunRepository()
+
+    orchestrator = build_orchestrator(
+        {"Research evaluation"},
+        run_repository=repository,
+    )
+
+    result = orchestrator.run(
+        ResearchRequest(question="Multi-agent research"),
+    )
+
+    persisted_runs = repository.list()
+
+    assert len(persisted_runs) == 1
+
+    persisted_run = persisted_runs[0]
+
+    assert persisted_run.completed_at is not None
+    assert persisted_run.outcome == result.execution
+    assert persisted_run.outcome.status.value == "partial"
+    assert persisted_run.outcome.completed_tasks == 2
+    assert persisted_run.outcome.failed_tasks == 1

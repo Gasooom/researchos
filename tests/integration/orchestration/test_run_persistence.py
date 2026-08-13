@@ -13,18 +13,15 @@ from app.application.retrieval.collector import SourceCollector
 from app.application.retrieval.deduplicator import SourceDeduplicator
 from app.application.retrieval.selector import SourceSelector
 from app.application.review.router import ClaimReviewRouter
-from app.domain.research.models import (
-    ResearchRequest,
-    ResearchResult,
-    ResearchTask,
-)
+from app.domain.research.models import ResearchRequest, ResearchTask
+from app.domain.runs.models import ResearchRunStatus
 from app.infrastructure.persistence.in_memory_run_repository import (
     InMemoryResearchRunRepository,
 )
 
 
 class StubPlanner:
-    """Deterministic planner for orchestration tests."""
+    """Deterministic planner for persistence integration tests."""
 
     def plan(self, request: ResearchRequest) -> list[ResearchTask]:
         return [
@@ -37,7 +34,7 @@ class StubPlanner:
 
 
 class StubSearchProvider:
-    """Deterministic search provider for orchestration tests."""
+    """Deterministic search provider for persistence integration tests."""
 
     def search(self, query: str) -> list[dict[str, str | float]]:
         return [
@@ -59,23 +56,23 @@ class StubSearchProvider:
 
 
 class StubClock:
-    """Deterministic clock for orchestration tests."""
+    """Deterministic clock for persistence integration tests."""
 
     def now(self) -> datetime:
         return datetime(
             2026,
             8,
             12,
-            8,
+            16,
             0,
             tzinfo=UTC,
         )
 
 
 def build_orchestrator(
-    run_repository: InMemoryResearchRunRepository | None = None,
+    repository: InMemoryResearchRunRepository,
 ) -> ResearchOrchestrator:
-    """Build a fully deterministic research orchestrator."""
+    """Build a deterministic orchestrator with run persistence."""
     research_agent = ResearchAgent(StubSearchProvider())
     reliable_agent = ReliableResearchAgent(research_agent)
 
@@ -89,55 +86,13 @@ def build_orchestrator(
         claim_grounder=ClaimGrounder(),
         claim_support_classifier=ClaimSupportClassifier(),
         claim_review_router=ClaimReviewRouter(),
-        run_repository=run_repository,
+        run_repository=repository,
     )
-
-
-def test_orchestrator_returns_research_result() -> None:
-    orchestrator = build_orchestrator()
-
-    request = ResearchRequest(
-        question="What are the main challenges of AI agent reliability?"
-    )
-
-    result = orchestrator.run(request)
-
-    assert isinstance(result, ResearchResult)
-    assert result.question == request.question
-    assert result.sources
-    assert result.claims
-
-
-def test_orchestrator_builds_claims_from_retrieved_evidence() -> None:
-    orchestrator = build_orchestrator()
-
-    request = ResearchRequest(
-        question="What are the main challenges of AI agent reliability?"
-    )
-
-    result = orchestrator.run(request)
-
-    assert len(result.claims) == 2
-    assert all(claim.evidence for claim in result.claims)
-
-
-def test_orchestrator_respects_source_limit() -> None:
-    orchestrator = build_orchestrator()
-
-    request = ResearchRequest(
-        question="What are the main challenges of AI agent reliability?"
-    )
-
-    result = orchestrator.run(request)
-
-    assert len(result.sources) <= 2
 
 
 def test_orchestrator_persists_completed_run() -> None:
     repository = InMemoryResearchRunRepository()
-    orchestrator = build_orchestrator(
-        run_repository=repository,
-    )
+    orchestrator = build_orchestrator(repository)
 
     request = ResearchRequest(
         question="What are the main challenges of AI agent reliability?"
@@ -153,6 +108,25 @@ def test_orchestrator_persists_completed_run() -> None:
 
     assert persisted_run.completed_at is not None
     assert persisted_run.outcome == result.execution
-    assert persisted_run.outcome.status.value == "success"
+    assert persisted_run.outcome.status == ResearchRunStatus.SUCCESS
     assert persisted_run.outcome.completed_tasks == 1
     assert persisted_run.outcome.failed_tasks == 0
+
+
+def test_orchestrator_persists_without_changing_result() -> None:
+    repository = InMemoryResearchRunRepository()
+    orchestrator = build_orchestrator(repository)
+
+    request = ResearchRequest(
+        question="What are the main challenges of AI agent reliability?"
+    )
+
+    result = orchestrator.run(request)
+
+    persisted_run = repository.list()[0]
+
+    assert result.execution is not None
+    assert persisted_run.outcome == result.execution
+    assert result.question == request.question
+    assert result.sources
+    assert result.claims

@@ -15,6 +15,10 @@ class Settings(BaseSettings):
         default=None,
         alias="TAVILY_API_KEY",
     )
+    research_database_path: str = Field(
+        default="researchos.db",
+        alias="RESEARCH_DATABASE_PATH",
+    )
 
     model_config = SettingsConfigDict(
         env_file=".env",
