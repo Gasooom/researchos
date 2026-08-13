@@ -11,6 +11,14 @@ class LLMClient(Protocol):
         ...
 
 
+class LLMProvider(Protocol):
+    """Contract for providers capable of structured generation."""
+
+    def generate(self, prompt: str) -> list[dict[str, str]]:
+        """Generate structured data from a prompt."""
+        ...
+
+
 class LLMProviderAdapter:
     """Adapt a concrete LLM client to the ResearchOS provider contract."""
 
