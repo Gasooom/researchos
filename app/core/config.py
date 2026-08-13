@@ -11,10 +11,27 @@ class Settings(BaseSettings):
 
     app_env: str = Field(default="development", alias="APP_ENV")
     log_level: str = Field(default="INFO", alias="LOG_LEVEL")
+
     tavily_api_key: str | None = Field(
         default=None,
         alias="TAVILY_API_KEY",
     )
+
+    openai_api_key: str | None = Field(
+        default=None,
+        alias="OPENAI_API_KEY",
+    )
+
+    llm_model: str = Field(
+        default="gpt-5-mini",
+        alias="LLM_MODEL",
+    )
+
+    llm_mode: str = Field(
+        default="deterministic",
+        alias="LLM_MODE",
+    )
+
     research_database_path: str = Field(
         default="researchos.db",
         alias="RESEARCH_DATABASE_PATH",

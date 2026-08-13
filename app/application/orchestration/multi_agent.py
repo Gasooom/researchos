@@ -1,10 +1,60 @@
 """Multi-agent research coordination services for ResearchOS."""
 
-from app.application.agents.analysis import AnalysisAgent
-from app.application.agents.retrieval import RetrievalAgent
-from app.application.agents.synthesis import SynthesisAgent
-from app.domain.research.models import ResearchTask
+from typing import Protocol
+
+from app.application.agents.roles import AgentRole
+from app.domain.research.analysis import AnalysisResult
+from app.domain.research.models import Evidence, ResearchTask
 from app.domain.research.multi_agent import MultiAgentResearchResult
+from app.domain.research.synthesis import SynthesisResult
+
+
+class RetrievalAgentLike(Protocol):
+    """Behavior required from a retrieval agent."""
+
+    @property
+    def role(self) -> AgentRole:
+        """Return the agent role."""
+        ...
+
+    def execute(self, task: ResearchTask) -> list[Evidence]:
+        """Retrieve evidence for a task."""
+        ...
+
+
+class AnalysisAgentLike(Protocol):
+    """Behavior required from an analysis agent."""
+
+    @property
+    def role(self) -> AgentRole:
+        """Return the agent role."""
+        ...
+
+    def execute(
+        self,
+        task: ResearchTask,
+        evidence: list[Evidence],
+    ) -> AnalysisResult:
+        """Analyze evidence for a task."""
+        ...
+
+
+class SynthesisAgentLike(Protocol):
+    """Behavior required from a synthesis agent."""
+
+    @property
+    def role(self) -> AgentRole:
+        """Return the agent role."""
+        ...
+
+    def execute(
+        self,
+        task: ResearchTask,
+        evidence: list[Evidence],
+        analysis: AnalysisResult,
+    ) -> SynthesisResult:
+        """Synthesize a research answer."""
+        ...
 
 
 class MultiAgentCoordinator:
@@ -12,9 +62,9 @@ class MultiAgentCoordinator:
 
     def __init__(
         self,
-        retrieval_agent: RetrievalAgent,
-        analysis_agent: AnalysisAgent,
-        synthesis_agent: SynthesisAgent,
+        retrieval_agent: RetrievalAgentLike,
+        analysis_agent: AnalysisAgentLike,
+        synthesis_agent: SynthesisAgentLike,
     ) -> None:
         self.retrieval_agent = retrieval_agent
         self.analysis_agent = analysis_agent

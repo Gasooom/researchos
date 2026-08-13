@@ -7,19 +7,23 @@ from app.application.claims.support_classifier import (
     ClaimSupportClassifier,
 )
 from app.application.evidence.extractor import EvidenceExtractor
+from app.application.memory.research_memory import ResearchMemoryService
 from app.application.orchestration.multi_agent import MultiAgentCoordinator
 from app.application.orchestration.planning import PlannerStrategy
 from app.application.orchestration.run_executor import ResearchRunExecutor
 from app.application.retrieval.collector import SourceCollector
 from app.application.retrieval.deduplicator import SourceDeduplicator
 from app.application.retrieval.selector import SourceSelector
+from app.application.retrieval.verifier import SourceVerifier
 from app.application.review.router import ClaimReviewRouter
+from app.domain.research.context import ResearchContext
 from app.domain.research.models import (
     Claim,
     Evidence,
     ResearchRequest,
     ResearchResult,
 )
+from app.domain.research.verification import SourceVerificationStatus
 from app.domain.runs.models import (
     ResearchRunFailure,
     ResearchRunOutcome,
@@ -47,6 +51,8 @@ class ResearchOrchestrator:
         multi_agent_coordinator: MultiAgentCoordinator | None = None,
         run_repository: ResearchRunRepository | None = None,
         run_observer: RunObserver | None = None,
+        source_verifier: SourceVerifier | None = None,
+        memory_service: ResearchMemoryService | None = None,
     ) -> None:
         self.planner = planner
         self.run_executor = run_executor
@@ -60,22 +66,37 @@ class ResearchOrchestrator:
         self.multi_agent_coordinator = multi_agent_coordinator
         self.run_repository = run_repository
         self.run_observer = run_observer
+        self.source_verifier = source_verifier or SourceVerifier()
+        self.memory_service = memory_service
 
     def run(self, request: ResearchRequest) -> ResearchResult:
-        """Execute a complete research workflow."""
+        """Execute a complete research workflow with optional memory."""
         started_at = datetime.now(UTC)
-        tasks = self.planner.plan(request)
+
+        historical_memory = []
+
+        if self.memory_service is not None:
+            historical_memory = self.memory_service.retrieve(
+                question=request.question,
+            )
+
+        context = ResearchContext(
+            request=request,
+            historical_memory=historical_memory,
+        )
+
+        tasks = self.planner.plan(context.request)
 
         if self.multi_agent_coordinator is not None:
             result, outcome = self._run_multi_agent(
-                request=request,
+                request=context.request,
                 tasks=tasks,
             )
         else:
             outcome = self.run_executor.execute(tasks)
 
             result = self._build_result(
-                request=request,
+                request=context.request,
                 all_evidence=outcome.evidence,
                 execution=outcome,
             )
@@ -84,6 +105,9 @@ class ResearchOrchestrator:
             started_at=started_at,
             outcome=outcome,
         )
+
+        if self.memory_service is not None:
+            self.memory_service.store(result)
 
         return result
 
@@ -177,7 +201,7 @@ class ResearchOrchestrator:
         all_evidence: list[Evidence],
         execution: ResearchRunOutcome,
     ) -> ResearchResult:
-        """Build sources, claims, and the final research result."""
+        """Build verified sources, claims, and the final research result."""
         source_results = [
             {
                 "title": evidence.source.title,
@@ -191,11 +215,31 @@ class ResearchOrchestrator:
 
         sources = self.source_collector.collect(source_results)
         sources = self.source_deduplicator.deduplicate(sources)
-        sources = self.source_selector.select(sources)
+
+        verified_sources = []
+
+        for source in sources:
+            verification = self.source_verifier.verify(source)
+
+            if verification.status == SourceVerificationStatus.VERIFIED:
+                verified_sources.append(source)
+
+        sources = self.source_selector.select(verified_sources)
+
+        verified_urls = {str(source.url).rstrip("/") for source in verified_sources}
+
+        verified_evidence = [
+            evidence
+            for evidence in all_evidence
+            if str(evidence.source.url).rstrip("/") in verified_urls
+        ]
+
+        if not verified_evidence:
+            raise ValueError("no verified evidence available")
 
         claims: list[Claim] = []
 
-        for evidence in all_evidence:
+        for evidence in verified_evidence:
             evidence_record = self.evidence_extractor.extract(
                 source=evidence.source,
                 content=evidence.excerpt,

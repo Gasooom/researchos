@@ -27,12 +27,12 @@ class LLMAnalysisAgent:
         if not evidence:
             raise ValueError("evidence must not be empty")
 
-        prompt = self._build_prompt(
-            task=task,
-            evidence=evidence,
+        raw_output = self.provider.generate(
+            self._build_prompt(
+                task=task,
+                evidence=evidence,
+            )
         )
-
-        raw_output = self.provider.generate(prompt)
 
         return self._parse_output(raw_output)
 
@@ -65,29 +65,90 @@ class LLMAnalysisAgent:
             "Do not use outside knowledge.\n\n"
             "Return exactly one JSON object with these fields:\n"
             '- "summary": a concise evidence-grounded analytical summary\n'
-            '- "key_points": a non-empty JSON array of evidence-grounded findings\n'
+            '- "key_points": a non-empty JSON array of findings\n'
             '- "confidence": a number between 0 and 1 reflecting how strongly '
             "the provided evidence supports the analysis\n\n"
+            "Each key point may be either:\n"
+            "- a string, or\n"
+            '- an object containing "finding" or "statement", optionally with '
+            '"type".\n\n'
             f"Research objective:\n{task.objective}\n\n"
             f"Provided evidence:\n{evidence_text}"
         )
 
     @staticmethod
     def _parse_output(
-        raw_output: list[dict[str, str]],
+        raw_output: list[dict[str, object]],
     ) -> AnalysisResult:
         """Parse provider output into a validated AnalysisResult."""
         if len(raw_output) != 1:
             raise ValueError("LLM analysis provider must return exactly one result")
 
-        raw_analysis = raw_output[0].get("analysis")
+        parsed = raw_output[0]
 
-        if raw_analysis is None:
-            raise ValueError("LLM analysis provider response must contain 'analysis'")
+        if "analysis" in parsed:
+            raw_analysis = parsed["analysis"]
 
-        try:
-            parsed = json.loads(raw_analysis)
-        except json.JSONDecodeError as exc:
-            raise ValueError("LLM analysis provider returned invalid JSON") from exc
+            if not isinstance(raw_analysis, str):
+                raise ValueError("LLM analysis 'analysis' field must be a JSON string")
 
-        return AnalysisResult.model_validate(parsed)
+            try:
+                parsed = json.loads(raw_analysis)
+            except json.JSONDecodeError as exc:
+                raise ValueError("LLM analysis provider returned invalid JSON") from exc
+
+        if not isinstance(parsed, dict):
+            raise ValueError("LLM analysis provider returned invalid structured output")
+
+        if not {
+            "summary",
+            "key_points",
+            "confidence",
+        }.issubset(parsed):
+            raise ValueError(
+                "LLM analysis provider response must contain "
+                "'analysis' or the direct analysis fields"
+            )
+
+        key_points = parsed["key_points"]
+
+        if not isinstance(key_points, list):
+            raise ValueError("LLM analysis key_points must be a list")
+
+        normalized_key_points: list[str] = []
+
+        for point in key_points:
+            if isinstance(point, str):
+                normalized_key_points.append(point)
+                continue
+
+            if isinstance(point, dict):
+                finding = point.get("finding")
+
+                if finding is None:
+                    finding = point.get("statement")
+
+                if not isinstance(finding, str) or not finding.strip():
+                    raise ValueError(
+                        "LLM analysis key point object must contain "
+                        "a non-empty 'finding' or 'statement'"
+                    )
+
+                point_type = point.get("type")
+
+                if isinstance(point_type, str) and point_type.strip():
+                    normalized_key_points.append(
+                        f"[{point_type.strip()}] {finding.strip()}"
+                    )
+                else:
+                    normalized_key_points.append(finding.strip())
+                continue
+
+            raise ValueError("LLM analysis key points must contain strings or objects")
+
+        normalized = {
+            **parsed,
+            "key_points": normalized_key_points,
+        }
+
+        return AnalysisResult.model_validate(normalized)

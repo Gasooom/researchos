@@ -32,13 +32,13 @@ class LLMSynthesisAgent:
         if not analysis.key_points:
             raise ValueError("analysis must contain key points")
 
-        prompt = self._build_prompt(
-            task=task,
-            evidence=evidence,
-            analysis=analysis,
+        raw_output = self.provider.generate(
+            self._build_prompt(
+                task=task,
+                evidence=evidence,
+                analysis=analysis,
+            )
         )
-
-        raw_output = self.provider.generate(prompt)
 
         return self._parse_output(raw_output)
 
@@ -73,9 +73,13 @@ class LLMSynthesisAgent:
             "The final answer must be traceable to the supplied material.\n\n"
             "Return exactly one JSON object with these fields:\n"
             '- "answer": a concise, evidence-grounded research answer\n'
-            '- "supporting_points": a non-empty JSON array of supporting findings\n'
+            '- "supporting_points": a non-empty JSON array of findings\n'
             '- "confidence": a number between 0 and 1 reflecting support from '
             "the provided evidence and analysis\n\n"
+            "Each supporting point may be either:\n"
+            "- a string, or\n"
+            '- an object containing "finding" or "statement", optionally with '
+            '"type".\n\n'
             f"Research objective:\n{task.objective}\n\n"
             f"Analysis summary:\n{analysis.summary}\n\n"
             f"Analysis key findings:\n{key_points}\n\n"
@@ -84,20 +88,85 @@ class LLMSynthesisAgent:
 
     @staticmethod
     def _parse_output(
-        raw_output: list[dict[str, str]],
+        raw_output: list[dict[str, object]],
     ) -> SynthesisResult:
         """Parse provider output into a validated SynthesisResult."""
         if len(raw_output) != 1:
             raise ValueError("LLM synthesis provider must return exactly one result")
 
-        raw_synthesis = raw_output[0].get("synthesis")
+        parsed = raw_output[0]
 
-        if raw_synthesis is None:
-            raise ValueError("LLM synthesis provider response must contain 'synthesis'")
+        if "synthesis" in parsed:
+            raw_synthesis = parsed["synthesis"]
 
-        try:
-            parsed = json.loads(raw_synthesis)
-        except json.JSONDecodeError as exc:
-            raise ValueError("LLM synthesis provider returned invalid JSON") from exc
+            if not isinstance(raw_synthesis, str):
+                raise ValueError(
+                    "LLM synthesis 'synthesis' field must be a JSON string"
+                )
 
-        return SynthesisResult.model_validate(parsed)
+            try:
+                parsed = json.loads(raw_synthesis)
+            except json.JSONDecodeError as exc:
+                raise ValueError(
+                    "LLM synthesis provider returned invalid JSON"
+                ) from exc
+
+        if not isinstance(parsed, dict):
+            raise ValueError(
+                "LLM synthesis provider returned invalid structured output"
+            )
+
+        if not {
+            "answer",
+            "supporting_points",
+            "confidence",
+        }.issubset(parsed):
+            raise ValueError(
+                "LLM synthesis provider response must contain "
+                "'synthesis' or the direct synthesis fields"
+            )
+
+        supporting_points = parsed["supporting_points"]
+
+        if not isinstance(supporting_points, list):
+            raise ValueError("LLM synthesis supporting_points must be a list")
+
+        normalized_supporting_points: list[str] = []
+
+        for point in supporting_points:
+            if isinstance(point, str):
+                normalized_supporting_points.append(point)
+                continue
+
+            if isinstance(point, dict):
+                finding = point.get("finding")
+
+                if finding is None:
+                    finding = point.get("statement")
+
+                if not isinstance(finding, str) or not finding.strip():
+                    raise ValueError(
+                        "LLM synthesis supporting point object must contain "
+                        "a non-empty 'finding' or 'statement'"
+                    )
+
+                point_type = point.get("type")
+
+                if isinstance(point_type, str) and point_type.strip():
+                    normalized_supporting_points.append(
+                        f"[{point_type.strip()}] {finding.strip()}"
+                    )
+                else:
+                    normalized_supporting_points.append(finding.strip())
+                continue
+
+            raise ValueError(
+                "LLM synthesis supporting points must contain strings or objects"
+            )
+
+        normalized = {
+            **parsed,
+            "supporting_points": normalized_supporting_points,
+        }
+
+        return SynthesisResult.model_validate(normalized)

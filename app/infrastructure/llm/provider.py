@@ -4,17 +4,23 @@ from typing import Protocol
 
 
 class LLMClient(Protocol):
-    """Protocol for provider clients that generate structured task data."""
+    """Protocol for providers that generate structured data."""
 
-    def generate(self, prompt: str) -> list[dict[str, str]]:
-        """Generate structured task data from a prompt."""
+    def generate(
+        self,
+        prompt: str,
+    ) -> list[dict[str, object]]:
+        """Generate structured data from a prompt."""
         ...
 
 
 class LLMProvider(Protocol):
     """Contract for providers capable of structured generation."""
 
-    def generate(self, prompt: str) -> list[dict[str, str]]:
+    def generate(
+        self,
+        prompt: str,
+    ) -> list[dict[str, object]]:
         """Generate structured data from a prompt."""
         ...
 
@@ -25,6 +31,9 @@ class LLMProviderAdapter:
     def __init__(self, client: LLMClient) -> None:
         self.client = client
 
-    def generate(self, prompt: str) -> list[dict[str, str]]:
-        """Generate structured planning data through the configured client."""
+    def generate(
+        self,
+        prompt: str,
+    ) -> list[dict[str, object]]:
+        """Generate structured data through the configured client."""
         return self.client.generate(prompt)
