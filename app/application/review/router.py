@@ -1,9 +1,6 @@
 """Claim review routing services for ResearchOS."""
 
-from app.application.claims.support_classifier import (
-    ClaimSupportClassifier,
-    SupportLevel,
-)
+from app.application.claims.critic import ClaimCritic
 from app.domain.research.models import Claim
 from app.domain.research.review import ReviewStatus
 
@@ -13,15 +10,13 @@ class ClaimReviewRouter:
 
     def __init__(
         self,
-        classifier: ClaimSupportClassifier | None = None,
+        critic: ClaimCritic | None = None,
     ) -> None:
-        self.classifier = classifier or ClaimSupportClassifier()
+        self.critic = critic or ClaimCritic()
 
     def route(self, claim: Claim) -> ReviewStatus:
         """Return the appropriate review status for a claim."""
-        support_level = self.classifier.classify(claim)
+        if self.critic.has_critical_issue(claim):
+            return ReviewStatus.PENDING
 
-        if support_level == SupportLevel.SUPPORTED:
-            return ReviewStatus.NOT_REQUIRED
-
-        return ReviewStatus.PENDING
+        return ReviewStatus.NOT_REQUIRED
