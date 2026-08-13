@@ -6,6 +6,7 @@ from app.domain.runs.models import ResearchRunOutcome, ResearchRunStatus
 def make_report(
     overall_score: float,
     research_quality: float,
+    semantic_quality: float,
     task_success_rate: float,
     failure_rate: float,
 ) -> EvaluationResult:
@@ -15,6 +16,11 @@ def make_report(
                 name="overall_research_quality",
                 value=research_quality,
                 description="Research quality.",
+            ),
+            EvaluationMetric(
+                name="semantic_quality",
+                value=semantic_quality,
+                description="Semantic quality.",
             ),
             EvaluationMetric(
                 name="task_success_rate",
@@ -61,12 +67,14 @@ def test_benchmark_aggregates_multiple_runs() -> None:
             make_report(
                 overall_score=0.9,
                 research_quality=0.8,
+                semantic_quality=0.75,
                 task_success_rate=1.0,
                 failure_rate=0.0,
             ),
             make_report(
                 overall_score=0.7,
                 research_quality=0.6,
+                semantic_quality=0.55,
                 task_success_rate=0.5,
                 failure_rate=0.5,
             ),
@@ -80,6 +88,7 @@ def test_benchmark_aggregates_multiple_runs() -> None:
     assert summary.runs_evaluated == 2
     assert summary.average_overall_score == 0.8
     assert summary.average_research_quality == 0.7
+    assert summary.average_semantic_quality == 0.65
 
     # Run 1 execution score:
     # 1.0 * (1 - 0.0) = 1.0
@@ -103,12 +112,14 @@ def test_benchmark_tracks_failed_runs() -> None:
             make_report(
                 overall_score=0.0,
                 research_quality=0.0,
+                semantic_quality=0.0,
                 task_success_rate=0.0,
                 failure_rate=1.0,
             ),
             make_report(
                 overall_score=1.0,
                 research_quality=1.0,
+                semantic_quality=1.0,
                 task_success_rate=1.0,
                 failure_rate=0.0,
             ),
@@ -121,6 +132,7 @@ def test_benchmark_tracks_failed_runs() -> None:
 
     assert summary.failure_rate == 0.5
     assert summary.partial_run_rate == 0.0
+    assert summary.average_semantic_quality == 0.5
 
 
 def test_benchmark_rejects_empty_reports() -> None:
@@ -143,6 +155,7 @@ def test_benchmark_requires_matching_lengths() -> None:
     report = make_report(
         overall_score=0.9,
         research_quality=0.8,
+        semantic_quality=0.75,
         task_success_rate=1.0,
         failure_rate=0.0,
     )
