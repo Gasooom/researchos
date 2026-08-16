@@ -7,7 +7,9 @@ from app.application.agents.llm_analysis import LLMAnalysisAgent
 from app.application.agents.llm_synthesis import LLMSynthesisAgent
 from app.application.agents.retrieval import RetrievalAgent
 from app.application.agents.synthesis import SynthesisAgent
+from app.application.claims.deduplicator import ClaimDeduplicator
 from app.application.claims.grounder import ClaimGrounder
+from app.application.claims.ranker import ClaimRanker
 from app.application.claims.support_classifier import (
     ClaimSupportClassifier,
 )
@@ -34,7 +36,9 @@ from app.infrastructure.persistence.sqlite_run_repository import (
     SQLiteResearchRunRepository,
 )
 from app.infrastructure.search.provider import SearchProvider
-from app.infrastructure.search.tavily import create_tavily_search_provider
+from app.infrastructure.search.tavily import (
+    create_tavily_search_provider,
+)
 from app.infrastructure.telemetry.run_observer import RunObserver
 
 
@@ -53,20 +57,24 @@ def create_research_service(
     """Build the production ResearchOS application service."""
     settings = settings or get_settings()
 
-    search_provider = search_provider or create_tavily_search_provider(
-        settings,
-    )
+    search_provider = search_provider or create_tavily_search_provider(settings)
 
-    research_agent = ResearchAgent(search_provider)
+    research_agent = ResearchAgent(
+        search_provider,
+    )
 
     reliable_research_agent = ReliableResearchAgent(
         research_agent,
     )
 
-    retrieval_agent = RetrievalAgent(search_provider)
+    retrieval_agent = RetrievalAgent(
+        search_provider,
+    )
 
     if settings.llm_mode == "openai":
-        llm_provider = create_llm_provider(settings)
+        llm_provider = create_llm_provider(
+            settings,
+        )
 
         analysis_agent = LLMAnalysisAgent(
             provider=llm_provider,
@@ -79,7 +87,9 @@ def create_research_service(
         analysis_agent = AnalysisAgent()
         synthesis_agent = SynthesisAgent()
     else:
-        raise ValueError("LLM_MODE must be either 'deterministic' or 'openai'.")
+        raise ValueError(
+            "LLM_MODE must be either 'deterministic' or 'openai'.",
+        )
 
     multi_agent_coordinator = MultiAgentCoordinator(
         retrieval_agent=retrieval_agent,
@@ -96,18 +106,28 @@ def create_research_service(
     )
 
     memory_repository = InMemoryResearchMemoryRepository()
-    memory_service = ResearchMemoryService(memory_repository)
+    memory_service = ResearchMemoryService(
+        memory_repository,
+    )
 
     orchestrator = ResearchOrchestrator(
         planner=DeterministicPlanner(),
         run_executor=run_executor,
-        source_collector=SourceCollector(SystemClock()),
+        source_collector=SourceCollector(
+            SystemClock(),
+        ),
         source_deduplicator=SourceDeduplicator(),
-        source_selector=SourceSelector(max_sources=5),
+        source_selector=SourceSelector(
+            max_sources=5,
+        ),
         source_verifier=SourceVerifier(),
         evidence_extractor=EvidenceExtractor(),
         claim_grounder=ClaimGrounder(),
         claim_support_classifier=ClaimSupportClassifier(),
+        claim_deduplicator=ClaimDeduplicator(),
+        claim_ranker=ClaimRanker(
+            max_claims=6,
+        ),
         claim_review_router=ClaimReviewRouter(),
         multi_agent_coordinator=multi_agent_coordinator,
         run_repository=run_repository,

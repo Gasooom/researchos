@@ -29,3 +29,7 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+researchos.db
+web/node_modules/
+web/dist/
+.ruff_cache/

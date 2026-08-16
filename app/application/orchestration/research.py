@@ -2,8 +2,12 @@
 
 from datetime import UTC, datetime
 
+from app.application.claims.deduplicator import ClaimDeduplicator
 from app.application.claims.grounder import ClaimGrounder
-from app.application.claims.support_classifier import ClaimSupportClassifier
+from app.application.claims.ranker import ClaimRanker
+from app.application.claims.support_classifier import (
+    ClaimSupportClassifier,
+)
 from app.application.evidence.extractor import EvidenceExtractor
 from app.application.orchestration.multi_agent import MultiAgentCoordinator
 from app.application.orchestration.planning import PlannerStrategy
@@ -25,6 +29,7 @@ from app.domain.runs.models import (
     ResearchRunOutcome,
     ResearchRunStatus,
 )
+from app.domain.runs.observability import RunObservation
 from app.domain.runs.record import ResearchRunRecord
 from app.domain.runs.repository import ResearchRunRepository
 from app.infrastructure.telemetry.run_observer import RunObserver
@@ -49,6 +54,8 @@ class ResearchOrchestrator:
         run_repository: ResearchRunRepository | None = None,
         run_observer: RunObserver | None = None,
         memory_service=None,
+        claim_deduplicator: ClaimDeduplicator | None = None,
+        claim_ranker: ClaimRanker | None = None,
     ) -> None:
         self.planner = planner
         self.run_executor = run_executor
@@ -64,10 +71,25 @@ class ResearchOrchestrator:
         self.run_repository = run_repository
         self.run_observer = run_observer
         self.memory_service = memory_service
+        self.claim_deduplicator = claim_deduplicator
+        self.claim_ranker = claim_ranker
 
-    def run(self, request: ResearchRequest) -> ResearchResult:
+        self._last_observation: RunObservation | None = None
+
+    def get_last_observation(
+        self,
+    ) -> RunObservation | None:
+        """Return the observation captured by the most recent run."""
+        return self._last_observation
+
+    def run(
+        self,
+        request: ResearchRequest,
+    ) -> ResearchResult:
         """Execute a complete research workflow."""
-        result, _, _ = self.run_with_evaluation_artifacts(request)
+        result, _, _ = self.run_with_evaluation_artifacts(
+            request,
+        )
 
         return result
 
@@ -81,6 +103,8 @@ class ResearchOrchestrator:
     ]:
         """Execute research while preserving evaluation artifacts."""
         started_at = datetime.now(UTC)
+
+        self._last_observation = None
 
         if self.memory_service is not None:
             self.memory_service.retrieve(
@@ -101,7 +125,9 @@ class ResearchOrchestrator:
                 tasks=tasks,
             )
         else:
-            outcome = self.run_executor.execute(tasks)
+            outcome = self.run_executor.execute(
+                tasks,
+            )
 
             result = self._build_result(
                 request=request,
@@ -128,11 +154,9 @@ class ResearchOrchestrator:
         started_at: datetime,
         outcome: ResearchRunOutcome,
     ) -> None:
-        """Persist a completed run and its operational observation."""
-        if self.run_repository is None:
-            return
-
+        """Persist a completed run and capture operational observation."""
         completed_at = datetime.now(UTC)
+
         duration_seconds = (completed_at - started_at).total_seconds()
 
         observation = None
@@ -142,6 +166,11 @@ class ResearchOrchestrator:
                 outcome=outcome,
                 duration_seconds=duration_seconds,
             )
+
+        self._last_observation = observation
+
+        if self.run_repository is None:
+            return
 
         self.run_repository.save(
             ResearchRunRecord(
@@ -163,7 +192,9 @@ class ResearchOrchestrator:
     ]:
         """Execute all planned tasks through the multi-agent coordinator."""
         if not tasks:
-            raise ValueError("planner returned no research tasks")
+            raise ValueError(
+                "planner returned no research tasks",
+            )
 
         all_evidence: list[Evidence] = []
         failures: list[ResearchRunFailure] = []
@@ -176,8 +207,14 @@ class ResearchOrchestrator:
                     task,
                 )
 
-                multi_agent_results.append(agent_result)
-                all_evidence.extend(agent_result.evidence)
+                multi_agent_results.append(
+                    agent_result,
+                )
+
+                all_evidence.extend(
+                    agent_result.evidence,
+                )
+
                 completed_tasks += 1
 
             except Exception as exc:
@@ -256,7 +293,9 @@ class ResearchOrchestrator:
         verified_sources = []
 
         for source in sources:
-            verification = self.source_verifier.verify(source)
+            verification = self.source_verifier.verify(
+                source,
+            )
 
             if verification.status.value == "verified":
                 verified_sources.append(source)
@@ -281,11 +320,27 @@ class ResearchOrchestrator:
                 claim,
             )
 
-            self.claim_review_router.route(
+            review_status = self.claim_review_router.route(
                 claim,
             )
 
+            claim = claim.model_copy(
+                update={
+                    "review_status": review_status,
+                }
+            )
+
             claims.append(claim)
+
+        if self.claim_deduplicator is not None:
+            claims = self.claim_deduplicator.deduplicate(
+                claims,
+            )
+
+        if self.claim_ranker is not None:
+            claims = self.claim_ranker.rank(
+                claims,
+            )
 
         return ResearchResult(
             question=request.question,

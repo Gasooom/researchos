@@ -4,6 +4,7 @@ from datetime import datetime
 
 from pydantic import AnyHttpUrl, BaseModel, Field, field_validator
 
+from app.domain.research.review import ReviewStatus
 from app.domain.runs.models import ResearchRunOutcome
 
 
@@ -69,7 +70,9 @@ class Source(BaseModel):
     def validate_timezone(cls, value: datetime) -> datetime:
         """Require timestamps to include timezone information."""
         if value.tzinfo is None or value.utcoffset() is None:
-            raise ValueError("retrieved_at must be timezone-aware")
+            raise ValueError(
+                "retrieved_at must be timezone-aware",
+            )
 
         return value
 
@@ -98,6 +101,7 @@ class Claim(BaseModel):
 
     statement: str = Field(min_length=1)
     evidence: list[Evidence] = Field(min_length=1)
+    review_status: ReviewStatus = ReviewStatus.NOT_REQUIRED
 
     @field_validator("statement")
     @classmethod
