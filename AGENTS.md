@@ -51,9 +51,27 @@ removed; README repositioned to lead with the evaluation results rather
 than the architecture diagram.
 
 ## Milestones
-- [ ] M1 — CI safety net: add `.github/workflows/ci.yml` running
+- [x] M1 — CI safety net: add `.github/workflows/ci.yml` running
       `pytest -q`, `ruff check .`, and `ruff format --check .` on
       push/PR to main. Acceptance: workflow passes.
+      Status: first CI run failed (setuptools flat-layout auto-discovery
+      found two top-level dirs, `app` and `web`, and refused to guess which
+      to package — a real gap the local dev `.venv` never surfaced because
+      it was never freshly reinstalled). Fixed by adding
+      `[tool.setuptools.packages.find] include = ["app*"]` to
+      `pyproject.toml`. That run also would have hit a second, unrelated
+      failure: `scripts/smoke_tavily.py` has an unsorted import block that
+      the local `.venv`'s pinned ruff 0.16.2 doesn't flag but the
+      `ruff>=0.16,<0.17` range CI installs (0.16.8) does. Fixed with the
+      minimal reorder ruff itself proposes. Both fixes verified by a truly
+      clean `pip install -e .[dev]` in a throwaway venv, then
+      `pytest -q` / `ruff check .` / `ruff format --check .` all green.
+      Not fixed (flagging for you, out of scope for CI-passing): that same
+      script's imports point at a pre-refactor module layout
+      (`app.core.services.*`, `app.core.models.research`) that no longer
+      exists — ruff doesn't catch this (it's not import-resolution), but
+      the script would crash if actually run. Left as-is pending your call
+      on whether to update it or delete it.
 - [ ] M2 — Remove dead orchestration code: delete
       `app/application/orchestration/research_service.py` and its
       dedicated test (`tests/integration/orchestration/test_research_service.py`),
