@@ -8,6 +8,7 @@ from app.application.claims.ranker import ClaimRanker
 from app.application.claims.support_classifier import (
     ClaimSupportClassifier,
 )
+from app.application.claims.synthesizer import SynthesizedClaimBuilder
 from app.application.evidence.extractor import EvidenceExtractor
 from app.application.orchestration.multi_agent import MultiAgentCoordinator
 from app.application.orchestration.planning import PlannerStrategy
@@ -56,6 +57,7 @@ class ResearchOrchestrator:
         memory_service=None,
         claim_deduplicator: ClaimDeduplicator | None = None,
         claim_ranker: ClaimRanker | None = None,
+        claim_builder: SynthesizedClaimBuilder | None = None,
     ) -> None:
         self.planner = planner
         self.run_executor = run_executor
@@ -73,6 +75,7 @@ class ResearchOrchestrator:
         self.memory_service = memory_service
         self.claim_deduplicator = claim_deduplicator
         self.claim_ranker = claim_ranker
+        self.claim_builder = claim_builder or SynthesizedClaimBuilder()
 
         self._last_observation: RunObservation | None = None
 
@@ -252,6 +255,7 @@ class ResearchOrchestrator:
             request=request,
             all_evidence=all_evidence,
             execution=outcome,
+            multi_agent_results=multi_agent_results,
         )
 
         return (
@@ -260,11 +264,50 @@ class ResearchOrchestrator:
             multi_agent_results,
         )
 
+    def _create_claims(
+        self,
+        all_evidence: list[Evidence],
+        multi_agent_results: list[MultiAgentResearchResult] | None,
+    ) -> list[Claim]:
+        """Create claim statements, preferring synthesis over raw excerpts.
+
+        Multi-agent runs word their claims through the synthesis agent, so the
+        statement is independent of the excerpt kept as evidence. Runs without a
+        coordinator fall back to excerpt-derived claims, where statement and
+        evidence text are identical by construction.
+        """
+        if multi_agent_results:
+            synthesized = self.claim_builder.build(
+                multi_agent_results,
+            )
+
+            if synthesized:
+                return synthesized
+
+        claims: list[Claim] = []
+
+        for evidence in all_evidence:
+            evidence_record = self.evidence_extractor.extract(
+                source=evidence.source,
+                content=evidence.excerpt,
+                relevance=evidence.relevance,
+            )
+
+            claims.append(
+                self.claim_grounder.ground(
+                    statement=evidence_record.excerpt,
+                    evidence=[evidence_record],
+                )
+            )
+
+        return claims
+
     def _build_result(
         self,
         request: ResearchRequest,
         all_evidence: list[Evidence],
         execution: ResearchRunOutcome,
+        multi_agent_results: list[MultiAgentResearchResult] | None = None,
     ) -> ResearchResult:
         """Build sources, claims, and the final research result."""
         source_results = [
@@ -304,18 +347,10 @@ class ResearchOrchestrator:
 
         claims: list[Claim] = []
 
-        for evidence in all_evidence:
-            evidence_record = self.evidence_extractor.extract(
-                source=evidence.source,
-                content=evidence.excerpt,
-                relevance=evidence.relevance,
-            )
-
-            claim = self.claim_grounder.ground(
-                statement=evidence_record.excerpt,
-                evidence=[evidence_record],
-            )
-
+        for claim in self._create_claims(
+            all_evidence=all_evidence,
+            multi_agent_results=multi_agent_results,
+        ):
             self.claim_support_classifier.classify(
                 claim,
             )

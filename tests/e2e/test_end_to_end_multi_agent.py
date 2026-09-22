@@ -122,7 +122,12 @@ def test_end_to_end_multi_agent_research() -> None:
     assert result.claims[0].evidence
     assert result.claims[1].evidence
 
-    excerpts = {claim.evidence[0].excerpt for claim in result.claims}
+    # Since M6 each synthesized claim carries the full evidence set for its
+    # task, rather than one excerpt per claim, so excerpts are checked across
+    # all attached evidence.
+    excerpts = {
+        evidence.excerpt for claim in result.claims for evidence in claim.evidence
+    }
 
     assert excerpts == {
         "AI agents can fail unpredictably.",
@@ -139,6 +144,35 @@ def test_end_to_end_multi_agent_preserves_relevance() -> None:
         )
     )
 
-    relevance_scores = [claim.evidence[0].relevance for claim in result.claims]
+    scores = {
+        evidence.relevance for claim in result.claims for evidence in claim.evidence
+    }
+
+    relevance_scores = sorted(scores, reverse=True)
 
     assert relevance_scores == [0.94, 0.88]
+
+
+def test_deterministic_agents_still_derive_statements_from_excerpts() -> None:
+    """Honest limit of M6: independence depends on the analysis agent.
+
+    The offline AnalysisAgent sets key_points to the evidence excerpts verbatim
+    and SynthesisAgent passes them through, so claim statements on the
+    deterministic path remain copies of their evidence. Independence is real
+    only for the LLM-backed agents used when LLM_MODE=openai, which is what the
+    benchmark exercises. This test records that boundary rather than implying
+    the whole system produces independent claims.
+    """
+    orchestrator = build_orchestrator()
+
+    result = orchestrator.run(
+        ResearchRequest(
+            question="What improves AI agent reliability?",
+        )
+    )
+
+    excerpts = {
+        evidence.excerpt for claim in result.claims for evidence in claim.evidence
+    }
+
+    assert {claim.statement for claim in result.claims} <= excerpts

@@ -13,6 +13,7 @@ from app.application.claims.ranker import ClaimRanker
 from app.application.claims.support_classifier import (
     ClaimSupportClassifier,
 )
+from app.application.claims.synthesizer import SynthesizedClaimBuilder
 from app.application.evidence.extractor import EvidenceExtractor
 from app.application.memory.research_memory import ResearchMemoryService
 from app.application.orchestration.multi_agent import MultiAgentCoordinator
@@ -123,6 +124,7 @@ def create_research_service(
         source_verifier=SourceVerifier(),
         evidence_extractor=EvidenceExtractor(),
         claim_grounder=ClaimGrounder(),
+        claim_builder=SynthesizedClaimBuilder(),
         claim_support_classifier=ClaimSupportClassifier(),
         claim_deduplicator=ClaimDeduplicator(),
         claim_ranker=ClaimRanker(

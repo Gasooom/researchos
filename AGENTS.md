@@ -196,6 +196,29 @@ than the architecture diagram.
       uncertainty handling is no better where required (0.604 vs 0.631).
       Roadmap section removed entirely rather than reworded — the remaining
       items were aspirational filler.
+- [x] M6 — Claim independence. Stage 1-2 (commit `ce7708f`): renamed
+      `claim_support_rate` → `high_relevance_claim_rate` and
+      `unsupported_claim_rate` → `low_relevance_claim_rate` so the names match
+      what they measure (retrieval relevance ≥ 0.8, no text comparison), and
+      added `claim_evidence_overlap_rate` reusing the existing
+      `ClaimSupportValidator`. Equivalence of the renamed metrics was proven by
+      a differential test against the prior implementation — 300 randomized
+      results, zero mismatches.
+      Stage 3: claims are no longer verbatim copies of their evidence.
+      `SynthesizedClaimBuilder` (`app/application/claims/synthesizer.py`) builds
+      one claim per synthesis finding, keeping the retrieved excerpt as
+      evidence, and `ResearchOrchestrator._create_claims` dispatches to it for
+      multi-agent runs. The synthesis text already existed on every run and was
+      simply being discarded at claim construction; no new LLM call was added.
+      Runs without a coordinator keep the old excerpt-derived construction, so
+      the change is backward compatible.
+      Honest boundary: independence holds only where the analysis and synthesis
+      agents generate text. `AnalysisAgent` (the offline deterministic stub)
+      sets `key_points` to the excerpts verbatim and `SynthesisAgent` passes
+      them through, so claim statements still equal excerpts on that path. Real
+      independence applies with `LLM_MODE=openai`, which is what benchmarks use.
+      A test records this boundary rather than implying system-wide
+      independence. The committed 2026-09-22 benchmark predates this change.
 
 ## Working rules
 - Work on exactly ONE milestone at a time, in order. Do not start the next

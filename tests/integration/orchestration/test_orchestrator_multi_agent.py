@@ -173,6 +173,47 @@ def test_orchestrator_preserves_successful_tasks_after_failure() -> None:
     assert len(result.claims) == 2
 
 
+def test_multi_agent_claims_are_worded_independently_of_their_evidence() -> None:
+    """End-to-end proof of the M6 change: statements come from synthesis.
+
+    Before this change the orchestrator copied each evidence excerpt into the
+    claim statement, so claim/evidence overlap was 1.0 by construction and
+    measured nothing.
+    """
+    orchestrator = build_orchestrator()
+
+    result = orchestrator.run(
+        ResearchRequest(question="Multi-agent research"),
+    )
+
+    assert result.claims
+
+    for claim in result.claims:
+        excerpts = {evidence.excerpt for evidence in claim.evidence}
+
+        assert claim.statement.startswith("Key point for")
+        assert claim.statement not in excerpts
+        assert claim.evidence
+
+
+def test_multi_agent_claims_preserve_the_retrieved_excerpt() -> None:
+    orchestrator = build_orchestrator()
+
+    result = orchestrator.run(
+        ResearchRequest(question="Multi-agent research"),
+    )
+
+    excerpts = {
+        evidence.excerpt for claim in result.claims for evidence in claim.evidence
+    }
+
+    assert excerpts == {
+        "Evidence for Research reliability.",
+        "Evidence for Research evaluation.",
+        "Evidence for Research deployment.",
+    }
+
+
 def test_orchestrator_records_multi_agent_failure_details() -> None:
     orchestrator = build_orchestrator(
         {"Research deployment"},

@@ -114,12 +114,13 @@ def test_relevance_rate_ignores_claim_evidence_wording() -> None:
 
 
 def test_claim_evidence_overlap_is_tautological_when_statement_is_the_excerpt() -> None:
-    """Pins the known weakness: the pipeline builds claims from their evidence.
+    """Overlap is 1.0 whenever a claim is a verbatim copy of its evidence.
 
-    ResearchOrchestrator._build_result passes the evidence excerpt as the claim
-    statement, so overlap is 1.0 by construction and measures nothing about
-    genuine support. If this test ever fails, the pipeline changed and the
-    metric became meaningful.
+    Multi-agent runs no longer construct claims this way: since M6 their
+    statements come from the synthesis agent, so overlap is a real signal.
+    This degenerate case still applies to the excerpt-derived fallback path
+    used when no coordinator is configured, and pins the evaluator's behaviour
+    on it.
     """
     evaluator = ClaimQualityEvaluator()
 

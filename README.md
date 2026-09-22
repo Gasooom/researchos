@@ -141,13 +141,19 @@ full-run mean is 0.346. It was previously called `claim_support_rate`, which
 overstated what it measures; the benchmark results above were recorded under
 that older name and are left unchanged as a historical artifact.
 
-A companion metric, `claim_evidence_overlap_rate`, does compare claim wording
-against evidence wording — but it reads near 1.0 by construction, because
-claims are built *from* the excerpts that also serve as their evidence
-([`research.py`](app/application/orchestration/research.py)). That tautology is
-pinned by a test rather than left as a comment. Neither metric should be read
-as evidence of reliability until claim statements stop being verbatim copies of
-their sources.
+A companion metric, `claim_evidence_overlap_rate`, compares claim wording
+against evidence wording. It was previously meaningless: claims were built
+*from* the excerpts that served as their evidence, so overlap was 1.0 by
+construction. Multi-agent runs now word claims through the synthesis agent
+instead ([`synthesizer.py`](app/application/claims/synthesizer.py)), keeping the
+retrieved excerpt as evidence, so the two texts are produced independently.
+
+That independence depends on the analysis and synthesis agents actually
+generating text. With `LLM_MODE=openai` they do. The offline deterministic
+agents still derive their findings from excerpts verbatim, so overlap stays
+near 1.0 on that path — a boundary recorded by a test rather than glossed over.
+**The benchmark figures above predate this change** and were produced by the
+old excerpt-copying construction.
 
 **Results are not bitwise reproducible.** The same question, run three times
 against live retrieval, scored 0.88 / 0.78 / 0.82. Results are committed
