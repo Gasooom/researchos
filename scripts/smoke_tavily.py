@@ -1,10 +1,11 @@
 """Manual smoke test for the real Tavily integration."""
 
-from app.core.config import Settings
 from app.core.models.research import ResearchTask
 from app.core.services.research_agent import ResearchAgent
 from app.core.services.tavily_client import create_tavily_client
 from app.core.services.tavily_search_provider import TavilySearchProvider
+
+from app.core.config import Settings
 
 
 def main() -> None:
