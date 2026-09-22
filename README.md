@@ -107,7 +107,8 @@ Judge          groundedness 0.95   completeness 0.70
                uncertainty  0.80   overall      0.82
 
 Deterministic  focus_coverage 0.938   average_relevance 0.845
-               claim_support_rate 0.833 (see caveat below)
+               high_relevance_claim_rate 0.833 (recorded as
+               claim_support_rate before the metric was renamed)
 ```
 
 This case scored well. It also illustrates a failure the benchmark was designed
@@ -132,14 +133,21 @@ scoring higher in 27 of 32. That is directionally consistent with known judge
 leniency, but both sides are machines and n=8. It is not human validation and
 is not presented as such.
 
-**`claim_support_rate` does not measure support.** It thresholds only on
-`evidence.relevance >= 0.8` — the retrieval engine's own score — with no
-comparison of claim text against evidence text
-([`claims.py`](app/application/evaluation/claims.py)). Its full-run mean is
-0.346. Separately, claims are constructed *from* the excerpts that also serve
-as their evidence ([`research.py`](app/application/orchestration/research.py)),
-so textual support is true by construction. Do not read this metric as
-evidence of reliability.
+**Retrieval relevance is not claim support.** The metric now named
+`high_relevance_claim_rate` thresholds only on `evidence.relevance >= 0.8` —
+the retrieval engine's own score — with no comparison of claim text against
+evidence text ([`claims.py`](app/application/evaluation/claims.py)). Its
+full-run mean is 0.346. It was previously called `claim_support_rate`, which
+overstated what it measures; the benchmark results above were recorded under
+that older name and are left unchanged as a historical artifact.
+
+A companion metric, `claim_evidence_overlap_rate`, does compare claim wording
+against evidence wording — but it reads near 1.0 by construction, because
+claims are built *from* the excerpts that also serve as their evidence
+([`research.py`](app/application/orchestration/research.py)). That tautology is
+pinned by a test rather than left as a comment. Neither metric should be read
+as evidence of reliability until claim statements stop being verbatim copies of
+their sources.
 
 **Results are not bitwise reproducible.** The same question, run three times
 against live retrieval, scored 0.88 / 0.78 / 0.82. Results are committed

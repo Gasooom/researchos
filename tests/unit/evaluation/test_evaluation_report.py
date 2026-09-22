@@ -104,7 +104,7 @@ def test_evaluation_report_combines_metrics() -> None:
     metric_names = {metric.name for metric in report.metrics}
 
     assert "average_relevance" in metric_names
-    assert "claim_support_rate" in metric_names
+    assert "high_relevance_claim_rate" in metric_names
     assert "task_success_rate" in metric_names
     assert "overall_system_quality" in metric_names
 

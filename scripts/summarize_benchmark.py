@@ -27,7 +27,14 @@ DETERMINISTIC_METRICS = (
     "overall_system_quality",
     "semantic_quality",
     "focus_coverage",
+    # Results recorded before the M6 rename carry the legacy names. Both are
+    # reported under their own key so historical values are never relabelled
+    # as something they did not measure.
     "claim_support_rate",
+    "unsupported_claim_rate",
+    "high_relevance_claim_rate",
+    "low_relevance_claim_rate",
+    "claim_evidence_overlap_rate",
     "average_relevance",
 )
 

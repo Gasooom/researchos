@@ -1,11 +1,20 @@
 """Evidence and claim quality evaluation for ResearchOS."""
 
+from app.application.claims.support_validator import ClaimSupportValidator
 from app.domain.evaluation.models import EvaluationMetric, EvaluationResult
 from app.domain.research.models import ResearchResult
 
+RELEVANCE_THRESHOLD = 0.8
+
 
 class ClaimQualityEvaluator:
-    """Evaluate evidence coverage and claim support quality."""
+    """Evaluate evidence coverage and retrieval-relevance quality."""
+
+    def __init__(
+        self,
+        support_validator: ClaimSupportValidator | None = None,
+    ) -> None:
+        self.support_validator = support_validator or ClaimSupportValidator()
 
     def evaluate(self, result: ResearchResult) -> EvaluationResult:
         """Compute deterministic claim-quality metrics."""
@@ -16,14 +25,21 @@ class ClaimQualityEvaluator:
 
         evidence_backed_claims = sum(bool(claim.evidence) for claim in result.claims)
 
-        supported_claims = sum(
-            any(evidence.relevance >= 0.8 for evidence in claim.evidence)
+        high_relevance_claims = sum(
+            any(
+                evidence.relevance >= RELEVANCE_THRESHOLD for evidence in claim.evidence
+            )
             for claim in result.claims
         )
 
+        overlapping_claims = sum(
+            self.support_validator.is_supported(claim) for claim in result.claims
+        )
+
         evidence_coverage = evidence_backed_claims / total_claims
-        claim_support_rate = supported_claims / total_claims
-        unsupported_claim_rate = 1.0 - claim_support_rate
+        high_relevance_claim_rate = high_relevance_claims / total_claims
+        low_relevance_claim_rate = 1.0 - high_relevance_claim_rate
+        claim_evidence_overlap_rate = overlapping_claims / total_claims
 
         metrics = [
             EvaluationMetric(
@@ -34,24 +50,37 @@ class ClaimQualityEvaluator:
                 ),
             ),
             EvaluationMetric(
-                name="claim_support_rate",
-                value=claim_support_rate,
+                name="high_relevance_claim_rate",
+                value=high_relevance_claim_rate,
                 description=(
-                    "Fraction of claims with at least one highly "
-                    "relevant evidence item."
+                    "Fraction of claims whose best evidence scored at or above "
+                    f"{RELEVANCE_THRESHOLD} retrieval relevance. This measures "
+                    "retrieval confidence, not whether the evidence supports "
+                    "the claim."
                 ),
             ),
             EvaluationMetric(
-                name="unsupported_claim_rate",
-                value=unsupported_claim_rate,
+                name="low_relevance_claim_rate",
+                value=low_relevance_claim_rate,
                 description=(
-                    "Fraction of claims without sufficiently relevant "
-                    "supporting evidence."
+                    "Fraction of claims whose best evidence scored below "
+                    f"{RELEVANCE_THRESHOLD} retrieval relevance."
+                ),
+            ),
+            EvaluationMetric(
+                name="claim_evidence_overlap_rate",
+                value=claim_evidence_overlap_rate,
+                description=(
+                    "Fraction of claims whose wording overlaps their evidence "
+                    "enough to pass ClaimSupportValidator. Reads near 1.0 while "
+                    "claims are built verbatim from their evidence excerpts, so "
+                    "it currently measures pipeline construction rather than "
+                    "genuine support."
                 ),
             ),
         ]
 
-        overall_score = (evidence_coverage + claim_support_rate) / 2
+        overall_score = (evidence_coverage + high_relevance_claim_rate) / 2
 
         return EvaluationResult(
             metrics=metrics,

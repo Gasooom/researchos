@@ -67,7 +67,7 @@ def test_claim_quality_evaluator_calculates_evidence_coverage() -> None:
     assert metrics["evidence_coverage"] == pytest.approx(1.0)
 
 
-def test_claim_quality_evaluator_calculates_support_rate() -> None:
+def test_claim_quality_evaluator_calculates_relevance_rates() -> None:
     evaluator = ClaimQualityEvaluator()
 
     result = make_result(
@@ -87,9 +87,58 @@ def test_claim_quality_evaluator_calculates_support_rate() -> None:
 
     metrics = {metric.name: metric.value for metric in evaluation.metrics}
 
-    assert metrics["claim_support_rate"] == pytest.approx(0.5)
-    assert metrics["unsupported_claim_rate"] == pytest.approx(0.5)
+    assert metrics["high_relevance_claim_rate"] == pytest.approx(0.5)
+    assert metrics["low_relevance_claim_rate"] == pytest.approx(0.5)
     assert evaluation.overall_score == pytest.approx(0.75)
+
+
+def test_relevance_rate_ignores_claim_evidence_wording() -> None:
+    """Relevance rates track the retrieval score, never the claim wording."""
+    evaluator = ClaimQualityEvaluator()
+
+    result = make_result(
+        [
+            make_claim(
+                "Entirely unrelated wording.",
+                [make_evidence("Nothing in common whatsoever.", 0.95)],
+            ),
+        ]
+    )
+
+    metrics = {
+        metric.name: metric.value for metric in evaluator.evaluate(result).metrics
+    }
+
+    assert metrics["high_relevance_claim_rate"] == pytest.approx(1.0)
+    assert metrics["claim_evidence_overlap_rate"] == pytest.approx(0.0)
+
+
+def test_claim_evidence_overlap_is_tautological_when_statement_is_the_excerpt() -> None:
+    """Pins the known weakness: the pipeline builds claims from their evidence.
+
+    ResearchOrchestrator._build_result passes the evidence excerpt as the claim
+    statement, so overlap is 1.0 by construction and measures nothing about
+    genuine support. If this test ever fails, the pipeline changed and the
+    metric became meaningful.
+    """
+    evaluator = ClaimQualityEvaluator()
+
+    excerpt = "Agent reliability remains an important deployment challenge."
+
+    result = make_result(
+        [
+            make_claim(
+                excerpt,
+                [make_evidence(excerpt, 0.95)],
+            ),
+        ]
+    )
+
+    metrics = {
+        metric.name: metric.value for metric in evaluator.evaluate(result).metrics
+    }
+
+    assert metrics["claim_evidence_overlap_rate"] == pytest.approx(1.0)
 
 
 def test_claim_quality_evaluator_handles_all_strong_claims() -> None:

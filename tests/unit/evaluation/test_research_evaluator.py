@@ -72,8 +72,9 @@ def test_unified_evaluator_combines_metrics() -> None:
     assert "average_relevance" in metric_names
     assert "high_relevance_rate" in metric_names
     assert "evidence_coverage" in metric_names
-    assert "claim_support_rate" in metric_names
-    assert "unsupported_claim_rate" in metric_names
+    assert "high_relevance_claim_rate" in metric_names
+    assert "low_relevance_claim_rate" in metric_names
+    assert "claim_evidence_overlap_rate" in metric_names
     assert "overall_research_quality" in metric_names
 
 
