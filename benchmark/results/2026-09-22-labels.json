@@ -1,0 +1,599 @@
+{
+  "source_results": "2026-09-22.json",
+  "dataset_version": "1.0.0",
+  "git_commit": "fe01efcd312f7e3bff89fc92956da766d28a8ed3",
+  "label_scale": "0.0-1.0 per dimension, judged against the case rubric and the system output shown, not against an ideal answer",
+  "provenance": "draft = rubric-applied pre-annotation; human = repository owner's reviewed judgment. Agreement is computed from the human fields.",
+  "labels": [
+    {
+      "case_id": "cap-theorem",
+      "question": "What is the CAP theorem in distributed systems, and what tradeoff does it describe?",
+      "difficulty": "easy",
+      "uncertainty_expected": false,
+      "rubric": {
+        "must_contain": [
+          "names all three properties: consistency, availability, partition tolerance",
+          "states the choice is forced only during a network partition, not at all times",
+          "notes partition tolerance is not optional for real distributed systems"
+        ],
+        "must_avoid": [
+          "claiming a system permanently sacrifices one of the three properties under all conditions",
+          "treating CAP consistency as identical to ACID consistency without qualification"
+        ]
+      },
+      "system_output": {
+        "claims": [
+          "The CAP theorem is a fundamental principle that every architect and developer working with distributed systems must understand. It highlights the inherent trade-offs between Consistency, Availability, and Partition Tolerance. While you can\u2019t have all three simultaneously in the presence of network partitions, understanding these trade-offs allows you to make informed decisions about system design and database selection. By carefully considering the specific requirements of your application and [",
+          "The CAP Theorem is a cornerstone in distributed system design, offering a framework to understand the inherent trade-offs between Consistency, Availability, and Partition Tolerance. When a distributed system experiences a network partition, it must choose how to behave. This is where the CAP theorem becomes practical rather than theoretical. You can optimize for consistency or for availability, but not both at the exact moment of the partition.\n\n### CP vs AP Systems Explained [...] The CAP theor",
+          "The CAP Theorem states that a distributed system can provide only two out of three guarantees at the same time: Consistency (C), Availability (A), and Partition Tolerance (P). When a network partition occurs, a system must choose between maintaining consistency or availability.\n\nWe can classify the systems into the following three categories:\n\ndevops_26\n\nTrade-offs in CAP theorem\n\n### 1. CA System [...] Addresses network failures, a common cause of partitions. It suggests that the system is desi",
+          "## Key takeaways\n\nThe CAP theorem describes the trade-offs distributed databases make between consistency, availability, and partition tolerance when data is replicated across multiple nodes.\n\nDuring a network partition, systems must choose to stay consistent (accurate and synchronized) or available (responsive and online). [...] CAP isn\u2019t a permanent choice between two properties. It\u2019s a trade-off that changes when a network partition occurs and systems must decide how to respond. This balance",
+          "The CAP theorem describes the trade-offs every distributed system must make when a network partition happens. During a partition, a system can guarantee consistency or availability, but not both. Knowing this helps engineers design systems with predictable behavior under real-world conditions.\n\n### A Quick Refresher on Brewer\u2019s Theorem [...] The CAP Theorem is a cornerstone in distributed system design, offering a framework to understand the inherent trade-offs between Consistency, Availability,",
+          "## The Trade-Offs in the CAP Theorem\n\nThe CAP theorem implies that a distributed system can only provide two out of three properties:\n\ncap_theorem\n\nVenn diagram of CAP theorem\n\n### 1. CA (Consistency and Availability)\n\n> These types of systems always accept the request to view or modify the data sent by the user and they are always responded with data which is consistent among all the database nodes of a big, distributed network. [...] > The CAP theorem states that distributed databases can have"
+        ],
+        "sources": [
+          {
+            "title": "The CAP Theorem: Understanding the Trade-offs in Distributed ...",
+            "url": "https://medium.com/@kiranpuli/the-cap-theorem-understanding-the-trade-offs-in-distributed-systems-6d39fb871fc9",
+            "publisher": "medium.com"
+          },
+          {
+            "title": "Understanding the CAP Theorem in Distributed Systems",
+            "url": "https://www.pingcap.com/article/understanding-cap-theorem-basics-in-distributed-systems",
+            "publisher": "www.pingcap.com"
+          },
+          {
+            "title": "CAP Theorem in System Design - GeeksforGeeks",
+            "url": "https://www.geeksforgeeks.org/system-design/cap-theorem-in-system-design",
+            "publisher": "www.geeksforgeeks.org"
+          },
+          {
+            "title": "Mastering the CAP Theorem: Insights for Distributed Systems",
+            "url": "https://www.mongodb.com/resources/basics/databases/cap-theorem",
+            "publisher": "www.mongodb.com"
+          },
+          {
+            "title": "The CAP Theorem in DBMS",
+            "url": "https://www.geeksforgeeks.org/dbms/the-cap-theorem-in-dbms",
+            "publisher": "www.geeksforgeeks.org"
+          }
+        ]
+      },
+      "judge_scores": {
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.7,
+        "llm_uncertainty_handling": 0.8,
+        "llm_judge_overall": 0.82
+      },
+      "draft": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      },
+      "draft_reasoning": null,
+      "human": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      }
+    },
+    {
+      "case_id": "prompt-injection-basics",
+      "question": "What is prompt injection in LLM applications, and how does it differ from jailbreaking?",
+      "difficulty": "easy",
+      "uncertainty_expected": false,
+      "rubric": {
+        "must_contain": [
+          "defines prompt injection as untrusted input being interpreted as instructions by the model",
+          "distinguishes it from jailbreaking, which targets the model's own safety training rather than an application's instruction boundary",
+          "mentions indirect injection delivered through retrieved or third-party content",
+          "notes there is no complete input-sanitization fix comparable to parameterized SQL queries"
+        ],
+        "must_avoid": [
+          "claiming prompt injection is fully solved by input filtering or escaping",
+          "treating prompt injection and jailbreaking as the same phenomenon"
+        ]
+      },
+      "system_output": {
+        "claims": [
+          "Prompt injection is when malicious instructions hidden inside text, files, or webpages trick an AI model into ignoring its developer's rules and following the attacker's commands instead. It works because LLMs can't tell the difference between trusted instructions and untrusted data, they see both as the same stream of tokens. OWASP listed it as the #1 LLM security risk in 2025.\n\n### Is prompt injection the same as jailbreaking? [...] Comparison table:\n\nTarget: Prompt injection targets the devel",
+          "Simon Willison, who named prompt injection, drew the line in a 2024 post: prompt injection is a class of attacks against applications built on LLMs that works by concatenating untrusted input with a trusted prompt; jailbreaking is a class of attacks that subvert the safety filters built into the models themselves. If there is no concatenation of trusted and untrusted strings, it is not prompt injection. That definition is exact, and it is also invisible at the text level, because the [...] ## FA",
+          "Prompt injection manipulates inputs to hijack an LLM\u2019s behavior, often by overriding instructions, accessing unintended capabilities, or influencing downstream actions. Jailbreaks try to convince an LLM to violate its safety guardrails and generate disallowed content.\n\nPut simply, a prompt injection focuses on control, while jailbreaks focus on evading policies. [...] ## Key Takeaways\n\n Prompt injection and jailbreak attacks exploit different failure points in LLMs. Prompt injection primarily ta",
+          "Jailbreaking, on the other hand, refers to attempts to bypass or subvert the safety filters and restrictions built into LLMs. The primary goal is to circumvent the model\u2019s limitations, allowing it to perform actions or generate outputs that are normally restricted. Jailbreaking often requires a deeper understanding of the model\u2019s restrictions and safety mechanisms.\n\nKey differences between prompt injection and jailbreaking include: [...] - Prompt injection specifically involves combining trusted",
+          "While the two terms are often used synonymously, prompt injections and jailbreaking are different techniques. Prompt injections disguise malicious instructions as benign inputs, while jailbreaking makes an LLM ignore its safeguards.\n\nSystem prompts don't just tell LLMs what to do. They also include safeguards that tell the LLM what not to do. For example, a simple translation app's system prompt might read: [...] Developers build safeguards into their system prompts to mitigate the risk of promp",
+          "LLM jailbreaking is the practice of crafting prompts that bypass an AI model's safety guardrails, causing it to produce content it would normally refuse. You can think of it as threat modeling for AI. Unlike general prompt injection, jailbreaking specifically targets the model's safety alignment.\n\n### What Jailbreaking Can Achieve [...] LLM jailbreak defense requires a layered approach to stop prompt injection attacks. If you deploy an AI model without strict input validation, attackers will man"
+        ],
+        "sources": [
+          {
+            "title": "Prompt Injection and Jailbreaking 101 Guide (2026)",
+            "url": "https://promptailearning.com/blogs/prompt-injection-jailbreaking-101",
+            "publisher": "promptailearning.com"
+          },
+          {
+            "title": "LLM Jailbreak Defense: What Actually Works [2026]",
+            "url": "https://thehgtech.com/guides/llm-jailbreaking-defense.html",
+            "publisher": "thehgtech.com"
+          },
+          {
+            "title": "Multi-Chain Prompt Injection and Jailbreaking of LLM Applications",
+            "url": "https://www.youtube.com/watch?v=Xmond63yRWk",
+            "publisher": "www.youtube.com"
+          },
+          {
+            "title": "Prompt Injection vs Jailbreak: Same Text, Different Owner - ARMO",
+            "url": "https://www.armosec.io/blog/prompt-injection-vs-jailbreak",
+            "publisher": "www.armosec.io"
+          },
+          {
+            "title": "Prompt Injection vs Jailbreak in LLMs: Differences, Risks, and Prevention - Mindgard",
+            "url": "https://mindgard.ai/blog/prompt-injection-vs-jailbreak",
+            "publisher": "mindgard.ai"
+          }
+        ]
+      },
+      "judge_scores": {
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.8,
+        "llm_uncertainty_handling": 0.7,
+        "llm_judge_overall": 0.82
+      },
+      "draft": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      },
+      "draft_reasoning": null,
+      "human": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      }
+    },
+    {
+      "case_id": "tcp-vs-udp",
+      "question": "What is the difference between TCP and UDP?",
+      "difficulty": "easy",
+      "uncertainty_expected": false,
+      "rubric": {
+        "must_contain": [
+          "states TCP provides connection-oriented ordered delivery with retransmission, UDP is connectionless best-effort",
+          "gives at least one concrete use case for each",
+          "notes UDP avoids head-of-line blocking and handshake latency"
+        ],
+        "must_avoid": [
+          "describing UDP as 'broken' or defective rather than best-effort by design",
+          "asserting UDP is simply faster without noting it omits delivery guarantees"
+        ]
+      },
+      "system_output": {
+        "claims": [
+          "TCP prioritizes completeness and integrity, while UDP prioritizes timeliness and reduced overhead in terms of connection setup, acknowledgments, and retransmissions. This means UDP delivers data faster and with less complexity.\n\nBy comparison, TCP introduces more overhead and potential latency due to its rigorous reliability mechanisms. That extra structure makes it more robust, but also heavier and slower. The choice depends on whether reliability or speed is the priority. [...] The main differ",
+          "In addition to latency, UDP is also more efficient in terms of bandwidth. Once the data is in motion from the server to the client, TCP engages in many error check mechanisms, acknowledgment processes, and sequencing measures, which occupy a lot of bandwidth. In contrast, UDP quickly gets the data stream from one computing location to another without a lot of checks and balances. This makes it suitable for low-performing networks, mobile devices, and other connectivity conditions where [...] To",
+          "1. TCP requires a reliable connection between server and recipient, which can slow down data transfer. UDP is a connectionless protocol, therefore much quicker.\n2. TCP guarantees flawless data delivery, even if lost or damaged packets are retransmitted. UDP is a \u201cfire-and-forget\u201d protocol that won\u2019t check for errors or resend lost data packets.\n3. UDP is better for broadcasting and live streaming. TCP is better for direct communication, like email, web browsing, or transferring files. [...] ## T",
+          "In summary, the major difference between TCP and UDP lies in their approach towards data transmission. TCP, being connection-oriented, ensures that all data packets are delivered accurately and in order, which is vital for applications like web browsing and email. Conversely, UDP is designed for speed, sacrificing reliability for applications where a few lost packets won\u2019t disrupt the overall experience, such as streaming and gaming. Understanding these distinctions is essential for network [...",
+          "UDP does not require connection setup, whereas TCP requires a mandatory three-step process flow to start a session.\n Unlike the UDP protocol, TCP provides comprehensive control and management of information flow.\n If overloads occur during data transmission, TCP will send an appropriate notification, whereas the UDP protocol does not offer protection.\n Unlike the UDP protocol, TCP cannot preserve the boundaries of transmitted messages, but it guarantees their integrity. [...] Only the TCP protoc",
+          "TCP is slower than UDP, but that isn\u2019t necessarily a bad thing. TCP has a back and forth of information going on, and makes sure that the recieving computer isn\u2019t being overloaded with information. UDP is sending as many packets of information as possible outwards. Taking those two things into account, you can see the pros and cons between the two. UDP is ideal for when you want quick updates (like video or audio files), and TCP is great for when you want sensitive projects (websites and file [."
+        ],
+        "sources": [
+          {
+            "title": "TCP vs UDP: Differences Between TCP & UDP Protocols",
+            "url": "https://www.avast.com/c-tcp-vs-udp-difference",
+            "publisher": "www.avast.com"
+          },
+          {
+            "title": "TCP vs. UDP: Key Differences and Uses",
+            "url": "https://www.avg.com/en/signal/tcp-vs-udp",
+            "publisher": "www.avg.com"
+          },
+          {
+            "title": "Differences Between TCP and UDP",
+            "url": "https://www.spiceworks.com/networking/tcp-vs-udp",
+            "publisher": "www.spiceworks.com"
+          },
+          {
+            "title": "Differences TCP vs UDP: \u0421oncise comparison chart of networking protocols",
+            "url": "https://trueconf.com/blog/reviews-comparisons/tcp-vs-udp",
+            "publisher": "trueconf.com"
+          },
+          {
+            "title": "TCP vs UDP: The Main Difference Between TCP and UDP",
+            "url": "https://www.netally.com/network-performance/tcp-vs-udp",
+            "publisher": "www.netally.com"
+          }
+        ]
+      },
+      "judge_scores": {
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.84,
+        "llm_uncertainty_handling": 0.62,
+        "llm_judge_overall": 0.81
+      },
+      "draft": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      },
+      "draft_reasoning": null,
+      "human": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      }
+    },
+    {
+      "case_id": "microservices-vs-monolith",
+      "question": "What are the main tradeoffs between microservices and monolithic architectures?",
+      "difficulty": "moderate",
+      "uncertainty_expected": false,
+      "rubric": {
+        "must_contain": [
+          "names concrete benefits (independent deployment, targeted scaling, team autonomy)",
+          "names concrete costs (network latency, distributed transactions, operational and debugging complexity)",
+          "notes organizational structure shapes the choice (Conway's law)",
+          "acknowledges a monolith is a reasonable default for small teams"
+        ],
+        "must_avoid": [
+          "presenting microservices as a strict upgrade over monoliths",
+          "omitting operational and debugging cost entirely"
+        ]
+      },
+      "system_output": {
+        "claims": [
+          "A: The main difference is in how the application is structured. A monolithic architecture has all features in a single codebase, while a microservices architecture breaks the application into smaller, independent services, each responsible for a specific business function.\n\n\\\\Q: What are the advantages of a monolithic architecture?\\\\ [...] A: Advantages of a monolithic architecture include: simpler development and deployment for small applications, easier end-to-end testing, centralized handling",
+          "Scalability: Microservices architecture is built on individual services that can be compartmentalized in modular forms and benefit from loose coupling and intercommunication achieved by using APIs. On the other hand, monolithic architecture displays less overall adaptability due to having a thickly composed core structure and tightly coupled software. [...] Structure: A monolithic architecture is designed and constructed as a single unit. Microservices architecture champions the idea of modulari",
+          "Independently deployable \u2013 Since microservices are individual units they allow for fast and easy independent deployment of individual features.\n\nTechnology flexibility \u2013 Microservice architectures allow teams the freedom to select the tools they desire.\n\nHigh reliability \u2013 You can deploy changes for a specific service, without the threat of bringing down the entire application. [...] Get it free\n\nA monolithic application is built as a single unified unit while a microservices architecture is a c",
+          "Monoliths require fewer specialized skills but may limit career growth for senior engineers. Microservices require expertise in distributed systems, but they also offer more interesting technical challenges. Understanding what developer experience means to your team helps inform these architectural decisions and their impact on talent retention. [...] Here\u2019s what we\u2019ve observed across engineering organizations: architecture decisions work best when they focus on organizational capabilities over",
+          "Security. Neither is better than the other. Monolithic systems benefit from having technology specialists who work in their field of expertise. A microservices architecture benefits from compartmentalization and a focus on standards due to the need for interoperability.\n\n## How to choose between monolith and microservices architectures for your application [...] A monolithic architecture is an approach to building applications in which all the application\u2019s components are packaged together; thou",
+          "While microservices increase developer productivity, and reduce time to market and refresh cycles for applications, they can also increase complexity and place additional burdens on engineering teams. Further, enterprises must ensure that all of their APIs are secure and perform at scale without putting unnecessary overhead on the network. Kong's Microservices API Gateway is an extendable abstraction layer that securely manages communication between APIs and microservices, future proofing an [.."
+        ],
+        "sources": [
+          {
+            "title": "Monolithic vs Microservices: What's the Difference? | Kong Inc.",
+            "url": "https://konghq.com/blog/learning-center/monolith-vs-microservices",
+            "publisher": "konghq.com"
+          },
+          {
+            "title": "Microservices vs. monolithic architecture",
+            "url": "https://www.atlassian.com/microservices/microservices-architecture/microservices-vs-monolith",
+            "publisher": "www.atlassian.com"
+          },
+          {
+            "title": "Monolithic vs microservices architecture: When to choose ...",
+            "url": "https://getdx.com/blog/monolithic-vs-microservices",
+            "publisher": "getdx.com"
+          },
+          {
+            "title": "Monolithic vs. Microservices Architecture | IBM",
+            "url": "https://www.ibm.com/think/topics/monolithic-vs-microservices",
+            "publisher": "www.ibm.com"
+          },
+          {
+            "title": "Monolith Versus Microservices: Weigh the Pros and Cons ...",
+            "url": "https://www.akamai.com/blog/cloud/monolith-versus-microservices-weigh-the-difference",
+            "publisher": "www.akamai.com"
+          }
+        ]
+      },
+      "judge_scores": {
+        "llm_groundedness": 0.9,
+        "llm_completeness": 0.75,
+        "llm_uncertainty_handling": 0.7,
+        "llm_judge_overall": 0.78
+      },
+      "draft": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      },
+      "draft_reasoning": null,
+      "human": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      }
+    },
+    {
+      "case_id": "rag-retrieval-failure-modes",
+      "question": "What are the documented failure modes of the retrieval stage in RAG systems, and how are they diagnosed?",
+      "difficulty": "moderate",
+      "uncertainty_expected": false,
+      "rubric": {
+        "must_contain": [
+          "separates retrieval-stage failures from generation-stage failures",
+          "names concrete mechanisms such as poor chunking, query-document embedding mismatch, low recall@k, and topically similar passages that do not support the claim",
+          "describes diagnosis by measuring retrieval independently against known-relevant sources before judging the final answer"
+        ],
+        "must_avoid": [
+          "attributing all errors in a retrieval-augmented system to the generation model",
+          "treating topical similarity as evidence that a passage supports a claim"
+        ]
+      },
+      "system_output": {
+        "claims": [
+          "%I Association for Computational Linguistics %C San Diego, California %@ 979-8-89176-418-7 %F garani-2026-systematic %X Retrieval-Augmented Generation (RAG) systems fail in diverse, poorly characterized ways that single-stage evaluation metrics cannot detect. We present a systematic taxonomy of 33 failure modes across 7 pipeline stages \u2014 ingestion, representation, retrieval, generation, evaluation, deployment, and agentic orchestration \u2014 constructed through a structured literature review of 48 [",
+          "(~100%) compared to approximately 40% for naive RAG and 60% for agentic RAG implementations. Through systematic analysis, we identify four primary failure modes in conventional RAG systems: extraction errors in processing, context size limitations, inexhaustive computation patterns, and computational reasoning failures. Our findings demonstrate that decoupling context-heavy plan generation from context-limited plan execution through programmatic environments fundamentally addresses these [...] #",
+          "Example: For the query \u201cGive a brief overview of climate change impacts on agriculture,\u201d the system may retrieve extensive research papers. Instead of generating a brief summary, it provides an overly detailed technical response, overwhelming the user who only sought a high-level overview.\n\n### Failure Point 7: Incomplete Answers\n\nAn incomplete answer occurs when the RAG system retrieves relevant content but the LLM fails to fully extract all necessary details, even when they\u2019re available. [...]",
+          "Retrieval Stage: The system does not pull the right documents or retrieves too much irrelevant information, leading to weak context.\n Generation Stage: The model produces incorrect, incomplete, or poorly formatted responses based on the retrieved data.\n\nBoth of these stages need to work together to produce reliable outputs. If retrieval fails, generation will always struggle, no matter how good your LLM is. [...] This is why following Retrieval-Augmented Generation best practices is key to ensur",
+          "> \"Chunk size is the single largest lever on retrieval quality. Half the audits we run, the highest-impact fix is moving from 1500-token chunks to 600 with 50 overlap.\"\u2014 Working observation from the engagements we ship\n\n## 03 \u2014 Retrieve Too FewMissing the critical context. [...] What is at stake: production RAG quality is engineering quality. A system that scores 90 on a launch demo can degrade to 60 within a quarter without a single deploy \u2014 chunks drifted, retrieval count stayed defaulted, the",
+          "## Conclusion\n\nRAG systems fail in subtle ways that aggregate metrics and component-level testing cannot reveal. The ten failure modes examined\u2014retrieval timing attacks, context position bias, embedding drift, multi-hop reasoning failures, negative interference, citation hallucination, model mismatches, temporal staleness, cross-document contradictions, and recursive loops\u2014share characteristics making them difficult to detect without systematic AI observability infrastructure. [...] RAG monitori"
+        ],
+        "sources": [
+          {
+            "title": "A Systematic Taxonomy of Failure Modes in Retrieval-Augmented Generation Systems - ACL Anthology",
+            "url": "https://aclanthology.org/2026.trustnlp-main.27",
+            "publisher": "aclanthology.org"
+          },
+          {
+            "title": "RAG Anti-Patterns: 7 Failure Modes Engineering Guide 2026",
+            "url": "https://www.digitalapplied.com/blog/rag-anti-patterns-7-failure-modes-2026-engineering-guide",
+            "publisher": "www.digitalapplied.com"
+          },
+          {
+            "title": "Ten Failure Modes of RAG Nobody Talks About (And How to Detect Them Systematically) - DEV Community",
+            "url": "https://dev.to/kuldeep_paul/ten-failure-modes-of-rag-nobody-talks-about-and-how-to-detect-them-systematically-7i4",
+            "publisher": "dev.to"
+          },
+          {
+            "title": "Fundamental Failure Modes in RAG Systems",
+            "url": "https://promptql.io/blog/fundamental-failure-modes-in-rag-systems",
+            "publisher": "promptql.io"
+          },
+          {
+            "title": "Medium",
+            "url": "https://medium.com/@sahin.samia/the-common-failure-points-of-llm-rag-systems-and-how-to-overcome-them-926d9090a88f",
+            "publisher": "medium.com"
+          }
+        ]
+      },
+      "judge_scores": {
+        "llm_groundedness": 0.8,
+        "llm_completeness": 0.6,
+        "llm_uncertainty_handling": 0.55,
+        "llm_judge_overall": 0.65
+      },
+      "draft": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      },
+      "draft_reasoning": null,
+      "human": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      }
+    },
+    {
+      "case_id": "citation-verification",
+      "question": "How can automated systems verify that a cited source actually supports a claim, and what limits do those methods have?",
+      "difficulty": "moderate",
+      "uncertainty_expected": true,
+      "rubric": {
+        "must_contain": [
+          "describes entailment or NLI-style checking of a claim against source text as the dominant automated approach",
+          "distinguishes full support, partial support, and no support rather than treating it as binary",
+          "notes human annotators themselves disagree on support judgments, bounding achievable automated accuracy",
+          "states lexical overlap between claim and source is not evidence of support"
+        ],
+        "must_avoid": [
+          "treating the presence of a citation as proof the claim is supported",
+          "presenting automated attribution checking as a solved problem"
+        ]
+      },
+      "system_output": {
+        "claims": [
+          "AI citations matter because standard ChatGPT-style models can sound sure without showing proof. A fake source can look real. A real source can be used for the wrong claim. A link can point to a page that does not support the answer.\n\nThat creates four risks: [...] | Check | 0 points | 1 point | 2 points |\n ---  --- |\n| Source exists | The source is missing or unverifiable. | The source exists but is hard to reach. | The source opens to a real paper, page, or uploaded file. |\n| Claim support | Th",
+          "Title: Do citation-checking AI systems retrieve the evidence users actually need?\n# Do citation-checking AI systems retrieve the evidence users actually need? AI citation checkers can verify if a source exists, but often fail to confirm if it actually supports the claim\u2014here's what the evidence shows. Current AI citation-checking systems are good at finding whether a reference exists, but they often fail to retrieve the specific evidence users actually need. The strongest study here, CiteAudit ,",
+          "Checking whether a cited passage entails a specific claim is a skilled task. It requires knowing the methodological context of the paper, understanding the scope conditions of the finding, and recognising when a relationship that looks supportive is actually qualified or conditional. These are the skills that develop through doing the retrieval and synthesis work manually. When AI tools handle that work, those skills atrophy -- and the errors that require those skills to catch go undetected. [..",
+          "It catches references that do not exist, citations that do not support the attached claim, retracted papers, and outdated references that make the literature review look careless or stale. Those are integrity problems, not just formatting problems.\n\nReference managers help store metadata and format references, but they do not verify that a cited paper still stands, that it supports the claim you attach to it, or that an AI writing tool has not introduced a fabricated source. [...] | Service type",
+          "> Find the original or primary source for this claim. Prefer official data, the underlying research paper, original report or direct record over articles that cite it.\n\nCheck source support\n\n> Does this source actually support the claim below? Identify the exact evidence, explain any important limitations, and flag anything the claim exaggerates or leaves out.\n\nFind independent evidence [...] 1\n\nDoes it exist?\n\nSearch the exact title. A citation can be perfectly formatted and still refer to noth",
+          "## Frequently asked questions\n\n### What does it mean to verify sources from AI answers?\n\nSource verification from AI answers means checking two things: first, that the cited source actually exists; second, that it says what the AI claims it says. A source that exists but does not support the claim is not useful evidence. Verification requires both checks \u2014 not just one.\n\n### Can AI cite fake sources? [...] ## Real Source vs. Relevant Source vs. Correctly Interpreted Source\n\nVerifying a source re"
+        ],
+        "sources": [
+          {
+            "title": "10 AI Tools That Cite Sources (2026): Verifiable Citations",
+            "url": "https://www.atlasworkspace.ai/blog/ai-that-cites-sources",
+            "publisher": "www.atlasworkspace.ai"
+          },
+          {
+            "title": "What Citation Verification Catches (2026)",
+            "url": "https://manusights.com/blog/what-citation-verification-catches",
+            "publisher": "manusights.com"
+          },
+          {
+            "title": "How to Fact-Check With AI: Verify Claims, Sources and Websites",
+            "url": "https://www.sigmabrowser.com/blog/how-to-fact-check-with-ai",
+            "publisher": "www.sigmabrowser.com"
+          },
+          {
+            "title": "Do citation-checking AI systems retrieve the evidence users actually need?",
+            "url": "https://www.wispaper.ai/en/research/citation-checking-ai-evidence-retrieval",
+            "publisher": "www.wispaper.ai"
+          },
+          {
+            "title": "A cited source and a supporting source are not the same thing. AI research tools treat them as if they are. \u2014 Epistamate",
+            "url": "https://epistamate.com/blog/cited-source-vs-supporting-source.html",
+            "publisher": "epistamate.com"
+          }
+        ]
+      },
+      "judge_scores": {
+        "llm_groundedness": 0.8,
+        "llm_completeness": 0.6,
+        "llm_uncertainty_handling": 0.6,
+        "llm_judge_overall": 0.67
+      },
+      "draft": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      },
+      "draft_reasoning": null,
+      "human": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      }
+    },
+    {
+      "case_id": "social-media-adolescent-mental-health",
+      "question": "Does the evidence support a causal link between social media use and adolescent mental health decline?",
+      "difficulty": "hard",
+      "uncertainty_expected": true,
+      "rubric": {
+        "must_contain": [
+          "states explicitly that the causal question is contested among researchers",
+          "distinguishes correlational findings from quasi-experimental or experimental ones",
+          "names specific opposing positions or researchers rather than asserting a consensus",
+          "notes effect sizes in large datasets are typically small and sensitive to analytic choices"
+        ],
+        "must_avoid": [
+          "asserting a settled causal link in either direction",
+          "citing a popular book or op-ed as if it were scientific consensus",
+          "presenting correlational results as causal evidence"
+        ]
+      },
+      "system_output": {
+        "claims": [
+          "Title: Australia\u2019s Social Media Ban Protects the Mental Health of Children: A Look at the Evidence | Institute for Family Studies\nHome Blog  Media and Technology  Australia\u2019s Social Media Ban Protects the Mental Health of Children: A Look at the Evidence. # Australia\u2019s Social Media Ban Protects the Mental Health of Children: A Look at the Evidence. 1. Social media use damages the brain\u2019s empathy pathways to hinder relationships and impair mental health. 3. As a psychiatrist, the sum of the scien",
+          "# The Impact of Social Media Use on Adolescent Mental Health and Well-being: A Scoping Review. **The Impact of Social Media on Adolescent Mental Health and Well-being: A Scoping Review**. This rapid expansion of social media has outpaced scientific understanding of its impact on adolescent mental health and well-being, creating a knowledge gap between public perception, often fueled by media reports, and scientific evidence. This scoping review aims to bridge this gap by analyzing existing resea",
+          "# Does Social Media Really Harm Teens\u2019 Mental Health? Is social media bad for teens\u2019 mental health? Last year, a multistate lawsuit was filed against social media giants including Meta, X, and TikTok alleging that the companies had violated consumer protection laws by designing psychologically manipulative features intended to incite \u201ccompulsive and extended use.\u201d Hundreds of school districts have since followed suit. \u201cSocial media harms teens\u2019 mental health, mounting evidence shows. Although th",
+          "Additionally, depression and suicide have increased as the number of people on social media and the number of social media platforms have increased.\n\n\u201cThis is correlational not causational,\u201d adds Katzenstein. \u201cBut it cannot be overlooked as a factor in adolescent and teen mental health.\u201d\n\n## How Can Parents Teach Children and Teens to Have Healthy Social Media Habits?\n\nParents can work with their children to create healthy digital habits and encourage moderation in its use by: [...] Some experts",
+          "> 43\n> 42\n> 41 40\n> 39 38 37 ,\n> Social Media Has Both Positive and Negative Impacts on Children and Adolescents Social Media and Youth Mental Health: The U.S. Surgeon General\u2019s Advisory 8\n\nScientific evidence suggests that harmful content exposure as well as excessive and problematic social media use are primary areas for concern. \n\n## Potential Risk of Harm from Content Exposure [...] > 35\n> 34\n\nIn addition to these recent studies, correlational research on associations between social media us",
+          "with pre-existing psychological distress are more inclined to engage with SM. Although a correlation exists between the two, the causal relationship remains unclear. [...] Meanwhile, some studies grounded in ecosystem theory suggest that SM interactions with children\u2019s immediate environments (e.g., home and school) may result in complex mental health outcomes . These varied findings not only reflect the heterogeneous and unsystematic nature of the current research but also highlight methodologic"
+        ],
+        "sources": [
+          {
+            "title": "Australia\u2019s Social Media Ban Protects the Mental Health of Children: A Look at the Evidence | Institute for Family Studies",
+            "url": "https://ifstudies.org/blog/australias-social-media-ban-protects-the-mental-health-of-children-a-look-at-the-evidence?ref=africantechroundup.com",
+            "publisher": "ifstudies.org"
+          },
+          {
+            "title": "The Impact of Social Media Use on Adolescent Mental Health and Well-being: A Scoping Review | DISA",
+            "url": "https://disa.org/the-impact-of-social-media-use-on-adolescent-mental-health-and-well-being-a-scoping-review",
+            "publisher": "disa.org"
+          },
+          {
+            "title": "Does Social Media Really Harm Teens\u2019 Mental Health? \u2014 The Center for Brain, Mind and Society",
+            "url": "https://brainmindsociety.org/posts/does-social-media-really-harm-teens-mental-health",
+            "publisher": "brainmindsociety.org"
+          },
+          {
+            "title": "Social Media and Mental Health Among Children and Teens",
+            "url": "https://www.hopkinsmedicine.org/health/expert-qa/social-media-and-mental-health-in-children-and-teens",
+            "publisher": "www.hopkinsmedicine.org"
+          },
+          {
+            "title": "[PDF] Social Media and Youth Mental Health - HHS.gov",
+            "url": "https://www.hhs.gov/sites/default/files/sg-youth-mental-health-social-media-advisory.pdf",
+            "publisher": "www.hhs.gov"
+          }
+        ]
+      },
+      "judge_scores": {
+        "llm_groundedness": 0.85,
+        "llm_completeness": 0.8,
+        "llm_uncertainty_handling": 0.9,
+        "llm_judge_overall": 0.85
+      },
+      "draft": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      },
+      "draft_reasoning": null,
+      "human": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      }
+    },
+    {
+      "case_id": "temperature-attribution-forcings",
+      "question": "How much of recent global temperature rise can be attributed to specific forcing factors?",
+      "difficulty": "hard",
+      "uncertainty_expected": true,
+      "rubric": {
+        "must_contain": [
+          "attributes the dominant share of observed warming to anthropogenic greenhouse gases, citing an assessment body",
+          "reports figures with uncertainty ranges rather than bare point estimates",
+          "explains aerosols as a partially offsetting cooling term carrying larger uncertainty",
+          "distinguishes forced response from internal variability"
+        ],
+        "must_avoid": [
+          "giving precise attribution percentages with no uncertainty range or source",
+          "treating aerosol forcing as precisely known"
+        ]
+      },
+      "system_output": {
+        "claims": [
+          "Range (5th to 95th percentile) and central estimate (50th percentile) of simulated global average surface temperature responses to the IMO 2020 regulations across the radiative forcing estimates in the literature. Analysis by Carbon Brief using the FaIR model.\n\nOverall, Carbon Brief\u2019s analysis finds that around 0.04C of warming over 2020-23 and 0.05C of warming over 2020-24 can be attributed to SO2 declines from shipping and other sources. [...] Even if unusual recent global warmth can be mostly",
+          "The planet's average surface temperature has risen about 2 degrees Fahrenheit (1 degrees Celsius) since the late 19th century, a change driven largely by increased carbon dioxide emissions into the atmosphere and other human activities.4 Most of the warming occurred in the past 40 years, with the seven most recent years being the warmest. The years 2016 and 2020 are tied for the warmest year on record.5 [...] ## The Evidence for Rapid Climate Change Is Compelling:\n\n ### Global Temperature Is Ris",
+          "Estimating global average surface air temperature increase requires careful analysis of millions of measurements from around the world, including from land stations, ships, and satellites. Despite the many complications of synthesising such data, multiple independent teams have concluded separately and unanimously that global average surface air temperature has risen by about 1 \u00b0C (1.8 \u00b0F) since 1900 [Figure B4]. Although the record shows several pauses and accelerations in the increasing [...]",
+          "... global warming due to a few key factors, namely: 1) Earth albedo (reflectance) is continuing to decrease (darken) meaning that more incoming",
+          "including natural variability.  1 While individual years are higher or lower as a result of internal variability, our best estimate of the longer-term forced response (and the human contribution to warming) remains around 1.3C, varying between 1.2C and 1.4C across different groups.  2 It is worth noting that a portion of other anthropogenic warming (and some of the \u201cother GHGs\u201d warming) can be attributed to indirect effects of methane emissions, which also enhance tropospheric ozone, [...] 2026",
+          "Over the previous 50 years, global warming has preceded in an almost linear fashion, consistent with an almost linear increase in the total greenhouse gas forcing. The warming spike in 2023 to 2025 suggests that the past warming rate is no longer a reliable predictor of the future, and additional factors have created conditions for faster warming, at least in the short-term. [...] Recent work by Goessling and colleagues has found that the changes in Earth\u2019s energy imbalance are in large part the"
+        ],
+        "sources": [
+          {
+            "title": "Analysis: What are the causes of recent record-high global temperatures? - Carbon Brief",
+            "url": "https://www.carbonbrief.org/analysis-what-are-the-causes-of-recent-record-high-global-temperatures",
+            "publisher": "www.carbonbrief.org"
+          },
+          {
+            "title": "Ongoing Global Warming Acceleration: 2026 to be Record ...",
+            "url": "https://www.youtube.com/watch?v=-mSiNLRvaQc",
+            "publisher": "www.youtube.com"
+          },
+          {
+            "title": "Exploring the drivers of modern global warming",
+            "url": "https://skepticalscience.com/exploring-modern-gw-drivers.html",
+            "publisher": "skepticalscience.com"
+          },
+          {
+            "title": "Evidence - NASA Science",
+            "url": "https://science.nasa.gov/climate-change/evidence",
+            "publisher": "science.nasa.gov"
+          },
+          {
+            "title": "Climate change: evidence and causes",
+            "url": "https://royalsociety.org/news-resources/projects/climate-change-evidence-causes/basics-of-climate-change",
+            "publisher": "royalsociety.org"
+          }
+        ]
+      },
+      "judge_scores": {
+        "llm_groundedness": 0.8,
+        "llm_completeness": 0.45,
+        "llm_uncertainty_handling": 0.6,
+        "llm_judge_overall": 0.62
+      },
+      "draft": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      },
+      "draft_reasoning": null,
+      "human": {
+        "groundedness": null,
+        "completeness": null,
+        "uncertainty_handling": null,
+        "overall_score": null
+      }
+    }
+  ]
+}

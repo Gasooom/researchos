@@ -129,6 +129,43 @@ than the architecture diagram.
       summary. These must be real, reproducible numbers — if API keys
       aren't configured, stop and tell me what's missing instead of
       inventing plausible output.
+      Status: execution DONE, calibration agreement OUTSTANDING (blocked on
+      human labels — see below). Credentials were live (`LLM_MODE=openai`,
+      gpt-5-mini, Tavily), verified with real calls before running. All 30
+      cases executed: 30 ok, 0 errors, 4,515s, at commit `fe01efc`, dataset
+      v1.0.0. Raw results in `benchmark/results/2026-09-22.json`, summary in
+      `-summary.json`. Judge means: groundedness 0.828, completeness 0.654,
+      uncertainty handling 0.618, overall 0.707 (n=30).
+      Wiring: `benchmark_dataset.py` loads/validates the M3 file and projects
+      onto `BenchmarkCase`; `benchmark_cases.py` now serves those 30 cases
+      instead of 3 hardcoded ones. `scripts/run_benchmark.py` persists after
+      every case and supports `--resume` (added after an interrupted run
+      would otherwise have discarded ~75 min of live API spend).
+      Findings worth carrying into M5:
+      (a) Judge scores fall monotonically with difficulty on overall
+      (0.773/0.722/0.603), groundedness and completeness — the M3 tiers are
+      empirically validated. Uncertainty handling is NOT monotonic
+      (moderate 0.662 highest).
+      (b) Cases flagged `uncertainty_expected` scored 0.604 versus 0.631 for
+      unflagged — no better where uncertainty is required.
+      (c) `claim_support_rate` (`app/application/evaluation/claims.py:19-26`)
+      thresholds ONLY on `evidence.relevance >= 0.8` — Tavily's retrieval
+      score. It performs no claim-versus-evidence textual comparison, so its
+      name oversells it: it is a retrieval-confidence proxy. Full-run mean is
+      0.346 (median 0.183, 14 cases at exactly 0.00), not the 1.00 seen in a
+      single pilot case. Separately, claims are constructed from the excerpts
+      that also serve as their evidence
+      (`app/application/orchestration/research.py:307-317`), so textual
+      support is trivially true by construction — but that is not what the
+      metric measures. Do not present this metric as evidence of reliability.
+      (d) Not reproducible bitwise: `cap-theorem` scored 0.88 / 0.78 / 0.82
+      across three live executions of identical input. The 0.78 exists only
+      in a task log, not a committed artifact.
+      Outstanding: `benchmark/results/2026-09-22-labels.json` holds 8 cases
+      (3 easy / 3 moderate / 2 hard) with real output and rubric; `draft` and
+      `human` fields are deliberately null. Agreement via `calibration.py`
+      cannot be computed until labels exist. Flip this checkbox to [x] once
+      that lands.
 - [ ] M5 — README overhaul: add an "Evaluation" section reporting the M4
       results as a table (metric, score, sample size), add one real
       end-to-end example (question → evidence → claims → scores), replace
