@@ -91,13 +91,34 @@ than the architecture diagram.
       `ruff format --check` both clean. The live orchestration entry point
       is now unambiguous: `app/application/research_service.py`
       (`ResearchApplicationService`) → `ResearchOrchestrator`.
-- [ ] M3 — Versioned benchmark dataset: create a `benchmark/` directory
+- [x] M3 — Versioned benchmark dataset: create a `benchmark/` directory
       (`README.md` explaining construction methodology + a dataset file)
       with 20-40 real research questions spanning a range of difficulty,
       each with documented "known-good answer characteristics" (what a
       correct grounded answer must contain/avoid — not a full written
       answer). Draft the question set and show it to me before treating it
       as final.
+      Status: `benchmark/dataset.json` v1.0.0 holds 30 cases (10 easy /
+      12 moderate / 8 hard), 14 flagged `uncertainty_expected`, across 20
+      domain labels. Drafted, reviewed, and revised once on request to
+      weight it toward this system's own subject area: 11 cases now cover
+      AI/LLM/agent/retrieval/evaluation topics and 8 are self-referential
+      (judge reliability, citation support verification, retrieval failure
+      modes, multi-agent decomposition, context limits, prompt injection
+      via retrieved content). Contested science/economics/policy cases were
+      kept deliberately — they are the strongest uncertainty-handling tests
+      available, since the disagreement in them is real rather than
+      resolvable by better sourcing. Cases document `must_contain` /
+      `must_avoid` characteristics rather than gold answers, so scoring
+      cannot be gamed by matching one phrasing and the set survives source
+      drift. All 30 verified to construct valid `BenchmarkCase` objects.
+      Important measurement caveat found while drafting and documented in
+      `benchmark/README.md`: `SemanticQualityEvaluator._focus_coverage`
+      scores `expected_focus` by token overlap against text that includes
+      the question itself, so focus terms echoing question wording score
+      for free. Terms were written to avoid this; audited at 23/30 cases
+      with zero overlap, mean 1.7%. No benchmark has been executed yet —
+      that is M4.
 - [ ] M4 — Run the benchmark for real: wire the M3 dataset into
       `researchos_benchmark.py` / `benchmark_runner.py`, execute it against
       the live system, and capture per-metric scores (groundedness,

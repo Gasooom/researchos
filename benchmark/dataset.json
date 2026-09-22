@@ -1,0 +1,732 @@
+{
+  "name": "researchos-benchmark",
+  "version": "1.0.0",
+  "created": "2026-09-22",
+  "case_count": 30,
+  "difficulty_distribution": {
+    "easy": 10,
+    "moderate": 12,
+    "hard": 8
+  },
+  "cases": [
+    {
+      "id": "cap-theorem",
+      "question": "What is the CAP theorem in distributed systems, and what tradeoff does it describe?",
+      "difficulty": "easy",
+      "domain": "distributed-systems",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "consistency",
+        "availability",
+        "partition tolerance",
+        "behavior during network failure"
+      ],
+      "must_contain": [
+        "names all three properties: consistency, availability, partition tolerance",
+        "states the choice is forced only during a network partition, not at all times",
+        "notes partition tolerance is not optional for real distributed systems"
+      ],
+      "must_avoid": [
+        "claiming a system permanently sacrifices one of the three properties under all conditions",
+        "treating CAP consistency as identical to ACID consistency without qualification"
+      ]
+    },
+    {
+      "id": "http-429",
+      "question": "What does the HTTP 429 status code mean and when should a server return it?",
+      "difficulty": "easy",
+      "domain": "web-protocols",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "too many requests",
+        "rate limiting",
+        "retry after header",
+        "quota enforcement"
+      ],
+      "must_contain": [
+        "identifies 429 as 'Too Many Requests'",
+        "connects it to rate limiting or quota enforcement",
+        "mentions Retry-After as the standard signal for when the client may retry"
+      ],
+      "must_avoid": [
+        "confusing 429 with 403, 503, or 500",
+        "inventing a specific numeric request limit as if it were part of the standard"
+      ]
+    },
+    {
+      "id": "symmetric-vs-asymmetric-crypto",
+      "question": "What is the difference between symmetric and asymmetric encryption?",
+      "difficulty": "easy",
+      "domain": "security",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "shared secret key",
+        "public private key pair",
+        "computational cost",
+        "key distribution problem",
+        "hybrid handshake"
+      ],
+      "must_contain": [
+        "states symmetric uses one shared key while asymmetric uses a mathematically related key pair",
+        "notes asymmetric operations are substantially slower",
+        "explains that TLS-style hybrid schemes use asymmetric exchange to establish a symmetric session key"
+      ],
+      "must_avoid": [
+        "claiming asymmetric encryption is simply 'more secure' than symmetric",
+        "asserting specific key-length recommendations without attributing them to a standards body"
+      ]
+    },
+    {
+      "id": "prompt-injection-basics",
+      "question": "What is prompt injection in LLM applications, and how does it differ from jailbreaking?",
+      "difficulty": "easy",
+      "domain": "ai-security",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "untrusted content treated as instructions",
+        "data versus control boundary",
+        "indirect delivery through retrieved documents",
+        "safety training bypass",
+        "no complete sanitization fix"
+      ],
+      "must_contain": [
+        "defines prompt injection as untrusted input being interpreted as instructions by the model",
+        "distinguishes it from jailbreaking, which targets the model's own safety training rather than an application's instruction boundary",
+        "mentions indirect injection delivered through retrieved or third-party content",
+        "notes there is no complete input-sanitization fix comparable to parameterized SQL queries"
+      ],
+      "must_avoid": [
+        "claiming prompt injection is fully solved by input filtering or escaping",
+        "treating prompt injection and jailbreaking as the same phenomenon"
+      ]
+    },
+    {
+      "id": "herd-immunity",
+      "question": "What is herd immunity and what determines the threshold for it?",
+      "difficulty": "easy",
+      "domain": "public-health",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "indirect protection",
+        "basic reproduction number",
+        "susceptible fraction",
+        "contact structure",
+        "disease specific variation"
+      ],
+      "must_contain": [
+        "defines it as indirect protection of susceptible people once a sufficient fraction is immune",
+        "links the threshold to the basic reproduction number (R0)",
+        "notes the threshold varies by pathogen, variant, and contact patterns"
+      ],
+      "must_avoid": [
+        "stating a single universal immunity percentage applying to all diseases",
+        "presenting a disease-specific threshold as a fixed constant"
+      ]
+    },
+    {
+      "id": "database-index-cost",
+      "question": "What is the purpose of a database index, and what cost does it impose?",
+      "difficulty": "easy",
+      "domain": "databases",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "avoiding full table scan",
+        "b-tree lookup",
+        "write amplification",
+        "storage overhead",
+        "maintenance on insert update delete"
+      ],
+      "must_contain": [
+        "explains indexes accelerate reads by avoiding full scans",
+        "states the cost: additional storage plus slower writes from index maintenance",
+        "notes an index that no query uses is pure overhead"
+      ],
+      "must_avoid": [
+        "claiming indexes always improve overall performance",
+        "omitting the write-path cost entirely"
+      ]
+    },
+    {
+      "id": "tcp-vs-udp",
+      "question": "What is the difference between TCP and UDP?",
+      "difficulty": "easy",
+      "domain": "networking",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "connection oriented handshake",
+        "ordered delivery",
+        "retransmission",
+        "datagram best effort",
+        "head of line blocking",
+        "latency sensitive streaming"
+      ],
+      "must_contain": [
+        "states TCP provides connection-oriented ordered delivery with retransmission, UDP is connectionless best-effort",
+        "gives at least one concrete use case for each",
+        "notes UDP avoids head-of-line blocking and handshake latency"
+      ],
+      "must_avoid": [
+        "describing UDP as 'broken' or defective rather than best-effort by design",
+        "asserting UDP is simply faster without noting it omits delivery guarantees"
+      ]
+    },
+    {
+      "id": "context-window-limits",
+      "question": "What is a context window in a large language model, and what happens when input exceeds it?",
+      "difficulty": "easy",
+      "domain": "ai-systems",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "token budget per call",
+        "truncation or explicit rejection",
+        "stateless requests",
+        "degraded recall before the hard limit",
+        "attention cost scaling"
+      ],
+      "must_contain": [
+        "defines the context window as the maximum tokens the model can attend to within a single call",
+        "states that exceeding it causes truncation or an explicit error rather than silent retention",
+        "notes each request is stateless: material outside the window is not remembered",
+        "distinguishes the advertised limit from the range over which recall stays reliable"
+      ],
+      "must_avoid": [
+        "implying the model retains earlier content after it falls outside the window",
+        "treating the advertised maximum as the limit of reliable recall"
+      ]
+    },
+    {
+      "id": "technical-debt",
+      "question": "What is technical debt in software engineering?",
+      "difficulty": "easy",
+      "domain": "software-engineering",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "expedient shortcut",
+        "future rework cost",
+        "interest metaphor",
+        "Ward Cunningham origin",
+        "deliberate versus inadvertent"
+      ],
+      "must_contain": [
+        "defines it as the implied future cost of choosing an expedient solution now",
+        "attributes the metaphor to Ward Cunningham",
+        "distinguishes deliberate from inadvertent debt"
+      ],
+      "must_avoid": [
+        "equating technical debt with any and all low-quality code",
+        "presenting it as always irrational rather than sometimes a deliberate tradeoff"
+      ]
+    },
+    {
+      "id": "training-cutoff-vs-retrieval",
+      "question": "How does a language model's training data cutoff differ from retrieval-based access to current information?",
+      "difficulty": "easy",
+      "domain": "ai-systems",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "parametric memory frozen at build time",
+        "external lookup at query time",
+        "staleness of internal knowledge",
+        "provenance and citability",
+        "updating without changing weights"
+      ],
+      "must_contain": [
+        "explains parametric knowledge is fixed when the model is built and does not update on its own",
+        "explains external lookup supplies current material at query time without altering model weights",
+        "notes external sources can be cited and independently checked, whereas parametric recall cannot be traced to a source"
+      ],
+      "must_avoid": [
+        "claiming a model knows events after its cutoff without external lookup",
+        "implying external lookup retrains or permanently updates the model"
+      ]
+    },
+    {
+      "id": "microservices-vs-monolith",
+      "question": "What are the main tradeoffs between microservices and monolithic architectures?",
+      "difficulty": "moderate",
+      "domain": "software-architecture",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "independent deployability",
+        "network partition failure",
+        "operational overhead",
+        "team autonomy conway",
+        "distributed data consistency",
+        "observability burden"
+      ],
+      "must_contain": [
+        "names concrete benefits (independent deployment, targeted scaling, team autonomy)",
+        "names concrete costs (network latency, distributed transactions, operational and debugging complexity)",
+        "notes organizational structure shapes the choice (Conway's law)",
+        "acknowledges a monolith is a reasonable default for small teams"
+      ],
+      "must_avoid": [
+        "presenting microservices as a strict upgrade over monoliths",
+        "omitting operational and debugging cost entirely"
+      ]
+    },
+    {
+      "id": "vector-vs-relational-db",
+      "question": "How do vector databases differ from traditional relational databases for similarity search?",
+      "difficulty": "moderate",
+      "domain": "databases",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "embedding representation",
+        "approximate nearest neighbor",
+        "recall latency tradeoff",
+        "exact predicate matching",
+        "high dimensional space",
+        "hybrid keyword filtering"
+      ],
+      "must_contain": [
+        "explains vector stores index embeddings for approximate nearest-neighbor retrieval rather than exact predicate matching",
+        "names the recall-versus-latency tradeoff inherent to ANN indexes",
+        "notes production systems often combine vector with keyword or relational filtering"
+      ],
+      "must_avoid": [
+        "claiming vector databases replace relational databases",
+        "describing ANN search as exact or lossless"
+      ]
+    },
+    {
+      "id": "financial-crisis-2008",
+      "question": "What were the primary causes of the 2008 financial crisis?",
+      "difficulty": "moderate",
+      "domain": "economics",
+      "uncertainty_expected": true,
+      "expected_focus": [
+        "subprime mortgage origination",
+        "securitization chain",
+        "credit rating agency failure",
+        "excessive leverage",
+        "short term funding runs",
+        "housing price decline"
+      ],
+      "must_contain": [
+        "identifies multiple interacting causes rather than a single one",
+        "names the securitization chain and rating-agency failures",
+        "connects leverage and short-term wholesale funding to the speed of contagion"
+      ],
+      "must_avoid": [
+        "reducing the crisis to one cause",
+        "presenting contested causal weightings (e.g. government housing policy as primary driver) as settled"
+      ]
+    },
+    {
+      "id": "rag-hallucination-limits",
+      "question": "How does retrieval-augmented generation reduce hallucination in language models, and what are its limits?",
+      "difficulty": "moderate",
+      "domain": "ai-systems",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "grounding in retrieved context",
+        "retrieval quality ceiling",
+        "conflicting context handling",
+        "unsupported extrapolation",
+        "citation faithfulness gap"
+      ],
+      "must_contain": [
+        "explains generation is conditioned on retrieved evidence, reducing reliance on parametric memory",
+        "states the ceiling: output quality is bounded by retrieval quality",
+        "notes a cited source does not guarantee the claim is actually supported by it"
+      ],
+      "must_avoid": [
+        "claiming retrieval augmentation eliminates hallucination",
+        "treating retrieval success and answer faithfulness as the same property"
+      ]
+    },
+    {
+      "id": "rag-retrieval-failure-modes",
+      "question": "What are the documented failure modes of the retrieval stage in RAG systems, and how are they diagnosed?",
+      "difficulty": "moderate",
+      "domain": "ai-systems",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "chunk boundary loss",
+        "embedding query mismatch",
+        "distractor passages",
+        "recall at k ceiling",
+        "reranking",
+        "stage wise attribution of errors"
+      ],
+      "must_contain": [
+        "separates retrieval-stage failures from generation-stage failures",
+        "names concrete mechanisms such as poor chunking, query-document embedding mismatch, low recall@k, and topically similar passages that do not support the claim",
+        "describes diagnosis by measuring retrieval independently against known-relevant sources before judging the final answer"
+      ],
+      "must_avoid": [
+        "attributing all errors in a retrieval-augmented system to the generation model",
+        "treating topical similarity as evidence that a passage supports a claim"
+      ]
+    },
+    {
+      "id": "nuclear-vs-renewables",
+      "question": "What are the tradeoffs between nuclear power and renewables for grid decarbonization?",
+      "difficulty": "moderate",
+      "domain": "energy",
+      "uncertainty_expected": true,
+      "expected_focus": [
+        "capacity factor",
+        "intermittency and storage",
+        "construction cost overrun",
+        "build timeline",
+        "grid firming",
+        "lifecycle emissions"
+      ],
+      "must_contain": [
+        "compares across multiple explicit dimensions (cost, build time, capacity factor, land use, emissions)",
+        "contrasts nuclear's high capacity factor with renewables' intermittency and firming needs",
+        "acknowledges the record of cost and schedule overruns in recent Western nuclear projects",
+        "attributes any levelized cost figure to a named source and year"
+      ],
+      "must_avoid": [
+        "declaring either option categorically superior independent of grid context",
+        "quoting a cost figure with no source or date"
+      ]
+    },
+    {
+      "id": "llm-as-judge-reliability",
+      "question": "How reliable are large language models as evaluators of other models' outputs, and what biases have been documented?",
+      "difficulty": "moderate",
+      "domain": "ai-evaluation",
+      "uncertainty_expected": true,
+      "expected_focus": [
+        "position order effect",
+        "verbosity preference",
+        "self preference toward own outputs",
+        "agreement with human raters",
+        "rubric specificity",
+        "score clustering"
+      ],
+      "must_contain": [
+        "names specific documented biases such as position/order effects, verbosity preference, and self-preference",
+        "reports agreement with human raters as the standard reliability measure and notes it varies by task and rubric",
+        "notes judges tend to cluster scores and discriminate poorly without an explicit rubric or reference answer",
+        "states reliability is task-dependent rather than a fixed property of the method"
+      ],
+      "must_avoid": [
+        "treating judge scores as ground truth without human calibration",
+        "citing a single agreement statistic as if it generalized across tasks"
+      ]
+    },
+    {
+      "id": "rate-limiting-approaches",
+      "question": "What are the main approaches to rate limiting in distributed APIs, and when does each fail?",
+      "difficulty": "moderate",
+      "domain": "distributed-systems",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "token bucket",
+        "leaky bucket",
+        "fixed window boundary burst",
+        "sliding window log",
+        "shared counter coordination",
+        "clock skew"
+      ],
+      "must_contain": [
+        "names concrete algorithms (token bucket, leaky bucket, fixed or sliding window)",
+        "identifies the fixed-window boundary burst problem",
+        "addresses coordination cost of shared counters across nodes"
+      ],
+      "must_avoid": [
+        "describing a single algorithm as though it were the only approach",
+        "ignoring the multi-node distributed case entirely"
+      ]
+    },
+    {
+      "id": "citation-verification",
+      "question": "How can automated systems verify that a cited source actually supports a claim, and what limits do those methods have?",
+      "difficulty": "moderate",
+      "domain": "ai-evaluation",
+      "uncertainty_expected": true,
+      "expected_focus": [
+        "textual entailment",
+        "natural language inference",
+        "attribution benchmarks",
+        "partial support gradation",
+        "annotator disagreement",
+        "surface overlap insufficiency"
+      ],
+      "must_contain": [
+        "describes entailment or NLI-style checking of a claim against source text as the dominant automated approach",
+        "distinguishes full support, partial support, and no support rather than treating it as binary",
+        "notes human annotators themselves disagree on support judgments, bounding achievable automated accuracy",
+        "states lexical overlap between claim and source is not evidence of support"
+      ],
+      "must_avoid": [
+        "treating the presence of a citation as proof the claim is supported",
+        "presenting automated attribution checking as a solved problem"
+      ]
+    },
+    {
+      "id": "intermittent-fasting-evidence",
+      "question": "What evidence supports intermittent fasting for weight loss, and how strong is it?",
+      "difficulty": "moderate",
+      "domain": "health-evidence",
+      "uncertainty_expected": true,
+      "expected_focus": [
+        "caloric restriction confounder",
+        "randomized controlled trial",
+        "comparable to continuous restriction",
+        "adherence dropout",
+        "short trial duration"
+      ],
+      "must_contain": [
+        "reports that randomized trials generally show weight loss comparable to continuous calorie restriction, not clearly superior",
+        "flags total caloric intake as the primary confounder",
+        "names study limitations: short durations, small samples, adherence"
+      ],
+      "must_avoid": [
+        "presenting mechanistic or rodent findings as established human outcomes",
+        "citing a single trial as definitive"
+      ]
+    },
+    {
+      "id": "rust-borrow-checker-limits",
+      "question": "How does Rust's borrow checker prevent memory safety bugs, and what classes of bugs does it not prevent?",
+      "difficulty": "moderate",
+      "domain": "programming-languages",
+      "uncertainty_expected": false,
+      "expected_focus": [
+        "ownership and lifetimes",
+        "aliasing mutation exclusion",
+        "use after free",
+        "data race",
+        "unsafe escape hatch",
+        "leaks deadlocks logic errors"
+      ],
+      "must_contain": [
+        "explains ownership and borrowing rules preventing use-after-free, double-free, and data races at compile time",
+        "states what it does not prevent: logic errors, deadlocks, memory leaks, and anything inside unsafe blocks",
+        "notes leaking memory is considered safe in Rust's model"
+      ],
+      "must_avoid": [
+        "claiming Rust programs are immune to all memory-related bugs",
+        "omitting unsafe as an escape hatch"
+      ]
+    },
+    {
+      "id": "remote-work-productivity",
+      "question": "What are the tradeoffs of remote work for engineering team productivity?",
+      "difficulty": "moderate",
+      "domain": "organizational-research",
+      "uncertainty_expected": true,
+      "expected_focus": [
+        "self selection bias",
+        "measurement proxy validity",
+        "hybrid arrangement",
+        "onboarding mentorship effect",
+        "communication network density"
+      ],
+      "must_contain": [
+        "distinguishes findings by study design (natural experiment versus survey versus self-report)",
+        "notes knowledge-work productivity measurement is itself contested",
+        "reports effects differ by task type, tenure, and fully-remote versus hybrid"
+      ],
+      "must_avoid": [
+        "generalizing one company's internal study to all engineering work",
+        "treating self-reported productivity as an objective measurement"
+      ]
+    },
+    {
+      "id": "social-media-adolescent-mental-health",
+      "question": "Does the evidence support a causal link between social media use and adolescent mental health decline?",
+      "difficulty": "hard",
+      "domain": "contested-evidence",
+      "uncertainty_expected": true,
+      "expected_focus": [
+        "correlation versus causation",
+        "small effect size",
+        "preregistration replication",
+        "reverse causality",
+        "specification sensitivity",
+        "conflicting meta analyses"
+      ],
+      "must_contain": [
+        "states explicitly that the causal question is contested among researchers",
+        "distinguishes correlational findings from quasi-experimental or experimental ones",
+        "names specific opposing positions or researchers rather than asserting a consensus",
+        "notes effect sizes in large datasets are typically small and sensitive to analytic choices"
+      ],
+      "must_avoid": [
+        "asserting a settled causal link in either direction",
+        "citing a popular book or op-ed as if it were scientific consensus",
+        "presenting correlational results as causal evidence"
+      ]
+    },
+    {
+      "id": "llm-clinical-diagnosis",
+      "question": "How effective are large language models at clinical diagnosis compared to physicians?",
+      "difficulty": "hard",
+      "domain": "ai-evaluation",
+      "uncertainty_expected": true,
+      "expected_focus": [
+        "vignette versus real patient",
+        "benchmark contamination",
+        "comparison clinician selection",
+        "deployment conditions",
+        "retrospective design limits"
+      ],
+      "must_contain": [
+        "distinguishes performance on curated vignettes or exams from real clinical deployment",
+        "raises training-data contamination for published case material",
+        "notes comparisons depend on which clinicians, with what information and time budget",
+        "states broad clinical superiority is not established"
+      ],
+      "must_avoid": [
+        "reporting exam-style benchmark scores as evidence of clinical readiness",
+        "treating vendor-published evaluations as independent verification"
+      ]
+    },
+    {
+      "id": "multi-agent-coordination-benefit",
+      "question": "Does decomposing a task across multiple LLM agents measurably improve output quality compared to a single well-prompted model?",
+      "difficulty": "hard",
+      "domain": "ai-systems",
+      "uncertainty_expected": true,
+      "expected_focus": [
+        "error propagation between stages",
+        "coordination overhead",
+        "baseline strength confound",
+        "token spend and latency multiplier",
+        "task decomposability",
+        "inconsistent replication"
+      ],
+      "must_contain": [
+        "reports the evidence as mixed rather than settled",
+        "identifies the central confound: multi-agent pipelines are frequently compared against a weak single-model baseline",
+        "names concrete costs such as latency, token spend, and error propagation across stages",
+        "notes gains appear task-dependent and concentrated in decomposable tasks"
+      ],
+      "must_avoid": [
+        "asserting multi-agent architectures are generally superior",
+        "citing one paper's headline improvement as a general result"
+      ]
+    },
+    {
+      "id": "minimum-wage-employment",
+      "question": "Do minimum wage increases reduce employment, and what does the empirical evidence show?",
+      "difficulty": "hard",
+      "domain": "contested-economics",
+      "uncertainty_expected": true,
+      "expected_focus": [
+        "natural experiment border design",
+        "monopsony model",
+        "elasticity estimate",
+        "publication bias",
+        "bite relative to median wage",
+        "local labor market"
+      ],
+      "must_contain": [
+        "reports genuine disagreement in the empirical literature rather than a single answer",
+        "names the methodological divide (border-discontinuity and natural experiments versus other designs)",
+        "notes effects depend on the size of the increase relative to local wages",
+        "mentions monopsony as the theoretical reason employment effects can be near zero"
+      ],
+      "must_avoid": [
+        "asserting economists broadly agree in either direction",
+        "generalizing from one country or one increase magnitude to all cases"
+      ]
+    },
+    {
+      "id": "temperature-attribution-forcings",
+      "question": "How much of recent global temperature rise can be attributed to specific forcing factors?",
+      "difficulty": "hard",
+      "domain": "climate-science",
+      "uncertainty_expected": true,
+      "expected_focus": [
+        "anthropogenic greenhouse contribution",
+        "aerosol cooling offset",
+        "internal variability",
+        "IPCC confidence language",
+        "uncertainty range",
+        "detection attribution method"
+      ],
+      "must_contain": [
+        "attributes the dominant share of observed warming to anthropogenic greenhouse gases, citing an assessment body",
+        "reports figures with uncertainty ranges rather than bare point estimates",
+        "explains aerosols as a partially offsetting cooling term carrying larger uncertainty",
+        "distinguishes forced response from internal variability"
+      ],
+      "must_avoid": [
+        "giving precise attribution percentages with no uncertainty range or source",
+        "treating aerosol forcing as precisely known"
+      ]
+    },
+    {
+      "id": "ai-coding-assistant-productivity",
+      "question": "What is the evidence on whether AI coding assistants improve developer productivity?",
+      "difficulty": "hard",
+      "domain": "contested-evidence",
+      "uncertainty_expected": true,
+      "expected_focus": [
+        "task completion speed",
+        "vendor funded study",
+        "code review burden",
+        "defect rework rate",
+        "self reported versus measured",
+        "task selection bias"
+      ],
+      "must_contain": [
+        "separates vendor-run studies from independent ones",
+        "notes measured speedups on synthetic tasks may not transfer to production work",
+        "raises downstream costs (review load, defects, maintainability) as under-measured",
+        "states the evidence base is young and mixed"
+      ],
+      "must_avoid": [
+        "reporting a vendor's headline percentage as an established productivity gain",
+        "conflating perceived productivity with measured outcomes"
+      ]
+    },
+    {
+      "id": "llm-benchmark-contamination",
+      "question": "To what extent does training data contamination inflate reported language model benchmark scores, and how is it detected?",
+      "difficulty": "hard",
+      "domain": "ai-evaluation",
+      "uncertainty_expected": true,
+      "expected_focus": [
+        "test set leakage",
+        "substring overlap detection",
+        "canary strings",
+        "freshly collected held out evaluation",
+        "closed weights opacity",
+        "disputed magnitude"
+      ],
+      "must_contain": [
+        "explains contamination as evaluation material appearing in the model's training data",
+        "names detection approaches such as n-gram or substring overlap, canary strings, and performance gaps on freshly collected variants",
+        "states the magnitude is disputed and hard to establish for closed-weight models whose training data is undisclosed",
+        "distinguishes demonstrated contamination from inferred contamination"
+      ],
+      "must_avoid": [
+        "asserting a specific inflation percentage as established across models",
+        "treating undisclosed training data as evidence that contamination did not occur"
+      ]
+    },
+    {
+      "id": "quantum-advantage-reproducibility",
+      "question": "Is there reproducible evidence for quantum advantage in practical computing tasks?",
+      "difficulty": "hard",
+      "domain": "contested-science",
+      "uncertainty_expected": true,
+      "expected_focus": [
+        "sampling task versus useful workload",
+        "classical simulation rebuttal",
+        "error correction overhead",
+        "noise decoherence",
+        "verification difficulty"
+      ],
+      "must_contain": [
+        "distinguishes narrow sampling-task advantage claims from practically useful computational advantage",
+        "notes several announced results were later challenged by improved classical algorithms",
+        "explains verification difficulty and error correction as central obstacles",
+        "declines to treat the question as settled"
+      ],
+      "must_avoid": [
+        "presenting a vendor announcement as uncontested",
+        "claiming general-purpose quantum advantage currently exists"
+      ]
+    }
+  ]
+}
