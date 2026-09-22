@@ -72,12 +72,25 @@ than the architecture diagram.
       exists — ruff doesn't catch this (it's not import-resolution), but
       the script would crash if actually run. Left as-is pending your call
       on whether to update it or delete it.
-- [ ] M2 — Remove dead orchestration code: delete
+- [x] M2 — Remove dead orchestration code: delete
       `app/application/orchestration/research_service.py` and its
       dedicated test (`tests/integration/orchestration/test_research_service.py`),
       or fold `build_research_result()` into `ResearchOrchestrator._build_result`
       if any assertions from that test are worth keeping. Acceptance: no
       references remain, all existing tests still pass.
+      Status: both files deleted outright — folding the helper in was
+      unnecessary. Its 2 tests only asserted that `ResearchResult` returns
+      what it was handed, and those exact assertions already exist in
+      `tests/unit/runs/test_models.py` (same question string, same
+      claims/sources checks), with the same fields covered through the real
+      pipeline in `tests/integration/orchestration/test_orchestrator.py`, so
+      no unique coverage was lost. Grep confirms zero remaining references
+      to `build_research_result` or the deleted module; no imports needed
+      updating because nothing in `app/` ever imported it. Suite went
+      309 → 307 (exactly the 2 deleted tests), `ruff check` and
+      `ruff format --check` both clean. The live orchestration entry point
+      is now unambiguous: `app/application/research_service.py`
+      (`ResearchApplicationService`) → `ResearchOrchestrator`.
 - [ ] M3 — Versioned benchmark dataset: create a `benchmark/` directory
       (`README.md` explaining construction methodology + a dataset file)
       with 20-40 real research questions spanning a range of difficulty,
