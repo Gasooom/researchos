@@ -166,7 +166,7 @@ than the architecture diagram.
       `human` fields are deliberately null. Agreement via `calibration.py`
       cannot be computed until labels exist. Flip this checkbox to [x] once
       that lands.
-- [ ] M5 — README overhaul: add an "Evaluation" section reporting the M4
+- [x] M5 — README overhaul: add an "Evaluation" section reporting the M4
       results as a table (metric, score, sample size), add one real
       end-to-end example (question → evidence → claims → scores), replace
       any stale/roadmap-style claims (e.g. the "191 automated tests" line,
@@ -175,6 +175,27 @@ than the architecture diagram.
       state plus an explicit accepted-limitation statement, and reposition
       the opening to lead with the evaluation story rather than the
       architecture diagram.
+      Status: README rewritten to open with the M4 numbers; the architecture
+      diagram is demoted below the evidence. Built on the owner's in-progress
+      draft (kept its framing and tighter voice) and repaired the truncated
+      section that draft ended on. Every published figure was verified
+      programmatically against `benchmark/results/2026-09-22-summary.json`
+      and `2026-09-22.json` — 26 checks, all passing, no figure appears that
+      is not in those files. End-to-end example uses the recorded
+      `cap-theorem` case. "191 automated tests" corrected to 315; the
+      roadmap items that already ship (model-based judge, calibration
+      workflow) were removed as roadmap and moved into Evaluation with their
+      caveats. SQLite is now stated as an accepted limitation — single-node,
+      file-based, deliberate for a single-user workspace — rather than a
+      feature or a roadmap item.
+      The README states plainly what the numbers do not show: the judge is
+      NOT human-calibrated (only a machine cross-check exists, MAE 0.135,
+      judge higher in 27/32, n=8, both sides machines); `claim_support_rate`
+      measures retrieval confidence rather than support; results are not
+      bitwise reproducible (0.88/0.78/0.82); retrieval quality is uneven; and
+      uncertainty handling is no better where required (0.604 vs 0.631).
+      Roadmap section removed entirely rather than reworded — the remaining
+      items were aspirational filler.
 
 ## Working rules
 - Work on exactly ONE milestone at a time, in order. Do not start the next
