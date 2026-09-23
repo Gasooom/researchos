@@ -124,3 +124,28 @@ def test_ui_research_form_renders_result() -> None:
         response.text
     )
     assert "success" in response.text
+
+
+class RaisingService:
+    """A service double whose execute() always fails, for leak-testing."""
+
+    def execute(self, request):
+        raise RuntimeError("sk-should-never-reach-a-response-body")
+
+
+def test_ui_research_form_does_not_leak_raw_exception_text_on_failure() -> None:
+    """A failure must show a generic message, not the raw exception string -
+    which for a real provider failure could contain partial credentials.
+    """
+    repository = InMemoryResearchRunRepository()
+    app = create_app(service=RaisingService(), run_repository=repository)
+    client = TestClient(app)
+
+    response = client.post(
+        "/ui/research",
+        data={"question": "Will this fail?"},
+    )
+
+    assert response.status_code == 500
+    assert "sk-should-never-reach-a-response-body" not in response.text
+    assert "Something went wrong" in response.text

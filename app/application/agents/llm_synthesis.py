@@ -6,12 +6,13 @@ from app.application.agents.roles import AgentRole
 from app.domain.research.analysis import AnalysisResult
 from app.domain.research.models import Evidence, ResearchTask
 from app.domain.research.synthesis import SynthesisResult
+from app.infrastructure.llm.provider import LLMProvider
 
 
 class LLMSynthesisAgent:
     """Synthesize research analysis using a configured LLM provider."""
 
-    def __init__(self, provider) -> None:
+    def __init__(self, provider: LLMProvider) -> None:
         self.provider = provider
 
     @property

@@ -1,11 +1,15 @@
 """Minimal browser UI for ResearchOS."""
 
+import logging
+
 from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 from app.application.research_service import ResearchApplicationService
 from app.domain.research.models import ResearchRequest
+
+logger = logging.getLogger(__name__)
 
 
 def create_router(
@@ -61,13 +65,16 @@ def create_router(
                     "error": None,
                 },
             )
-        except Exception as exc:
+        except Exception:
+            logger.exception("UI research request failed for question: %s", question)
+
             return templates.TemplateResponse(
                 request=request,
                 name="index.html",
                 context={
                     "result": None,
-                    "error": str(exc),
+                    "error": "Something went wrong while running this research "
+                    "request. Check the server logs for details.",
                 },
                 status_code=500,
             )

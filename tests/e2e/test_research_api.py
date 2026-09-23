@@ -162,3 +162,21 @@ def test_research_api_returns_validation_error_for_missing_question() -> None:
     )
 
     assert response.status_code == 422
+
+
+def test_research_api_returns_validation_error_for_whitespace_only_question() -> None:
+    """A whitespace-only question passes the schema's min_length=1 check but
+    fails ResearchRequest's own validator; that must surface as 422, not an
+    unhandled 500.
+    """
+    client, _ = build_e2e_client()
+
+    response = client.post(
+        "/research",
+        json={
+            "question": "   ",
+            "max_sources": 1,
+        },
+    )
+
+    assert response.status_code == 422

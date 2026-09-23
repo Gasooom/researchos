@@ -4,12 +4,13 @@ import json
 
 from app.domain.evaluation.models import EvaluationMetric, EvaluationResult
 from app.domain.research.models import ResearchResult
+from app.infrastructure.llm.provider import LLMProvider
 
 
 class LLMJudgeEvaluator:
     """Evaluate research quality using a configured LLM judge."""
 
-    def __init__(self, provider) -> None:
+    def __init__(self, provider: LLMProvider) -> None:
         self.provider = provider
 
     def evaluate(self, result: ResearchResult) -> EvaluationResult:

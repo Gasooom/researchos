@@ -25,3 +25,28 @@ def test_workspace_api_returns_research_and_evaluation() -> None:
     assert isinstance(body["agents"], list)
     assert body["evaluation"]["overall_score"] >= 0.0
     assert body["evaluation"]["metrics"]
+
+
+def test_workspace_api_rejects_empty_question() -> None:
+    client, _ = build_e2e_client()
+
+    response = client.post(
+        "/workspace",
+        params={"question": "", "max_sources": 1},
+    )
+
+    assert response.status_code == 422
+
+
+def test_workspace_api_rejects_whitespace_only_question() -> None:
+    """Mirrors /research: whitespace passes the shallow query constraint but
+    fails ResearchRequest's own validator, and must surface as 422.
+    """
+    client, _ = build_e2e_client()
+
+    response = client.post(
+        "/workspace",
+        params={"question": "   ", "max_sources": 1},
+    )
+
+    assert response.status_code == 422

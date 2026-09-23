@@ -250,8 +250,17 @@ Set `LLM_MODE=deterministic` to run without an LLM provider, or
 
 ```bash
 uvicorn app.main:app --reload     # API + web UI on :8000
-pytest -q                          # 315 tests
+pytest -q                          # 387 tests
 ruff check . && ruff format --check .
 ```
 
-The React workspace lives in [`web/`](web/).
+The React workspace lives in [`web/`](web/) and talks to the API above:
+
+```bash
+cd web
+npm install
+npm run dev                        # workspace UI on :5173
+```
+
+Set `VITE_API_URL` (e.g. in `web/.env.local`) if the API isn't on the
+default `http://127.0.0.1:8000`.

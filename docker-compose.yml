@@ -5,4 +5,11 @@ services:
       - "8001:8000"
     env_file:
       - .env
+    volumes:
+      - researchos-data:/app/data
+    environment:
+      - RESEARCH_DATABASE_PATH=/app/data/researchos.db
     restart: unless-stopped
+
+volumes:
+  researchos-data:

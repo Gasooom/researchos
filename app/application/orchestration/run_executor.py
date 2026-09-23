@@ -1,5 +1,7 @@
 """Research run execution services for ResearchOS."""
 
+import logging
+
 from app.application.orchestration.reliable_agent import ReliableResearchAgent
 from app.domain.research.models import Evidence, ResearchTask
 from app.domain.runs.models import (
@@ -7,6 +9,8 @@ from app.domain.runs.models import (
     ResearchRunOutcome,
     ResearchRunStatus,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class ResearchRunExecutor:
@@ -30,6 +34,7 @@ class ResearchRunExecutor:
                 evidence.extend(task_evidence)
                 completed_tasks += 1
             except Exception as exc:
+                logger.exception("research task failed: %s", task.objective)
                 failures.append(
                     ResearchRunFailure(
                         task_objective=task.objective,

@@ -1,7 +1,9 @@
 """FastAPI application factory for ResearchOS."""
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from pydantic import ValidationError
 
 from app.api.routes.health import create_router as create_health_router
 from app.api.routes.research import create_router as create_research_router
@@ -41,5 +43,28 @@ def create_app(
     app.include_router(create_runs_router(run_repository))
     app.include_router(create_ui_router(service))
     app.include_router(create_workspace_router(service))
+
+    @app.exception_handler(ValidationError)
+    def handle_domain_validation_error(
+        request: Request,
+        exc: ValidationError,
+    ) -> JSONResponse:
+        """Map domain-model validation failures to 422 instead of a bare 500.
+
+        Request-body schemas (ResearchRequestSchema etc.) already get FastAPI's
+        own 422 handling. This covers domain models like ResearchRequest,
+        constructed by hand inside a route body, whose own validators (e.g.
+        rejecting a whitespace-only question) raise pydantic.ValidationError
+        after the request schema has already accepted the value.
+        """
+        return JSONResponse(
+            status_code=422,
+            content={
+                "detail": [
+                    {"loc": error["loc"], "msg": error["msg"], "type": error["type"]}
+                    for error in exc.errors()
+                ]
+            },
+        )
 
     return app

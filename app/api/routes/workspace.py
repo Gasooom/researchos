@@ -1,6 +1,6 @@
 """Research workspace API routes."""
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from app.api.workspace import WorkspaceResponse
 from app.application.research_service import ResearchApplicationService
@@ -21,8 +21,8 @@ def create_router(
         response_model=WorkspaceResponse,
     )
     def run_workspace(
-        question: str,
-        max_sources: int = 5,
+        question: str = Query(min_length=1),
+        max_sources: int = Query(default=5, ge=1),
     ) -> WorkspaceResponse:
         """Execute research and return the complete workspace payload."""
         request = ResearchRequest(

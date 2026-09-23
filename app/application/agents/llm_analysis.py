@@ -5,12 +5,13 @@ import json
 from app.application.agents.roles import AgentRole
 from app.domain.research.analysis import AnalysisResult
 from app.domain.research.models import Evidence, ResearchTask
+from app.infrastructure.llm.provider import LLMProvider
 
 
 class LLMAnalysisAgent:
     """Analyze research evidence using a configured LLM provider."""
 
-    def __init__(self, provider) -> None:
+    def __init__(self, provider: LLMProvider) -> None:
         self.provider = provider
 
     @property

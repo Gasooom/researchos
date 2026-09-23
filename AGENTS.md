@@ -284,6 +284,71 @@ than the architecture diagram.
       against the real `2026-09-22.json` / `2026-09-22-d629756.json`
       artifacts. `docs/experiments.md` documents the model and explicitly
       states what it is not.
+- [x] M10 — Production hardening. Ran a full 20-dimension engineering audit
+      (architecture, error handling, config, logging, type safety, testing,
+      security, dependency hygiene, docs, CI, Docker, persistence, frontend
+      integration, and more) and implemented only what the audit found to be
+      genuinely high-value — no new features, no rewrites without evidence:
+      - **No server-side logging anywhere** (`get_log_level()` was defined
+        but never called). Wired `logging.basicConfig` in `app/main.py` and
+        added `logger.exception(...)` at the three places exceptions were
+        previously swallowed silently: the orchestrator's per-task loop, the
+        run executor, and the UI route.
+      - **Raw exception text reached a browser.** `app/api/routes/ui.py`'s
+        error page rendered `str(exc)` directly — a third-party SDK error
+        (e.g. an OpenAI auth failure) could echo partial credentials into
+        the response. Replaced with a generic message; the real detail is
+        now logged server-side instead. Proved with a duck-typed
+        `RaisingService` test asserting the raw exception string never
+        appears in the response body.
+      - **`/workspace` had no validation `/research` already had.** A
+        whitespace-only question passed both routes' shallow schema checks
+        and only failed inside `ResearchRequest`'s own validator, which
+        nothing caught — an opaque 500 instead of a 422. Added matching
+        `Query` constraints to `/workspace` and one global
+        `pydantic.ValidationError` handler in `app/api/app.py` (distinct
+        from FastAPI's own `RequestValidationError` handling) so this class
+        of input is a clean 422 on both routes. Verified live against a
+        running server, not just pytest.
+      - **Dead duplicate code**: `app/application/orchestration/planning.py`
+        contained a second, untyped `LLMPlanner`/`LLMTaskOutput` — a
+        byte-for-byte functional duplicate of the properly-typed
+        `app/infrastructure/llm/planner.py::LLMPlanner`, which is the one
+        actually tested and which `container.py` doesn't even wire up
+        (production always plans deterministically today). Confirmed zero
+        references anywhere before deleting — the same dead-code pattern M2
+        removed once already. Not caught by the audit; found by checking
+        container.py's actual wiring against every class named `LLMPlanner`.
+      - **Type coverage**: annotated the three untyped `provider` params
+        (`llm_analysis.py`, `llm_synthesis.py`, `llm_judge.py`) with the
+        existing `LLMProvider` Protocol, consistent with how
+        `SearchProvider` is already used elsewhere. No mypy gate added —
+        noted as a known limitation rather than bolted on under milestone
+        pressure.
+      - **Dependency hygiene**: `pyproject.toml` declared `httpx2` (a real
+        but unrelated, unused package) instead of `httpx`, which
+        `fastapi.testclient.TestClient` actually needs and which only
+        worked in CI via a transitive pull-in. Fixed.
+      - **Frontend hardcoded to localhost**: `web/src/api.ts` had
+        `http://127.0.0.1:8000` inlined with no override, so a production
+        build could never point anywhere else. Now reads
+        `VITE_API_URL` with that value as the default.
+      - **`docker-compose.yml` had no volume for the SQLite file** — any
+        container recreation silently wiped run history despite
+        `restart: unless-stopped` implying durability. Added a named volume.
+      - **README** never documented running the frontend at all, and
+        still stated "315 tests" (actual count: 391). Both fixed.
+      Explicitly NOT done, and why: no auth/rate-limiting (no auth model
+      exists anywhere in the system; partial security controls without one
+      would be theater — stated as a limitation for anything beyond
+      single-user local use, not fixed here); no change to SQLite's
+      single-connection-per-call model (already correct and already an
+      accepted limitation in the README); M8's tracing model still not
+      wired into the API (that was M8's own explicit scope decision, not
+      reopened here). Verification: `pytest -q` — 391 passed (387 + 4 new
+      tests); `ruff check .` and `ruff format --check .` both clean; the
+      whitespace-validation and health-endpoint fixes were also verified
+      live against a running `uvicorn` server, not just through pytest.
 
 ## Working rules
 - Work on exactly ONE milestone at a time, in order. Do not start the next

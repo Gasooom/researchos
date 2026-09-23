@@ -1,5 +1,6 @@
 """Research orchestration services for ResearchOS."""
 
+import logging
 from datetime import UTC, datetime
 
 from app.application.claims.deduplicator import ClaimDeduplicator
@@ -34,6 +35,8 @@ from app.domain.runs.observability import RunObservation
 from app.domain.runs.record import ResearchRunRecord
 from app.domain.runs.repository import ResearchRunRepository
 from app.infrastructure.telemetry.run_observer import RunObserver
+
+logger = logging.getLogger(__name__)
 
 
 class ResearchOrchestrator:
@@ -221,6 +224,7 @@ class ResearchOrchestrator:
                 completed_tasks += 1
 
             except Exception as exc:
+                logger.exception("multi-agent task failed: %s", task.objective)
                 failures.append(
                     ResearchRunFailure(
                         task_objective=task.objective,

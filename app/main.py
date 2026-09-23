@@ -1,5 +1,7 @@
 """ResearchOS application entry point."""
 
+import logging
+
 from app.api.app import create_app
 from app.bootstrap.container import create_research_service
 from app.core.config import get_settings
@@ -11,6 +13,11 @@ from app.infrastructure.persistence.sqlite_run_repository import (
 def create_application():
     """Build the production FastAPI application."""
     settings = get_settings()
+
+    logging.basicConfig(
+        level=settings.log_level,
+        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    )
 
     service = create_research_service(settings)
 

@@ -6,6 +6,10 @@ import type {
   ReviewState,
 } from "./types";
 
+const API_BASE_URL: string =
+  (import.meta.env.VITE_API_URL as string | undefined) ??
+  "http://127.0.0.1:8000";
+
 type ApiReviewStatus =
   | "not_required"
   | "pending"
@@ -364,7 +368,7 @@ export async function fetchRun(
   });
 
   const response = await fetch(
-    `http://127.0.0.1:8000/workspace?${searchParams.toString()}`,
+    `${API_BASE_URL}/workspace?${searchParams.toString()}`,
     {
       method: "POST",
       headers: {
