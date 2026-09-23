@@ -222,6 +222,13 @@ def main() -> None:
 
     records = []
 
+    if out_path.exists() and not args.resume:
+        raise SystemExit(
+            f"{out_path} already exists. Committed results are historical "
+            "artifacts and must not be overwritten: pass --out with a new path, "
+            "or --resume to continue that run."
+        )
+
     if args.resume and out_path.exists():
         previous = json.loads(out_path.read_text(encoding="utf-8"))
         records = [r for r in previous["results"] if r["status"] == "ok"]

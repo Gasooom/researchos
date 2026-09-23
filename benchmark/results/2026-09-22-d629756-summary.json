@@ -1,0 +1,247 @@
+{
+  "run": {
+    "started_at": "2026-09-23T04:44:40.431055+00:00",
+    "completed_at": "2026-09-23T05:09:45.910688+00:00",
+    "duration_seconds": 1505.48,
+    "git_commit": "d629756086bfed0b5ee4a1f3ad221cffe301a002",
+    "llm_model": "gpt-5-mini",
+    "llm_mode": "openai",
+    "dataset_name": "researchos-benchmark",
+    "dataset_version": "1.0.0",
+    "cases_recorded": 30,
+    "cases_ok": 30,
+    "cases_error": 0
+  },
+  "judge_metrics": {
+    "llm_groundedness": {
+      "n": 30,
+      "mean": 0.9397,
+      "median": 0.95,
+      "min": 0.85,
+      "max": 1.0,
+      "stdev": 0.0301
+    },
+    "llm_completeness": {
+      "n": 30,
+      "mean": 0.8177,
+      "median": 0.85,
+      "min": 0.3,
+      "max": 0.95,
+      "stdev": 0.1319
+    },
+    "llm_uncertainty_handling": {
+      "n": 30,
+      "mean": 0.8113,
+      "median": 0.9,
+      "min": 0.2,
+      "max": 0.95,
+      "stdev": 0.1837
+    },
+    "llm_judge_overall": {
+      "n": 30,
+      "mean": 0.859,
+      "median": 0.88,
+      "min": 0.55,
+      "max": 0.96,
+      "stdev": 0.0905
+    }
+  },
+  "deterministic_metrics": {
+    "overall_research_quality": {
+      "n": 30,
+      "mean": 0.7806,
+      "median": 0.8945,
+      "min": 0.5111,
+      "max": 0.969,
+      "stdev": 0.1742
+    },
+    "overall_system_quality": {
+      "n": 30,
+      "mean": 0.8718,
+      "median": 0.9456,
+      "min": 0.6675,
+      "max": 0.9845,
+      "stdev": 0.1019
+    },
+    "semantic_quality": {
+      "n": 30,
+      "mean": 0.7729,
+      "median": 0.7806,
+      "min": 0.6564,
+      "max": 0.8854,
+      "stdev": 0.0573
+    },
+    "focus_coverage": {
+      "n": 30,
+      "mean": 0.6119,
+      "median": 0.625,
+      "min": 0.2361,
+      "max": 0.9375,
+      "stdev": 0.2002
+    },
+    "high_relevance_claim_rate": {
+      "n": 30,
+      "mean": 0.6,
+      "median": 1.0,
+      "min": 0.0,
+      "max": 1.0,
+      "stdev": 0.4983
+    },
+    "low_relevance_claim_rate": {
+      "n": 30,
+      "mean": 0.4,
+      "median": 0.0,
+      "min": 0.0,
+      "max": 1.0,
+      "stdev": 0.4983
+    },
+    "claim_evidence_overlap_rate": {
+      "n": 30,
+      "mean": 0.5,
+      "median": 0.5,
+      "min": 0.0,
+      "max": 1.0,
+      "stdev": 0.3126
+    },
+    "average_relevance": {
+      "n": 30,
+      "mean": 0.7611,
+      "median": 0.789,
+      "min": 0.5221,
+      "max": 0.938,
+      "stdev": 0.1102
+    }
+  },
+  "by_difficulty": {
+    "easy": {
+      "llm_groundedness": {
+        "n": 10,
+        "mean": 0.95,
+        "median": 0.95,
+        "min": 0.92,
+        "max": 0.98,
+        "stdev": 0.0141
+      },
+      "llm_completeness": {
+        "n": 10,
+        "mean": 0.865,
+        "median": 0.9,
+        "min": 0.7,
+        "max": 0.95,
+        "stdev": 0.0747
+      },
+      "llm_uncertainty_handling": {
+        "n": 10,
+        "mean": 0.755,
+        "median": 0.8,
+        "min": 0.25,
+        "max": 0.95,
+        "stdev": 0.2179
+      },
+      "llm_judge_overall": {
+        "n": 10,
+        "mean": 0.865,
+        "median": 0.88,
+        "min": 0.72,
+        "max": 0.96,
+        "stdev": 0.0749
+      }
+    },
+    "moderate": {
+      "llm_groundedness": {
+        "n": 12,
+        "mean": 0.9517,
+        "median": 0.95,
+        "min": 0.9,
+        "max": 1.0,
+        "stdev": 0.0233
+      },
+      "llm_completeness": {
+        "n": 12,
+        "mean": 0.8325,
+        "median": 0.855,
+        "min": 0.5,
+        "max": 0.9,
+        "stdev": 0.1107
+      },
+      "llm_uncertainty_handling": {
+        "n": 12,
+        "mean": 0.8225,
+        "median": 0.9,
+        "min": 0.2,
+        "max": 0.95,
+        "stdev": 0.2053
+      },
+      "llm_judge_overall": {
+        "n": 12,
+        "mean": 0.8692,
+        "median": 0.905,
+        "min": 0.55,
+        "max": 0.93,
+        "stdev": 0.1064
+      }
+    },
+    "hard": {
+      "llm_groundedness": {
+        "n": 8,
+        "mean": 0.9087,
+        "median": 0.91,
+        "min": 0.85,
+        "max": 0.95,
+        "stdev": 0.034
+      },
+      "llm_completeness": {
+        "n": 8,
+        "mean": 0.7362,
+        "median": 0.78,
+        "min": 0.3,
+        "max": 0.9,
+        "stdev": 0.1856
+      },
+      "llm_uncertainty_handling": {
+        "n": 8,
+        "mean": 0.865,
+        "median": 0.9,
+        "min": 0.75,
+        "max": 0.95,
+        "stdev": 0.0672
+      },
+      "llm_judge_overall": {
+        "n": 8,
+        "mean": 0.8362,
+        "median": 0.86,
+        "min": 0.63,
+        "max": 0.93,
+        "stdev": 0.0899
+      }
+    }
+  },
+  "judge_score_distribution": {
+    "0.55-0.60": 1,
+    "0.60-0.65": 1,
+    "0.70-0.75": 1,
+    "0.75-0.80": 1,
+    "0.80-0.85": 3,
+    "0.85-0.90": 11,
+    "0.90-0.95": 11,
+    "0.95-1.00": 1
+  },
+  "uncertainty_handling_split": {
+    "uncertainty_expected": {
+      "n": 14,
+      "mean": 0.8693,
+      "median": 0.9,
+      "min": 0.7,
+      "max": 0.95,
+      "stdev": 0.0737
+    },
+    "uncertainty_not_expected": {
+      "n": 16,
+      "mean": 0.7606,
+      "median": 0.86,
+      "min": 0.2,
+      "max": 0.95,
+      "stdev": 0.2338
+    }
+  }
+}

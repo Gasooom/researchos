@@ -1,0 +1,2227 @@
+{
+  "run": {
+    "started_at": "2026-09-23T04:44:40.431055+00:00",
+    "completed_at": "2026-09-23T05:09:45.910688+00:00",
+    "duration_seconds": 1505.48,
+    "git_commit": "d629756086bfed0b5ee4a1f3ad221cffe301a002",
+    "llm_model": "gpt-5-mini",
+    "llm_mode": "openai",
+    "dataset_name": "researchos-benchmark",
+    "dataset_version": "1.0.0",
+    "cases_recorded": 30,
+    "cases_ok": 30,
+    "cases_error": 0
+  },
+  "results": [
+    {
+      "id": "cap-theorem",
+      "question": "What is the CAP theorem in distributed systems, and what tradeoff does it describe?",
+      "difficulty": "easy",
+      "domain": "distributed-systems",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 141.09,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 4,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.96365042825,
+      "metrics": {
+        "average_relevance": 0.8546017129999999,
+        "high_relevance_rate": 1.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.5,
+        "overall_research_quality": 0.9273008564999999,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.96365042825,
+        "llm_groundedness": 0.92,
+        "llm_completeness": 0.9,
+        "llm_uncertainty_handling": 0.9,
+        "llm_judge_overall": 0.91,
+        "llm_judge_adjusted_quality": 0.91,
+        "focus_coverage": 0.9375,
+        "claim_source_diversity": 0.6666666666666666,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.9375,
+        "semantic_quality": 0.8854166666666666
+      },
+      "claims": [
+        "[direct_evidence] When a network partition occurs, a distributed system cannot simultaneously provide both Consistency and Availability while also tolerating the partition; a choice must be made between Consistency and Availability.",
+        "[direct_evidence] The CAP theorem is used as a design framework to guide system architects and engineers in making informed decisions about system behavior and database selection under partition scenarios.",
+        "[direct_evidence] One excerpt (Evidence 2) includes statements implying a CA system 'addresses network failures' and 'can adapt to arbitrary partitioning', which conflicts with the primary CAP claim that you cannot have all three guarantees in the presence of partitions; this introduces unresolved uncertainty about that source's interpretation.",
+        "[inference] Overall, the supplied sources are strongly but not unanimously consistent: most present the standard CAP conclusion (must choose C or A during partitions), while one source contains conflicting phrasing.",
+        "[direct_evidence] The CAP theorem states there are inherent trade-offs between Consistency, Availability, and Partition Tolerance in distributed systems.",
+        "[direct_evidence] Because partition tolerance is generally required in real distributed systems, the practical trade-off described by CAP typically reduces to choosing between Consistency and Availability during partitions."
+      ],
+      "sources": [
+        {
+          "title": "The CAP Theorem: Understanding the Trade-offs in Distributed Systems",
+          "url": "https://medium.com/@kiranpuli/the-cap-theorem-understanding-the-trade-offs-in-distributed-systems-6d39fb871fc9",
+          "publisher": "medium.com"
+        },
+        {
+          "title": "CAP Theorem in System Design - GeeksforGeeks",
+          "url": "https://www.geeksforgeeks.org/system-design/cap-theorem-in-system-design",
+          "publisher": "www.geeksforgeeks.org"
+        },
+        {
+          "title": "CAP Theorem Explained: Balancing Consistency, Availability & Partition Tolerance",
+          "url": "https://www.pingcap.com/article/understanding-cap-theorem-basics-in-distributed-systems",
+          "publisher": "www.pingcap.com"
+        },
+        {
+          "title": "CAP Theorem Explained: Trade-offs with Examples",
+          "url": "https://daily.dev/blog/cap-theorem-explained-consistency-availability-partition-tolerance",
+          "publisher": "daily.dev"
+        }
+      ]
+    },
+    {
+      "id": "http-429",
+      "question": "What does the HTTP 429 status code mean and when should a server return it?",
+      "difficulty": "easy",
+      "domain": "web-protocols",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 117.43,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.7916020725,
+      "metrics": {
+        "average_relevance": 0.66640829,
+        "high_relevance_rate": 0.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 0.0,
+        "low_relevance_claim_rate": 1.0,
+        "claim_evidence_overlap_rate": 0.5,
+        "overall_research_quality": 0.5832041450000001,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.7916020725,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.9,
+        "llm_uncertainty_handling": 0.8,
+        "llm_judge_overall": 0.88,
+        "llm_judge_adjusted_quality": 0.88,
+        "focus_coverage": 0.75,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.9499999999999998,
+        "semantic_quality": 0.8208333333333333
+      },
+      "claims": [
+        "[direct_evidence] 429 indicates the client has sent too many requests within a given timeframe\u2014i.e., exceeded the server's rate limit or usage policy.",
+        "[direct_evidence] Servers use 429 to manage and control excessive request volume, ensure fair usage, and protect against abuse; the server is typically operational but refusing further requests from that client temporarily.",
+        "[direct_evidence] Responses that return 429 may include a Retry-After header advising the client how long to wait before retrying.",
+        "[direct_evidence] Clients receiving 429 are advised to review response headers and reduce or throttle request frequency to comply with server limits.",
+        "[inference] 429 communicates rate-limiting (a temporary refusal to accept more requests) rather than a malformed request or other client-configuration error.",
+        "[direct_evidence] Frequent 429 responses can negatively affect user experience and, according to sources, may also harm site indexing or visibility (SEO) if they occur often."
+      ],
+      "sources": [
+        {
+          "title": "HTTP Error 429 (Too Many Requests) - How to Fix",
+          "url": "https://blog.postman.com/http-error-429",
+          "publisher": "blog.postman.com"
+        },
+        {
+          "title": "HTTP Error 429: What causes it and how to fix it?",
+          "url": "https://www.networksolutions.com/blog/http-error-429-too-many-requests",
+          "publisher": "www.networksolutions.com"
+        },
+        {
+          "title": "HTTP Error 429 'Too Many Requests' Explained | FireBear",
+          "url": "https://firebearstudio.com/blog/http-error-429-explained-why-too-many-requests-happens-and-how-to-fix-it.html",
+          "publisher": "firebearstudio.com"
+        },
+        {
+          "title": "Decoding HTTP Error 429: Comprehensive Analysis and Solutions | Blog | Stablepoint",
+          "url": "https://stablepoint.com/blog/http-error-429",
+          "publisher": "stablepoint.com"
+        },
+        {
+          "title": "What is HTTP 429 Status Code (Too Many Requests)?",
+          "url": "https://reliqus.com/what-is-http-429-status-code",
+          "publisher": "reliqus.com"
+        }
+      ]
+    },
+    {
+      "id": "symmetric-vs-asymmetric-crypto",
+      "question": "What is the difference between symmetric and asymmetric encryption?",
+      "difficulty": "easy",
+      "domain": "security",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 158.62,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.9836759375,
+      "metrics": {
+        "average_relevance": 0.93470375,
+        "high_relevance_rate": 1.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.6666666666666666,
+        "overall_research_quality": 0.9673518750000001,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.9836759375,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.9,
+        "llm_uncertainty_handling": 0.95,
+        "llm_judge_overall": 0.93,
+        "llm_judge_adjusted_quality": 0.93,
+        "focus_coverage": 0.9,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.9424999999999999,
+        "semantic_quality": 0.8564583333333333
+      },
+      "claims": [
+        "[direct_evidence] Asymmetric encryption uses a key pair (public and private); one key encrypts and the other decrypts.",
+        "[direct_evidence] Symmetric encryption is described as faster and less resource-intensive than asymmetric encryption.",
+        "[direct_evidence] Primary security tradeoff: symmetric requires secure key distribution and is vulnerable if the shared key is intercepted; asymmetric simplifies distribution over untrusted networks but requires protecting the private key.",
+        "[direct_evidence] Practical usage pattern: symmetric is preferable for large/bulk data encryption; asymmetric is better for small data and for securely exchanging symmetric keys.",
+        "[direct_evidence] Typical key-size difference reported: symmetric keys commonly 128 or 256 bits; asymmetric keys are described as 'large' and typically require larger key sizes for comparable security.",
+        "[uncertain_direct_evidence] An isolated claim (only in one source) states symmetric ciphertext size is smaller than the original text; other sources do not corroborate this, so this claim is uncertain."
+      ],
+      "sources": [
+        {
+          "title": "Difference Between Symmetric and Asymmetric Encryption",
+          "url": "https://aardwolfsecurity.com/difference-between-symmetric-and-asymmetric-encryption",
+          "publisher": "aardwolfsecurity.com"
+        },
+        {
+          "title": "Difference Between Symmetric and Asymmetric Encryption | Difference Between | Symmetric vs Asymmetric Encryption",
+          "url": "http://www.differencebetween.net/technology/difference-between-symmetric-and-asymmetric-encryption",
+          "publisher": "www.differencebetween.net"
+        },
+        {
+          "title": "Difference between symmetric and asymmetric Key encryption",
+          "url": "https://www.naukri.com/code360/library/difference-between-symmetric-and-asymmetric-encryption",
+          "publisher": "www.naukri.com"
+        },
+        {
+          "title": "Symmetric vs. Asymmetric Encryption - What are differences?",
+          "url": "https://www.ssl2buy.com/wiki/symmetric-vs-asymmetric-encryption-what-are-differences",
+          "publisher": "www.ssl2buy.com"
+        },
+        {
+          "title": "Symmetric And Asymmetric Encryption | Which Is Better?",
+          "url": "https://www.encryptionconsulting.com/education-center/symmetric-vs-asymmetric-encryption",
+          "publisher": "www.encryptionconsulting.com"
+        }
+      ]
+    },
+    {
+      "id": "prompt-injection-basics",
+      "question": "What is prompt injection in LLM applications, and how does it differ from jailbreaking?",
+      "difficulty": "easy",
+      "domain": "ai-security",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 160.83,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.9716381133333334,
+      "metrics": {
+        "average_relevance": 0.8865524533333333,
+        "high_relevance_rate": 1.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.6666666666666666,
+        "overall_research_quality": 0.9432762266666667,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.9716381133333334,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.9,
+        "llm_uncertainty_handling": 0.8,
+        "llm_judge_overall": 0.88,
+        "llm_judge_adjusted_quality": 0.88,
+        "focus_coverage": 0.76,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.9216666666666667,
+        "semantic_quality": 0.81625
+      },
+      "claims": [
+        "[direct_evidence] Prompt injection is an attack against LLM applications that works by concatenating untrusted input with a trusted prompt, disguising malicious instructions as user input.",
+        "[direct_evidence] Prompt injections aim to hijack model behavior or downstream actions (e.g., overriding instructions, accessing unintended capabilities, influencing pipelines).",
+        "[direct_evidence] Jailbreaking is an attack that makes an LLM ignore its safeguards/safety training and produce disallowed content.",
+        "[direct_evidence] Some sources/standards (e.g., OWASP LLM01) describe jailbreaking as a form of prompt injection, indicating overlap in terminology and definitions.",
+        "[direct_evidence] Prompt injection is compared to SQL injection: both send malicious commands disguised as user inputs, but their targets differ (SQL databases vs LLMs).",
+        "[direct_evidence] Recommendations in the sources call for layered defenses across model, application, and system layers because attacks can propagate through tools, pipelines, and workflows."
+      ],
+      "sources": [
+        {
+          "title": "Prompt Injection vs Jailbreak: Same Text, Different Owner - ARMO",
+          "url": "https://www.armosec.io/blog/prompt-injection-vs-jailbreak",
+          "publisher": "www.armosec.io"
+        },
+        {
+          "title": "Prompt Injection vs Jailbreak in LLMs: Differences, Risks, and Prevention - Mindgard",
+          "url": "https://mindgard.ai/blog/prompt-injection-vs-jailbreak",
+          "publisher": "mindgard.ai"
+        },
+        {
+          "title": "What Is a Prompt Injection Attack?",
+          "url": "https://www.ibm.com/think/topics/prompt-injection",
+          "publisher": "www.ibm.com"
+        },
+        {
+          "title": "Prompt injection and jailbreaking are not the same thing",
+          "url": "https://simonwillison.net/2024/Mar/5/prompt-injection-jailbreaking",
+          "publisher": "simonwillison.net"
+        },
+        {
+          "title": "LLM Prompt Injection: Is Your LLM Safe? - Pureinsights",
+          "url": "https://pureinsights.com/blog/2025/llm-prompt-injection-is-your-llm-safe",
+          "publisher": "pureinsights.com"
+        }
+      ]
+    },
+    {
+      "id": "herd-immunity",
+      "question": "What is herd immunity and what determines the threshold for it?",
+      "difficulty": "easy",
+      "domain": "public-health",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 155.04,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.7950093841666667,
+      "metrics": {
+        "average_relevance": 0.6800375366666667,
+        "high_relevance_rate": 0.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 0.0,
+        "low_relevance_claim_rate": 1.0,
+        "claim_evidence_overlap_rate": 0.5,
+        "overall_research_quality": 0.5900187683333333,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.7950093841666667,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.7,
+        "llm_uncertainty_handling": 0.6,
+        "llm_judge_overall": 0.75,
+        "llm_judge_adjusted_quality": 0.75,
+        "focus_coverage": 0.7333333333333333,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.9091666666666667,
+        "semantic_quality": 0.8064583333333333
+      },
+      "claims": [
+        "[direct_evidence] Definition: The herd immunity threshold is the percentage of the population that must be immune so that introduction of the virus will not cause an outbreak.",
+        "[direct_evidence] Mechanism: If enough people are immune, an infected person will likely contact immune persons rather than susceptibles, reducing onward transmission.",
+        "[direct_evidence] Relation to transmissibility: Higher R0 implies a higher herd-immunity threshold (example given: R0 = 5.7 \u2192 estimated threshold \u2248 82%).",
+        "[direct_evidence] Reported threshold ranges in the evidence: ~70\u201390% for highly contagious diseases; thresholds can be reported as low as 40% depending on circumstances.",
+        "[direct_evidence] Ways to develop herd immunity: vaccination or previous infection.",
+        "[direct_evidence] Epidemic dynamics at the threshold: when the threshold is reached each case leads on average to one new case (Reffective = 1); if the immune fraction exceeds the threshold, new cases will decline."
+      ],
+      "sources": [
+        {
+          "title": "4. Herd Immunity | ATrain Education",
+          "url": "https://www.atrainceu.com/content/4-herd-immunity",
+          "publisher": "www.atrainceu.com"
+        },
+        {
+          "title": "What is Herd Immunity?",
+          "url": "https://www.news-medical.net/health/What-is-Herd-Immunity.aspx",
+          "publisher": "www.news-medical.net"
+        },
+        {
+          "title": "\u201cHerd Immunity\u201d: A Rough Guide | Clinical Infectious Diseases",
+          "url": "https://academic.oup.com/cid/article/52/7/911/299077",
+          "publisher": "academic.oup.com"
+        },
+        {
+          "title": "Herd immunity requires 50-80% vaccination rate",
+          "url": "https://www.facebook.com/ClevelandClinicInYourCommunity/posts/in-order-for-us-to-reach-herd-immunity-50-to-80-of-the-population-will-need-to-b/3731711390241421",
+          "publisher": "www.facebook.com"
+        },
+        {
+          "title": "Herd Immunity Threshold | Definition, History & Function | Study.com",
+          "url": "https://study.com/academy/lesson/herd-immunity-definition-threshold.html",
+          "publisher": "study.com"
+        }
+      ]
+    },
+    {
+      "id": "database-index-cost",
+      "question": "What is the purpose of a database index, and what cost does it impose?",
+      "difficulty": "easy",
+      "domain": "databases",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 138.11,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.7656631700000001,
+      "metrics": {
+        "average_relevance": 0.56265268,
+        "high_relevance_rate": 0.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 0.0,
+        "low_relevance_claim_rate": 1.0,
+        "claim_evidence_overlap_rate": 0.3333333333333333,
+        "overall_research_quality": 0.53132634,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.7656631700000001,
+        "llm_groundedness": 0.98,
+        "llm_completeness": 0.95,
+        "llm_uncertainty_handling": 0.95,
+        "llm_judge_overall": 0.96,
+        "llm_judge_adjusted_quality": 0.96,
+        "focus_coverage": 0.75,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.9358333333333334,
+        "semantic_quality": 0.8172916666666667
+      },
+      "claims": [
+        "[direct_evidence] There are many index designs with trade-offs among lookup performance, index size, and index-update performance; many designs are O(log(N)) and some applications can achieve O(1).",
+        "[direct_evidence] Indexes are used to police database constraints (UNIQUE, PRIMARY KEY, FOREIGN KEY); databases commonly create an index implicitly for a PRIMARY KEY.",
+        "[direct_evidence] Maintaining indexes imposes additional storage requirements and adds write overhead because writes/updates must also update the index data structure.",
+        "[direct_evidence] An index may provide little or no benefit when the table is small, when the indexed column is updated very frequently, or when the column has low selectivity (few distinct values).",
+        "[direct_evidence] An index lookup can point to a page/row but the database may still need to fetch the row and perform additional filtering or validation (for example if the index is stale or due to MVCC), adding extra work beyond the index lookup.",
+        "[inference] Practical trade-off (inference): indexes speed reads at the expense of increased storage and slower/more expensive writes, so indexing decisions should balance query patterns, column selectivity, table size, and write frequency."
+      ],
+      "sources": [
+        {
+          "title": "Database index - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Database_index",
+          "publisher": "en.wikipedia.org"
+        },
+        {
+          "title": "Database Indexes Explained: Types, Use Cases and Best Practices | by Isha Shaw | Towards Dev",
+          "url": "https://medium.com/towardsdev/database-indexes-explained-types-use-cases-and-best-practices-090e2f5e0640",
+          "publisher": "medium.com"
+        },
+        {
+          "title": "what is a database index?",
+          "url": "https://www.youtube.com/watch?v=Jemuod4wKWo",
+          "publisher": "www.youtube.com"
+        },
+        {
+          "title": "What is the primary purpose of a database index?",
+          "url": "https://www.facebook.com/100069978800188/posts/what-is-the-primary-purpose-of-a-database-index/1399683095707637",
+          "publisher": "www.facebook.com"
+        },
+        {
+          "title": "What Is a Database Index, and What Does It Do?",
+          "url": "https://www.red-gate.com/blog/what-is-database-index",
+          "publisher": "www.red-gate.com"
+        }
+      ]
+    },
+    {
+      "id": "tcp-vs-udp",
+      "question": "What is the difference between TCP and UDP?",
+      "difficulty": "easy",
+      "domain": "networking",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 170.76,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.9844938308333333,
+      "metrics": {
+        "average_relevance": 0.9379753233333334,
+        "high_relevance_rate": 1.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.8333333333333334,
+        "overall_research_quality": 0.9689876616666667,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.9844938308333333,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.8,
+        "llm_uncertainty_handling": 0.25,
+        "llm_judge_overall": 0.72,
+        "llm_judge_adjusted_quality": 0.72,
+        "focus_coverage": 0.7222222222222222,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.9375,
+        "semantic_quality": 0.8107638888888888
+      },
+      "claims": [
+        "[direct_evidence] TCP is connection-oriented: it requires a reliable connection between sender and receiver.",
+        "[direct_evidence] UDP is connectionless: no connection setup is required before sending data.",
+        "[direct_evidence] TCP guarantees data delivery and integrity, including retransmission of lost or damaged packets and ordered delivery.",
+        "[direct_evidence] UDP does not check for errors or resend lost data (described as 'fire-and-forget'); it tolerates packet loss and can deliver incomplete data.",
+        "[direct_evidence] Because of its reliability mechanisms, TCP incurs more overhead and can be slower and introduce latency.",
+        "[direct_evidence] UDP has less packet-related overhead, reduces end-to-end delay, and operates faster and more efficiently in many conditions."
+      ],
+      "sources": [
+        {
+          "title": "TCP vs UDP: Differences Between TCP & UDP Protocols",
+          "url": "https://www.avast.com/c-tcp-vs-udp-difference",
+          "publisher": "www.avast.com"
+        },
+        {
+          "title": "TCP vs UDP: The Main Difference Between TCP and UDP - NetAlly",
+          "url": "https://www.netally.com/network-performance/tcp-vs-udp",
+          "publisher": "www.netally.com"
+        },
+        {
+          "title": "What Is the Difference Between TCP and UDP?",
+          "url": "https://www.avg.com/en/signal/tcp-vs-udp",
+          "publisher": "www.avg.com"
+        },
+        {
+          "title": "Differences TCP vs UDP: \u0421oncise comparison chart of networking protocols",
+          "url": "https://trueconf.com/blog/reviews-comparisons/tcp-vs-udp",
+          "publisher": "trueconf.com"
+        },
+        {
+          "title": "TCP vs UDP: Header Size, Packet Size, and Differences",
+          "url": "https://digilent.com/blog/udp-vs-tcp",
+          "publisher": "digilent.com"
+        }
+      ]
+    },
+    {
+      "id": "technical-debt",
+      "question": "What is technical debt in software engineering?",
+      "difficulty": "easy",
+      "domain": "software-engineering",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 133.48,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.9508987225,
+      "metrics": {
+        "average_relevance": 0.80359489,
+        "high_relevance_rate": 0.6666666666666666,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.3333333333333333,
+        "overall_research_quality": 0.9017974449999999,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.9508987225,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.8,
+        "llm_uncertainty_handling": 0.9,
+        "llm_judge_overall": 0.88,
+        "llm_judge_adjusted_quality": 0.88,
+        "focus_coverage": 0.9333333333333333,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.9125,
+        "semantic_quality": 0.8572916666666667
+      },
+      "claims": [
+        "[direct evidence] Origin and evolution: Technical debt began as Ward Cunningham's 1992 metaphor (trade-off between shipping speed and long-term code quality) and is described in 2026 sources as having evolved into a measurable, quantifiable business metric that affects engineering productivity, budget allocation, and organizational velocity.",
+        "[direct evidence] Common technical manifestations: Code/design shortcuts such as skipping automated tests, copying code instead of abstracting, and deferring documentation lead to increased time for later changes, surprising bugs, and onboarding difficulty.",
+        "[direct evidence] DevOps manifestations: Missing automation, inconsistent development/production environments, fragile release processes, and lack of continuous integration cause manual pre-deployment effort and make engineers hesitant to push code.",
+        "[direct evidence] Operational and business impacts: Sources report materially worse outcomes for high-debt organizations\u2014examples include slower development, longer bug-fix cycles, erosion of customer trust, potential SLA breaches, lost revenue and reputational damage; one source asserts a 2\u20133\u00d7 higher outage rate.",
+        "[direct evidence] Non-technical contributors: An industrial case study identifies lack of communication, collaboration, and cooperation as key contributors to technical debt accumulation in large agile development.",
+        "[inference] Measurement and quantification are asserted but unsupported in the excerpts: the supplied materials do not specify measurement methods, metrics, sampling, or validation approaches for technical debt."
+      ],
+      "sources": [
+        {
+          "title": "Technical debt - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Technical_debt",
+          "publisher": "en.wikipedia.org"
+        },
+        {
+          "title": "What is Technical Debt? | IBM",
+          "url": "https://www.ibm.com/think/topics/technical-debt",
+          "publisher": "www.ibm.com"
+        },
+        {
+          "title": "Say 'bye' to tech debt: Agile solutions for clean development",
+          "url": "https://www.atlassian.com/agile/software-development/technical-debt",
+          "publisher": "www.atlassian.com"
+        },
+        {
+          "title": "A Field Study of Technical Debt | CMU Software Engineering Institute",
+          "url": "https://www.sei.cmu.edu/blog/a-field-study-of-technical-debt",
+          "publisher": "www.sei.cmu.edu"
+        },
+        {
+          "title": "Technical Debt (Tech Debt): A Complete Guide",
+          "url": "https://www.confluent.io/learn/tech-debt",
+          "publisher": "www.confluent.io"
+        }
+      ]
+    },
+    {
+      "id": "training-cutoff-vs-retrieval",
+      "question": "How does a language model's training data cutoff differ from retrieval-based access to current information?",
+      "difficulty": "easy",
+      "domain": "ai-systems",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 150.07,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.782749345,
+      "metrics": {
+        "average_relevance": 0.6309973799999999,
+        "high_relevance_rate": 0.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 0.0,
+        "low_relevance_claim_rate": 1.0,
+        "claim_evidence_overlap_rate": 0.5,
+        "overall_research_quality": 0.56549869,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.782749345,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.9,
+        "llm_uncertainty_handling": 0.8,
+        "llm_judge_overall": 0.88,
+        "llm_judge_adjusted_quality": 0.88,
+        "focus_coverage": 0.5700000000000001,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.9141666666666667,
+        "semantic_quality": 0.766875
+      },
+      "claims": [
+        "[direct_evidence] A knowledge cutoff date defines the boundary of an LLM\u2019s training data; the model learns patterns and facts from data collected up to that point and has no inherent awareness of events after the cutoff.",
+        "[direct_evidence] Content published before the cutoff is 'baked into' model weights (parametric memory): it is always accessible, presented confidently, and typically unreferenced.",
+        "[direct_evidence] Content after the cutoff is retrieved at inference time using Retrieval-Augmented Generation: a retriever collects live documents, compresses relevant passages, injects them into the prompt/context, and the model synthesizes answers from those passages.",
+        "[direct_evidence] Retrieved (post-cutoff) information is treated differently: it can exhibit a different confidence signature, different attribution/referencing behavior, and may be less reliable or harder for the model to synthesize.",
+        "[direct_evidence] Models with browsing or internet access may still default to training-data knowledge for many queries and only perform web searches when prompted or when they detect a need for current information.",
+        "[direct_evidence] Cutoff dates provided by vendors are approximate (often a month) and there can be a gap between data-collection end and model release."
+      ],
+      "sources": [
+        {
+          "title": "LLM Knowledge Cutoff Dates (2026 Updated) \u2014 ChatGPT, GPT-4o, Claude, Gemini & More",
+          "url": "https://otterly.ai/blog/knowledge-cutoff",
+          "publisher": "otterly.ai"
+        },
+        {
+          "title": "Training Data vs Live Search: How AI Systems Access Information | Am I Cited",
+          "url": "https://www.amicited.com/faq/what-is-difference-training-data-live-search",
+          "publisher": "www.amicited.com"
+        },
+        {
+          "title": "When the Training Data Cutoff Becomes a Ranking Factor",
+          "url": "https://duaneforresterdecodes.substack.com/p/when-the-training-data-cutoff-becomes",
+          "publisher": "duaneforresterdecodes.substack.com"
+        },
+        {
+          "title": "Dated Data: Tracing Knowledge Cutoffs in Large Language Models",
+          "url": "https://arxiv.org/html/2403.12958v1",
+          "publisher": "arxiv.org"
+        },
+        {
+          "title": "LLM Knowledge Cutoffs 2026: What They Mean & Workarounds",
+          "url": "https://pristren.com/blog/llm-knowledge-cutoff-guide",
+          "publisher": "pristren.com"
+        }
+      ]
+    },
+    {
+      "id": "microservices-vs-monolith",
+      "question": "What are the main tradeoffs between microservices and monolithic architectures?",
+      "difficulty": "moderate",
+      "domain": "software-architecture",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 152.58,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.9702985383333333,
+      "metrics": {
+        "average_relevance": 0.8811941533333333,
+        "high_relevance_rate": 1.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.5,
+        "overall_research_quality": 0.9405970766666667,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.9702985383333333,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.85,
+        "llm_uncertainty_handling": 0.85,
+        "llm_judge_overall": 0.88,
+        "llm_judge_adjusted_quality": 0.88,
+        "focus_coverage": 0.611111111111111,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.9366666666666666,
+        "semantic_quality": 0.7827777777777778
+      },
+      "claims": [
+        "[direct_evidence] Monoliths have lower initial infrastructure costs and are simpler to develop, test, debug, and deploy; new developers can more easily understand the whole system \u2014 helpful for startups and small teams.",
+        "[direct_evidence] Monolithic systems can become expensive to change and create deployment bottlenecks as organization size grows (one source notes problems once teams exceed ~50 engineers); a failing module can threaten the whole application's availability.",
+        "[direct_evidence] Microservices require higher upfront investment in tooling, infrastructure, and automation and introduce operational complexity: service discovery, distributed tracing, distributed transactions, network reliability, and the risk of development sprawl.",
+        "[direct_evidence] Microservices enable independent deployability, per-component scaling, technology flexibility, and fault isolation \u2014 benefits that support faster feature delivery and resilience at larger scale when teams have sufficient DevOps/distributed-systems expertise and automation.",
+        "[direct_evidence] Some domains (payment gateways, fraud detection, blockchain, serverless migrations) are commonly cited as better fits for microservices because of needs for modularity, scalability, and resilience.",
+        "[inference] Central tradeoff (inference): choose a monolith for short-term simplicity and lower initial cost (small teams, startups, stable business models); choose microservices for long-term flexibility, per-component scaling, and resilience when the organization can bear higher operational and recurring costs and has distributed-systems expertise."
+      ],
+      "sources": [
+        {
+          "title": "Monolithic vs microservices architecture: When to choose each approach",
+          "url": "https://getdx.com/blog/monolithic-vs-microservices",
+          "publisher": "getdx.com"
+        },
+        {
+          "title": "Monolithic vs Microservices: What's the Difference? | Kong Inc.",
+          "url": "https://konghq.com/blog/learning-center/monolith-vs-microservices",
+          "publisher": "konghq.com"
+        },
+        {
+          "title": "Monolith Versus Microservices: Weigh the Pros and Cons of Both Configs | Akamai",
+          "url": "https://www.akamai.com/blog/cloud/monolith-versus-microservices-weigh-the-difference",
+          "publisher": "www.akamai.com"
+        },
+        {
+          "title": "Monolithic vs. Microservices Architecture | IBM",
+          "url": "https://www.ibm.com/think/topics/monolithic-vs-microservices",
+          "publisher": "www.ibm.com"
+        },
+        {
+          "title": "Microservices vs. monolithic architecture",
+          "url": "https://www.atlassian.com/microservices/microservices-architecture/microservices-vs-monolith",
+          "publisher": "www.atlassian.com"
+        }
+      ]
+    },
+    {
+      "id": "vector-vs-relational-db",
+      "question": "How do vector databases differ from traditional relational databases for similarity search?",
+      "difficulty": "moderate",
+      "domain": "databases",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 167.47,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.9733977191666666,
+      "metrics": {
+        "average_relevance": 0.8935908766666666,
+        "high_relevance_rate": 1.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.8333333333333334,
+        "overall_research_quality": 0.9467954383333332,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.9733977191666666,
+        "llm_groundedness": 1.0,
+        "llm_completeness": 0.9,
+        "llm_uncertainty_handling": 0.9,
+        "llm_judge_overall": 0.93,
+        "llm_judge_adjusted_quality": 0.93,
+        "focus_coverage": 0.7222222222222222,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.93,
+        "semantic_quality": 0.8088888888888889
+      },
+      "claims": [
+        "[direct_evidence] Vector databases are purpose-built for similarity/semantic search and AI-driven applications, performing nearest-neighbor/ANN searches in high-dimensional vector space.",
+        "[direct_evidence] Vector databases store vector embeddings that represent semantic meaning of original data and require embedding generation (preprocessing) and AI model integration before storage.",
+        "[direct_evidence] Vector databases handle unstructured data (PDFs, images, audio, transcripts, logs) by converting that data into embeddings suitable for similarity search.",
+        "[direct_evidence] Relational databases store structured data with enforced schemas and data types and are optimized for exact matches, joins, aggregations, transactions, and strong data integrity/consistency.",
+        "[direct_evidence] Traditional indexing structures (e.g., B-trees, hash indexes) are designed for exact matching and are not efficient for distance calculations in high-dimensional spaces, making them ill-suited for similarity search.",
+        "[direct_evidence] Vector databases are less effective for strict relational queries and transactions and are a newer technology with smaller ecosystems compared to traditional databases."
+      ],
+      "sources": [
+        {
+          "title": "Vector database vs. Relational database: 7 key differences",
+          "url": "https://www.instaclustr.com/education/vector-database/vector-database-vs-relational-database-7-key-differences",
+          "publisher": "www.instaclustr.com"
+        },
+        {
+          "title": "What Is a Vector Database? Similarity Search & Semantic Search for AI | Weaviate",
+          "url": "https://weaviate.io/blog/what-is-a-vector-database",
+          "publisher": "weaviate.io"
+        },
+        {
+          "title": "What is a vector database? What you need to know [2026] | Meilisearch",
+          "url": "https://www.meilisearch.com/blog/what-is-a-vector-database",
+          "publisher": "www.meilisearch.com"
+        },
+        {
+          "title": "Vector Databases vs. Traditional Relational Databases: A Comprehensive Comparison (using Bob :p) - DEV Community",
+          "url": "https://dev.to/aairom/vector-databases-vs-traditional-relational-databases-a-comprehensive-comparison-using-bob-p-351a",
+          "publisher": "dev.to"
+        },
+        {
+          "title": "Vector DB vs Traditional DB: The Key to Modern AI (2026 Guide)",
+          "url": "https://www.youtube.com/watch?v=u994iNve8aU",
+          "publisher": "www.youtube.com"
+        }
+      ]
+    },
+    {
+      "id": "financial-crisis-2008",
+      "question": "What were the primary causes of the 2008 financial crisis?",
+      "difficulty": "moderate",
+      "domain": "economics",
+      "uncertainty_expected": true,
+      "status": "ok",
+      "duration_seconds": 154.85,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.9469974865,
+      "metrics": {
+        "average_relevance": 0.787989946,
+        "high_relevance_rate": 0.3333333333333333,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.6666666666666666,
+        "overall_research_quality": 0.8939949730000001,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.9469974865,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.8,
+        "llm_uncertainty_handling": 0.9,
+        "llm_judge_overall": 0.88,
+        "llm_judge_adjusted_quality": 0.88,
+        "focus_coverage": 0.5694444444444444,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.8833333333333333,
+        "semantic_quality": 0.7590277777777777
+      },
+      "claims": [
+        "Excessive speculation on property values by homeowners and financial institutions led to a U.S. housing bubble. (direct_evidence)",
+        "Predatory lending for subprime mortgages exacerbated the housing bubble. (direct_evidence)",
+        "Banks made risky home loans to people who could not afford them and bundled those bad mortgages into securities. (direct_evidence)",
+        "Deficiencies in regulation contributed to the crisis. (direct_evidence)",
+        "[direct_evidence] Some economists (Austrian school) attributed the crisis primarily to the Federal Reserve's prolonged policy of artificially low interest rates.",
+        "[direct_evidence] There is explicit disagreement among analysts about which factor was primary; for example, Paul Krugman argued that simultaneous residential and commercial real estate bubbles and the global reach of the crisis undermine claims that specific institutions or policies were the sole primary causes."
+      ],
+      "sources": [
+        {
+          "title": "2008 financial crisis",
+          "url": "https://en.wikipedia.org/wiki/2008_financial_crisis",
+          "publisher": "en.wikipedia.org"
+        },
+        {
+          "title": "Causes of the Global Financial Crisis (Financial Economics) | Reference Library | Economics | tutor2u",
+          "url": "https://www.tutor2u.net/economics/reference/financial-economics-causes-of-the-global-financial-crisis",
+          "publisher": "www.tutor2u.net"
+        },
+        {
+          "title": "ELI5: What caused the 2008 recession? : r/explainlikeimfive",
+          "url": "https://www.reddit.com/r/explainlikeimfive/comments/1tuf158/eli5_what_caused_the_2008_recession",
+          "publisher": "www.reddit.com"
+        },
+        {
+          "title": "Origins of the Crisis",
+          "url": "https://www.fdic.gov/media/18636",
+          "publisher": "www.fdic.gov"
+        },
+        {
+          "title": "The Origins of the Financial Crisis",
+          "url": "https://www.brookings.edu/wp-content/uploads/2016/06/11_origins_crisis_baily_litan.pdf",
+          "publisher": "www.brookings.edu"
+        }
+      ]
+    },
+    {
+      "id": "rag-hallucination-limits",
+      "question": "How does retrieval-augmented generation reduce hallucination in language models, and what are its limits?",
+      "difficulty": "moderate",
+      "domain": "ai-systems",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 186.74,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.9515334458333333,
+      "metrics": {
+        "average_relevance": 0.8061337833333334,
+        "high_relevance_rate": 0.6666666666666666,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 1.0,
+        "overall_research_quality": 0.9030668916666666,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.9515334458333333,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.85,
+        "llm_uncertainty_handling": 0.9,
+        "llm_judge_overall": 0.9,
+        "llm_judge_adjusted_quality": 0.9,
+        "focus_coverage": 0.7,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.9083333333333333,
+        "semantic_quality": 0.7979166666666666
+      },
+      "claims": [
+        "[direct_evidence] Mechanism: RAG grounds outputs by retrieving external domain knowledge (documents, reports, images) and injecting that evidence into the prompt context so generations are based on source material.",
+        "[direct_evidence] RAG leverages information retrieval + generative models to handle real-time and domain-specific knowledge but the diversity of data sources also introduces factors that can cause confabulations.",
+        "[direct_evidence] Quantitative impact (structured outputs): removing the retriever produced up to 21% hallucinated steps/tables on a Human Eval split; adding a retriever reduced hallucinated steps to <7.5% and tables to <4.5% (with StarCoderBase models).",
+        "[direct_evidence] RAG effectiveness depends on system-level design: retrieval optimization, visual/multimodal retrieval, entity-probing diagnostics, and structured fine-tuning materially affect hallucination rates.",
+        "[direct_evidence] Retrieval failure modes that limit RAG include data-source issues, ambiguous or complex queries, suboptimal retriever granularity, and poor retrieval strategy.",
+        "[direct_evidence] Generation-phase limitations that persist under RAG include context noise and conflict, long-context degradation (the 'middle curse'), alignment gaps, and intrinsic model capability limits."
+      ],
+      "sources": [
+        {
+          "title": "Hallucination Mitigation for Retrieval-Augmented Large ...",
+          "url": "https://www.mdpi.com/2227-7390/13/5/856",
+          "publisher": "www.mdpi.com"
+        },
+        {
+          "title": "RAG hallucination: What is it and how to avoid it",
+          "url": "https://www.k2view.com/blog/rag-hallucination",
+          "publisher": "www.k2view.com"
+        },
+        {
+          "title": "RAG hallucinations explained: Causes, risks, and fixes",
+          "url": "https://www.mindee.com/blog/rag-hallucinations-explained",
+          "publisher": "www.mindee.com"
+        },
+        {
+          "title": "Reducing Hallucinations in Clinical LLMs Using Retrieval Augmented Generation",
+          "url": "https://www.makebot.ai/blog-en/clinical-llm-rag-hallucination-mitigation",
+          "publisher": "www.makebot.ai"
+        },
+        {
+          "title": "Reducing hallucination in structured outputs via Retrieval-Augmented Generation",
+          "url": "https://arxiv.org/html/2404.08189v1",
+          "publisher": "arxiv.org"
+        }
+      ]
+    },
+    {
+      "id": "rag-retrieval-failure-modes",
+      "question": "What are the documented failure modes of the retrieval stage in RAG systems, and how are they diagnosed?",
+      "difficulty": "moderate",
+      "domain": "ai-systems",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 197.49,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.7976002441666666,
+      "metrics": {
+        "average_relevance": 0.6904009766666667,
+        "high_relevance_rate": 0.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 0.0,
+        "low_relevance_claim_rate": 1.0,
+        "claim_evidence_overlap_rate": 0.16666666666666666,
+        "overall_research_quality": 0.5952004883333333,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.7976002441666666,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.5,
+        "llm_uncertainty_handling": 0.2,
+        "llm_judge_overall": 0.55,
+        "llm_judge_adjusted_quality": 0.55,
+        "focus_coverage": 0.3194444444444444,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.8941666666666667,
+        "semantic_quality": 0.6992361111111111
+      },
+      "claims": [
+        "[direct_evidence] Missing content from the index prevents RAG from answering questions about un-ingested documents.",
+        "[direct_evidence] The retriever can rank the correct passage below wrong ones so the right document is not returned.",
+        "[direct_evidence] Retrieval may return too much irrelevant information or the wrong documents, producing a weak context for generation.",
+        "[direct_evidence] Retrieved content can be dropped during consolidation or fail to make it into the LLM context window due to truncation, poor chunking, or ineffective consolidation strategies.",
+        "[direct_evidence] Similarity-based retrieval lacks an inherent mechanism to prefer current over superseded facts and can miss relational/temporal queries (staleness/versioning and relationship failures).",
+        "[direct_evidence] \u2018Extraction errors in processing\u2019 and context-size limitations are identified as primary failure classes tied to conflating planning and execution in probabilistic contexts."
+      ],
+      "sources": [
+        {
+          "title": "A Systematic Taxonomy of Failure Modes in Retrieval-Augmented Generation Systems - ACL Anthology",
+          "url": "https://aclanthology.org/2026.trustnlp-main.27",
+          "publisher": "aclanthology.org"
+        },
+        {
+          "title": "RAG Anti-Patterns: 7 Failure Modes Engineering Guide 2026",
+          "url": "https://www.digitalapplied.com/blog/rag-anti-patterns-7-failure-modes-2026-engineering-guide",
+          "publisher": "www.digitalapplied.com"
+        },
+        {
+          "title": "Ten Failure Modes of RAG Nobody Talks About (And How to Detect Them Systematically) - DEV Community",
+          "url": "https://dev.to/kuldeep_paul/ten-failure-modes-of-rag-nobody-talks-about-and-how-to-detect-them-systematically-7i4",
+          "publisher": "dev.to"
+        },
+        {
+          "title": "Fundamental Failure Modes in RAG Systems",
+          "url": "https://promptql.io/blog/fundamental-failure-modes-in-rag-systems",
+          "publisher": "promptql.io"
+        },
+        {
+          "title": "Top RAG System Problems and How to Fix Them",
+          "url": "https://dataframer.ai/posts/top_problems_with_rag_systems_and_ways_to_mitigate_them",
+          "publisher": "dataframer.ai"
+        }
+      ]
+    },
+    {
+      "id": "nuclear-vs-renewables",
+      "question": "What are the tradeoffs between nuclear power and renewables for grid decarbonization?",
+      "difficulty": "moderate",
+      "domain": "energy",
+      "uncertainty_expected": true,
+      "status": "ok",
+      "duration_seconds": 160.21,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.8013415916666666,
+      "metrics": {
+        "average_relevance": 0.7053663666666667,
+        "high_relevance_rate": 0.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 0.0,
+        "low_relevance_claim_rate": 1.0,
+        "claim_evidence_overlap_rate": 0.3333333333333333,
+        "overall_research_quality": 0.6026831833333334,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.8013415916666666,
+        "llm_groundedness": 0.9,
+        "llm_completeness": 0.8,
+        "llm_uncertainty_handling": 0.7,
+        "llm_judge_overall": 0.8,
+        "llm_judge_adjusted_quality": 0.8,
+        "focus_coverage": 0.611111111111111,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.8758333333333334,
+        "semantic_quality": 0.7675694444444445
+      },
+      "claims": [
+        "[direct_evidence] Nuclear can provide flexible operation (load following) and thus help balance intermittent renewables, enhancing their efficiency.",
+        "[direct_evidence] Many reactors under construction have faced multi\u2011year delays; the 2023 status report noted dozens of reactors under construction with many far from completion.",
+        "[direct_evidence] Renewables (wind, solar, hydro, biomass, geothermal, marine) are intermittent, modular, scalable and have seen notable cost declines and rapid deployment.",
+        "[direct_evidence] Nuclear\u2013renewable hybrid energy systems are proposed as integrated facilities combining reactors, renewables and industrial processes to address grid flexibility and emissions reductions, but few countries have fully explored these synergies.",
+        "[inference] Tradeoff synthesis: nuclear trades higher capital, longer lead times and waste/liability for firm, low\u2011carbon and potentially flexible capacity; renewables trade intermittency and added system integration costs for faster, modular, lower\u2011upfront deployment and falling generation costs.",
+        "[inference] Regional geographic/economic constraints and financial, expertise or logistical barriers affect the viability of renewables and nuclear respectively, and policy/regulatory frameworks strongly influence which approach or combination is adopted; the provided evidence does not specify particular policy measures or detailed implementation pathways."
+      ],
+      "sources": [
+        {
+          "title": "Exploring Synergies between Nuclear and Renewables: IAEA Meeting Discusses Options for Decarbonizing Energy Production and Cogeneration",
+          "url": "http://www.iaea.org/newscenter/news/exploring-synergies-between-nuclear-and-renewables-iaea-meeting-discusses-options-for-decarbonizing-energy-production-and-cogeneration",
+          "publisher": "www.iaea.org"
+        },
+        {
+          "title": "Nuclear vs. Renewable Energy for Sustainability | CLOU GLOBAL",
+          "url": "https://clouglobal.com/comparing-nuclear-power-and-renewable-energy-analysing-the-trade-offs-for-a-sustainable-future",
+          "publisher": "clouglobal.com"
+        },
+        {
+          "title": "Power Play: The Economics Of Nuclear Vs. Renewables",
+          "url": "https://www.worldnuclearreport.org/Power-Play-The-Economics-Of-Nuclear-Vs-Renewables",
+          "publisher": "www.worldnuclearreport.org"
+        },
+        {
+          "title": "We Need Both Nuclear and Renewables to Protect ...",
+          "url": "https://nuclearinnovationalliance.org/we-need-both-nuclear-and-renewables-protect-climate",
+          "publisher": "nuclearinnovationalliance.org"
+        },
+        {
+          "title": "Are There Trade-offs Between Decarbonization in the Power ...",
+          "url": "https://stopgreedbuildgreen.climateandcommunity.org/posts/trade-offs",
+          "publisher": "stopgreedbuildgreen.climateandcommunity.org"
+        }
+      ]
+    },
+    {
+      "id": "llm-as-judge-reliability",
+      "question": "How reliable are large language models as evaluators of other models' outputs, and what biases have been documented?",
+      "difficulty": "moderate",
+      "domain": "ai-evaluation",
+      "uncertainty_expected": true,
+      "status": "ok",
+      "duration_seconds": 145.69,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.8166244883333333,
+      "metrics": {
+        "average_relevance": 0.7664979533333334,
+        "high_relevance_rate": 0.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 0.0,
+        "low_relevance_claim_rate": 1.0,
+        "claim_evidence_overlap_rate": 0.0,
+        "overall_research_quality": 0.6332489766666667,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.8166244883333333,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.9,
+        "llm_uncertainty_handling": 0.9,
+        "llm_judge_overall": 0.92,
+        "llm_judge_adjusted_quality": 0.92,
+        "focus_coverage": 0.7361111111111112,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.9066666666666666,
+        "semantic_quality": 0.8065277777777778
+      },
+      "claims": [
+        "[direct_evidence] Documented biases in LLM evaluators include position bias (favoring earlier-presented examples), verbosity bias (favoring longer responses), self-preference/self-enhancement (preferring their own outputs), family bias (favoring outputs from the same provider), round-number bias, anchoring effects, and score-granularity effects.",
+        "[direct_evidence] Score-related phenomena include instability of numeric scores over time (e.g., the same response receiving different scores unless a rubric is enforced) and a tendency to produce certain scores more frequently (round-number bias).",
+        "[direct_evidence] Many biases arise from non-content features (order, length, provenance, formatting), meaning judges often respond to signals other than the response content.",
+        "[direct_evidence] Because robustness of LLM evaluators is relatively understudied and existing work has focused on correlation with human scores, the prevalence and generalizability of documented failures across architectures, tasks, and prompting styles remain uncertain.",
+        "[direct_evidence] Proposed and tested mitigations in the evidence include using a diverse pool of evaluators or model ensembles, averaging or majority-vote aggregation, giving clear instructions and training examples, and explicitly enforcing rubrics/state in prompts to improve consistency.",
+        "[inference] Inference from the collected evidence: LLMs are useful evaluators but produce systematic, non-content-driven errors and therefore should not be used as lone, uncalibrated arbiters; applying calibration, aggregation, and prompt/rubric controls is necessary to reduce biased and inconsistent judgments."
+      ],
+      "sources": [
+        {
+          "title": "Evaluating Large Language Models (LLMs)",
+          "url": "https://medium.com/online-inference/evaluating-large-language-models-llms-9c45c7ead425",
+          "publisher": "medium.com"
+        },
+        {
+          "title": "Large Language Models are Inconsistent and Biased Evaluators",
+          "url": "https://arxiv.org/html/2405.01724v1",
+          "publisher": "arxiv.org"
+        },
+        {
+          "title": "LLM-As-A-Judge: Reliability, Bias, And What The Research Says | Adaline",
+          "url": "https://www.adaline.ai/blog/llm-as-a-judge-reliability-bias",
+          "publisher": "www.adaline.ai"
+        },
+        {
+          "title": "Detecting and Evaluating Bias in Large Language Models",
+          "url": "https://jbds.isdsa.org/jbds/article/view/182/133",
+          "publisher": "jbds.isdsa.org"
+        },
+        {
+          "title": "Benchmarking Cognitive Biases in Large Language Models as Evaluators - ACL Anthology",
+          "url": "https://aclanthology.org/2024.findings-acl.29",
+          "publisher": "aclanthology.org"
+        }
+      ]
+    },
+    {
+      "id": "rate-limiting-approaches",
+      "question": "What are the main approaches to rate limiting in distributed APIs, and when does each fail?",
+      "difficulty": "moderate",
+      "domain": "distributed-systems",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 181.38,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.7914643741666667,
+      "metrics": {
+        "average_relevance": 0.6658574966666667,
+        "high_relevance_rate": 0.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 0.0,
+        "low_relevance_claim_rate": 1.0,
+        "claim_evidence_overlap_rate": 0.3333333333333333,
+        "overall_research_quality": 0.5829287483333334,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.7914643741666667,
+        "llm_groundedness": 0.98,
+        "llm_completeness": 0.86,
+        "llm_uncertainty_handling": 0.87,
+        "llm_judge_overall": 0.9,
+        "llm_judge_adjusted_quality": 0.9,
+        "focus_coverage": 0.8333333333333334,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.91,
+        "semantic_quality": 0.8316666666666668
+      },
+      "claims": [
+        "Network-layer volumetric controls (example: Cloudflare) can block floods before traffic reaches the origin but cannot see or enforce per-tenant plan logic; combine network-layer volumetric protection with application-layer per-tenant limits.",
+        "Per-tenant keying (separate counters per organization, sized by plan and optionally per-endpoint) is recommended for SaaS APIs; per-IP limiting fails for B2B because enterprise clients often share egress IPs via corporate proxies, and it also fails for clients behind carrier NAT.",
+        "In-process/local rate limiting fails when scaling horizontally because each replica enforces limits independently and users exploit gaps; a centralized/shared store (example: Redis) provides an atomic, shared view suitable under heavy concurrency.",
+        "Common algorithmic patterns are fixed-window counters (the simplest), sliding windows, token buckets, and distributed guardrails; algorithm choice should match traffic shape and goals.",
+        "Fixed-window counters operate by incrementing a key with TTL (e.g., key per user per minute) and blocking when the count exceeds the limit; they are the common starting point but are a simple pattern that can be insufficient for complex traffic shapes.",
+        "Operational rollout should progress from observe \u2192 soft enforce \u2192 tiered enforce \u2192 full enforce, and policies should be versioned because limit changes are user-visible and can break clients if rolled out carelessly."
+      ],
+      "sources": [
+        {
+          "title": "Rate Limiting Patterns for SaaS APIs in 2026 | Dusko Licanin",
+          "url": "https://www.duskolicanin.com/blog/rate-limiting-saas-api-patterns-2026",
+          "publisher": "www.duskolicanin.com"
+        },
+        {
+          "title": "Rate Limiting and Throttling Strategies for Production APIs: Token Buckets, Sliding Windows, and Distributed Guardrails - AverageDevs",
+          "url": "https://averagedevs.com/blog/rate-limiting-throttling-production-apis",
+          "publisher": "averagedevs.com"
+        },
+        {
+          "title": "Redis Rate Limiting Explained: Practical Patterns for APIs and Distributed Systems",
+          "url": "https://www.c-sharpcorner.com/article/redis-rate-limiting-explained-practical-patterns-for-apis-and-distributed-syste",
+          "publisher": "www.c-sharpcorner.com"
+        },
+        {
+          "title": "Design a Distributed Rate Limiter",
+          "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/distributed-rate-limiter",
+          "publisher": "www.hellointerview.com"
+        },
+        {
+          "title": "10 API Rate Limiting Best Practices (2026 Guide)",
+          "url": "https://zuplo.com/learning-center/10-best-practices-for-api-rate-limiting-in-2026",
+          "publisher": "zuplo.com"
+        }
+      ]
+    },
+    {
+      "id": "citation-verification",
+      "question": "How can automated systems verify that a cited source actually supports a claim, and what limits do those methods have?",
+      "difficulty": "moderate",
+      "domain": "ai-evaluation",
+      "uncertainty_expected": true,
+      "status": "ok",
+      "duration_seconds": 170.24,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.791315875,
+      "metrics": {
+        "average_relevance": 0.6652635,
+        "high_relevance_rate": 0.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 0.0,
+        "low_relevance_claim_rate": 1.0,
+        "claim_evidence_overlap_rate": 0.0,
+        "overall_research_quality": 0.58263175,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.791315875,
+        "llm_groundedness": 0.94,
+        "llm_completeness": 0.88,
+        "llm_uncertainty_handling": 0.9,
+        "llm_judge_overall": 0.91,
+        "llm_judge_adjusted_quality": 0.91,
+        "focus_coverage": 0.25,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.8791666666666668,
+        "semantic_quality": 0.6781250000000001
+      },
+      "claims": [
+        "[direct_evidence] Reference managers (EndNote, Zotero, Mendeley) excel at bibliographic formatting but provide no semantic verification capabilities.",
+        "[direct_evidence] Some platforms extract the surrounding citing context and classify whether the citing statement supports or contradicts the reference, but these systems often assess directionality in reverse (they check whether the citation is supported by the citing text, not whether the cited source actually contains the claimed evidence).",
+        "[direct_evidence] Practical claim-level verification steps documented include reading the abstract, searching the PDF for quoted text, confirming statistics and data points, verifying the paper addresses the cited topic, cross-referencing across multiple databases, checking author publication lists, confirming DOI/URL resolution, and checking for retractions.",
+        "[direct_evidence] Proposed or implemented automated features to improve claim-level verification include real-time source retrieval, context annotation of source content before generation, explicit LLM prompting constraints forbidding citation invention, validation that claims appear in retrieved source context during generation, and post-generation removal of invalid citations.",
+        "[direct_evidence] Human editorial review may spot-check a few citations manually but does not provide systematic verification across all citations.",
+        "[inference] Key documented limits: (a) mainstream tools generally lack semantic/claim-level checks, (b) directionality/classification limits in some citation-analysis systems, (c) risk of LLM hallucinations generating fabricated citations when unconstrained, and (d) the supplied excerpts do not include empirical performance metrics or coverage figures to judge real-world effectiveness."
+      ],
+      "sources": [
+        {
+          "title": ": Citation Verification with AI-Powered Full-Text Analysis and Evidence-Based Reasoning",
+          "url": "https://arxiv.org/html/2511.16198v1",
+          "publisher": "arxiv.org"
+        },
+        {
+          "title": "What Citation Verification Catches (2026)",
+          "url": "https://manusights.com/blog/what-citation-verification-catches",
+          "publisher": "manusights.com"
+        },
+        {
+          "title": "AI Citation Hallucinations: Verify Fake References (2026) | INRA.AI Blog",
+          "url": "https://www.inra.ai/blog/citation-accuracy",
+          "publisher": "www.inra.ai"
+        },
+        {
+          "title": "How Should Students Fact-Check AI? An 8-Step Guide to ...",
+          "url": "https://davidpblross.substack.com/p/how-should-students-fact-check-ai",
+          "publisher": "davidpblross.substack.com"
+        },
+        {
+          "title": "Developing an AI-Powered Tool for Automatic Citation ...",
+          "url": "https://developer.nvidia.com/blog/developing-an-ai-powered-tool-for-automatic-citation-validation-using-nvidia-nim",
+          "publisher": "developer.nvidia.com"
+        }
+      ]
+    },
+    {
+      "id": "intermittent-fasting-evidence",
+      "question": "What evidence supports intermittent fasting for weight loss, and how strong is it?",
+      "difficulty": "moderate",
+      "domain": "health-evidence",
+      "uncertainty_expected": true,
+      "status": "ok",
+      "duration_seconds": 171.13,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.9475017316666666,
+      "metrics": {
+        "average_relevance": 0.7900069266666666,
+        "high_relevance_rate": 0.3333333333333333,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.5,
+        "overall_research_quality": 0.8950034633333332,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.9475017316666666,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.85,
+        "llm_uncertainty_handling": 0.95,
+        "llm_judge_overall": 0.92,
+        "llm_judge_adjusted_quality": 0.92,
+        "focus_coverage": 0.8,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.8525,
+        "semantic_quality": 0.8089583333333333
+      },
+      "claims": [
+        "[direct evidence] A Cochrane review of 21 trials (1,430 people) found the difference in weight loss between IF and conventional diets was 0.33 percentage points of body weight\u2014i.e., nearly identical outcomes.",
+        "[direct evidence] In comparisons with no intervention in the Cochrane review, IF produced about 3.4% body\u2011weight loss, which the review notes is below the 5% threshold generally considered necessary for meaningful health benefits.",
+        "[direct evidence] A 12\u2011month follow\u2011up of a randomized controlled trial (Camacho\u2011Cardenosa et al., Clinical Nutrition) reported that time\u2011restricted eating maintained long\u2011term weight loss regardless of whether eating windows were earlier, later, or self\u2011selected.",
+        "[direct evidence] Some IF formats showed higher dropout and adherence challenges (example: alternate\u2011day fasting dropout 38% vs daily calorie restriction 29%; participants sometimes under\u2011 or over\u2011ate relative to prescriptions), indicating behavioral variability across studies.",
+        "[inference] Collectively, the evidence supports that IF can produce weight loss but does not consistently outperform conventional calorie\u2011restriction; advantages versus no intervention are modest and often below commonly used clinical thresholds.",
+        "[inference] Heterogeneity in IF methods, populations, study sizes and durations, plus incomplete reporting in underlying trials, limits confidence about which IF approaches are most effective, their long\u2011term clinical benefit, and generalizability."
+      ],
+      "sources": [
+        {
+          "title": "Intermittent Fasting: What Research Shows in 2026",
+          "url": "https://acibademinternational.com/blog/intermittent-fasting-what-the-research-actually-shows-in-2026",
+          "publisher": "acibademinternational.com"
+        },
+        {
+          "title": "Diet Review: Intermittent Fasting for Weight Loss \u2022 The Nutrition Source",
+          "url": "https://nutritionsource.hsph.harvard.edu/healthy-weight/diet-reviews/intermittent-fasting",
+          "publisher": "nutritionsource.hsph.harvard.edu"
+        },
+        {
+          "title": "Intermittent Fasting Explained: Benefits, Risks, Weight Loss & What Doctors Really Think",
+          "url": "https://www.youtube.com/watch?v=OA0iSwtHhZo",
+          "publisher": "www.youtube.com"
+        },
+        {
+          "title": "Intermittent fasting maintains long-term weight loss, regardless of meal timing, study shows",
+          "url": "https://medicalxpress.com/news/2026-07-intermittent-fasting-term-weight-loss.html",
+          "publisher": "medicalxpress.com"
+        },
+        {
+          "title": "Researchers Find Intermittent Fasting Is No Better, or Worse, Than Conventional Dieting | Rutgers University",
+          "url": "https://www.rutgers.edu/news/researchers-find-intermittent-fasting-no-better-or-worse-conventional-dieting",
+          "publisher": "www.rutgers.edu"
+        }
+      ]
+    },
+    {
+      "id": "context-window-limits",
+      "question": "What is a context window in a large language model, and what happens when input exceeds it?",
+      "difficulty": "easy",
+      "domain": "ai-systems",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 118.24,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.95991473,
+      "metrics": {
+        "average_relevance": 0.8396589200000001,
+        "high_relevance_rate": 1.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.8333333333333334,
+        "overall_research_quality": 0.9198294600000001,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.95991473,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.9,
+        "llm_uncertainty_handling": 0.6,
+        "llm_judge_overall": 0.86,
+        "llm_judge_adjusted_quality": 0.86,
+        "focus_coverage": 0.41666666666666663,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.9141666666666667,
+        "semantic_quality": 0.7285416666666666
+      },
+      "claims": [
+        "[direct_evidence] A context window (or 'context length') is the amount of text, in tokens, that the model can consider or 'remember' at one time.",
+        "[direct_evidence] Tokens are the basic units LLMs work with and can represent words or word parts.",
+        "[direct_evidence] The context window sets the maximum size of prompts, conversations, documents, or code samples the model can process in a single input.",
+        "[direct_evidence] When input exceeds the context window the model begins to 'forget' earlier parts of the exchange; outputs can become less coherent, accurate, or reliable.",
+        "[direct_evidence] If a prompt or document exceeds the context window it must be truncated or summarized for the model to proceed.",
+        "[direct_evidence] Developers handle context-window limits with preprocessing techniques such as chunking, summarization, and retrieval-augmented (RAG) approaches; platforms and tooling can assist with these steps."
+      ],
+      "sources": [
+        {
+          "title": "Medium",
+          "url": "https://medium.com/@tahirbalarabe2/understanding-llm-context-windows-tokens-attention-and-challenges-c98e140f174d",
+          "publisher": "medium.com"
+        },
+        {
+          "title": "What is a context window? - IBM",
+          "url": "https://www.ibm.com/think/topics/context-window",
+          "publisher": "www.ibm.com"
+        },
+        {
+          "title": "LLM Context Windows Explained: A Developer's Guide | Unstructured",
+          "url": "https://unstructured.io/insights/llm-context-windows-explained-a-developer-s-guide",
+          "publisher": "unstructured.io"
+        },
+        {
+          "title": "large language model - Context Window LLM - Stack Overflow",
+          "url": "https://stackoverflow.com/questions/78115102/context-window-llm",
+          "publisher": "stackoverflow.com"
+        },
+        {
+          "title": "LLM Context Window: Input, Output, and The Memory \u2026",
+          "url": "https://aiagentmemory.org/articles/llm-context-window-input-output",
+          "publisher": "aiagentmemory.org"
+        }
+      ]
+    },
+    {
+      "id": "rust-borrow-checker-limits",
+      "question": "How does Rust's borrow checker prevent memory safety bugs, and what classes of bugs does it not prevent?",
+      "difficulty": "moderate",
+      "domain": "programming-languages",
+      "uncertainty_expected": false,
+      "status": "ok",
+      "duration_seconds": 134.08,
+      "execution_status": "partial",
+      "completed_tasks": 2,
+      "failed_tasks": 1,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 2,
+      "overall_score": 0.6675229030555556,
+      "metrics": {
+        "average_relevance": 0.7812027233333334,
+        "high_relevance_rate": 0.3333333333333333,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.6666666666666666,
+        "overall_research_quality": 0.8906013616666667,
+        "task_success_rate": 0.6666666666666666,
+        "failure_rate": 0.3333333333333333,
+        "partial_run_rate": 1.0,
+        "overall_system_quality": 0.6675229030555556,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.9,
+        "llm_uncertainty_handling": 0.9,
+        "llm_judge_overall": 0.92,
+        "llm_judge_adjusted_quality": 0.92,
+        "focus_coverage": 0.638888888888889,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.89125,
+        "semantic_quality": 0.7783680555555555
+      },
+      "claims": [
+        "[direct_evidence] The borrow checker plus ownership/lifetimes prevents use-after-free, double-free, and dangling-pointer issues by ensuring references are always valid and by tracking lifetimes.",
+        "[direct_evidence] The borrow checker enforces borrowing rules (one mutable or many immutable references) and disallows conflicting borrows, which helps prevent data races in multithreaded code.",
+        "[direct_evidence] The borrow checker does not prevent memory leaks; memory leaks are outside its scope and are not treated as undefined behavior in Rust.",
+        "[direct_evidence] Safety guarantees of the borrow checker can be circumvented by unsafe Rust, which allows code to bypass the usual compile-time checks.",
+        "[direct_evidence] The borrow checker normally prohibits certain raw-address accesses; this limitation matters for embedded or low-level system code that must interact with specific memory addresses.",
+        "[direct_evidence] Iterator/invalidation behavior is nuanced in the evidence: one source states the borrow checker \u201cdoes not prevent the use of invalid iterators,\u201d while also stating it prevents iterators becoming invalid by forbidding vector modifications that would invalidate them\u2014this is an ambiguous/qualified limitation."
+      ],
+      "sources": [
+        {
+          "title": "The borrowchecker is what I like the least about Rust",
+          "url": "https://viralinstruction.com/posts/borrowchecker",
+          "publisher": "viralinstruction.com"
+        },
+        {
+          "title": "Understanding the Rust borrow checker",
+          "url": "https://blog.logrocket.com/introducing-rust-borrow-checker",
+          "publisher": "blog.logrocket.com"
+        },
+        {
+          "title": "Rust Ownership and Borrowing Explained: A Visual Guide for 2026 | Rustify",
+          "url": "https://rustify.rs/articles/rust-ownership-borrowing-explained",
+          "publisher": "rustify.rs"
+        },
+        {
+          "title": "Rust Software Security: A Current State Assessment | CMU Software Engineering Institute",
+          "url": "https://www.sei.cmu.edu/blog/rust-software-security-a-current-state-assessment",
+          "publisher": "www.sei.cmu.edu"
+        },
+        {
+          "title": "Rust Memory Safety: Ownership Explained | Andrew Odendaal",
+          "url": "https://andrewodendaal.com/rust-memory-safety",
+          "publisher": "andrewodendaal.com"
+        }
+      ]
+    },
+    {
+      "id": "remote-work-productivity",
+      "question": "What are the tradeoffs of remote work for engineering team productivity?",
+      "difficulty": "moderate",
+      "domain": "organizational-research",
+      "uncertainty_expected": true,
+      "status": "ok",
+      "duration_seconds": 161.07,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.9621667833333334,
+      "metrics": {
+        "average_relevance": 0.8486671333333333,
+        "high_relevance_rate": 1.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 1.0,
+        "overall_research_quality": 0.9243335666666667,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.9621667833333334,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.9,
+        "llm_uncertainty_handling": 0.9,
+        "llm_judge_overall": 0.92,
+        "llm_judge_adjusted_quality": 0.92,
+        "focus_coverage": 0.36666666666666664,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.8566666666666666,
+        "semantic_quality": 0.7016666666666667
+      },
+      "claims": [
+        "[direct_evidence] Remote work supports focused execution and asynchronous collaboration that can increase engineering productivity, particularly for tasks requiring uninterrupted concentration (loss of interruptions is a cited mechanism).",
+        "[direct_evidence] Teams with documented deliverables and deadlines show 23% higher remote productivity than teams with vague goals.",
+        "[direct_evidence] Structured communication rhythms (regular 1:1s, weekly syncs, async stand-ups) reduce isolation and limit cross-group collaboration loss; Microsoft data cited shows teams using such protocols lose only ~5\u20138% of cross-group collaboration versus a ~25% average loss.",
+        "[direct_evidence] Some studies report fully remote arrangements reduce individual output by about 8\u201319%; by contrast, hybrid work tends to show a roughly neutral impact on performance.",
+        "[direct_evidence] Hybrid schedules of two to three office days per week are presented across multiple sources as producing the best balance of individual output, team collaboration, and employee satisfaction.",
+        "[direct_evidence] Fully remote models can limit mentoring, innovation, and spontaneous team cohesion (research is mixed; many businesses report no drop)."
+      ],
+      "sources": [
+        {
+          "title": "Remote Work Productivity Stats 2026 | eMonitor",
+          "url": "https://www.employee-monitoring.net/resources/remote-work-productivity-statistics-2026",
+          "publisher": "www.employee-monitoring.net"
+        },
+        {
+          "title": "Remote work productivity statistics 2026: 40+ trends & data",
+          "url": "https://www.worktime.com/blog/statistics/remote-work-productivity-statistics-trends-data",
+          "publisher": "www.worktime.com"
+        },
+        {
+          "title": "Remote Worker Productivity: What the Real Data Shows (2026)",
+          "url": "https://www.we360.ai/blog/remote-work-vs-office-productivity-are-remote-workers-more-productive",
+          "publisher": "www.we360.ai"
+        },
+        {
+          "title": "Remote Work Productivity Study 2026: 50+ Studies | eMonitor",
+          "url": "https://www.employee-monitoring.net/blog/remote-work-productivity-research-meta-analysis",
+          "publisher": "www.employee-monitoring.net"
+        },
+        {
+          "title": "Does Remote Work Increase Productivity in 2026? - Arc Employer Blog",
+          "url": "https://arc.dev/employer-blog/does-remote-work-increase-productivity",
+          "publisher": "arc.dev"
+        }
+      ]
+    },
+    {
+      "id": "social-media-adolescent-mental-health",
+      "question": "Does the evidence support a causal link between social media use and adolescent mental health decline?",
+      "difficulty": "hard",
+      "domain": "contested-evidence",
+      "uncertainty_expected": true,
+      "status": "ok",
+      "duration_seconds": 119.01,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.9442457883333333,
+      "metrics": {
+        "average_relevance": 0.7769831533333333,
+        "high_relevance_rate": 0.3333333333333333,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.5,
+        "overall_research_quality": 0.8884915766666667,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.9442457883333333,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.9,
+        "llm_uncertainty_handling": 0.95,
+        "llm_judge_overall": 0.93,
+        "llm_judge_adjusted_quality": 0.93,
+        "focus_coverage": 0.3333333333333333,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.8958333333333334,
+        "semantic_quality": 0.703125
+      },
+      "claims": [
+        "[finding] Multiple large reviews and studies report small but consistent associations between social media use and adolescent internalizing symptoms and related harms (body-image disturbance, sleep disruption, cyberbullying exposure, problematic/addictive use).",
+        "[finding] The literature does not provide causal evidence that social media use causes adolescent mental-health decline; major studies are cross-sectional and explicitly state their results indicate associations only, allowing for bidirectional relationships and third-variable confounding (Evidence 1; analysis summary).",
+        "[finding] Some reviewers conclude social media is associated with mental-health problems but is not a major cause, and raise reverse causation as a plausible explanation (poor mental health driving greater/problematic social-media use) (Evidence 2; analysis summary).",
+        "[finding] Associations vary by pattern and context of use and by subgroup: harms depend more on how social media is used than on total time, and emotionally vulnerable adolescents (and in some reports, girls) may show stronger associations (Evidence 3; analysis summary).",
+        "[finding] Contemporary syntheses adopt a 'dual-edged' model: social media is associated with harms for some adolescents while also providing social connection, identity exploration, peer support, and access to mental-health information for others (Evidence 3).",
+        "[statement] Inference: Current evidence is insufficient to assert a causal link; establishing causality would require stronger longitudinal, experimental, or otherwise methodologically robust designs to rule out reverse causation and confounding (analysis summary)."
+      ],
+      "sources": [
+        {
+          "title": "Social media use in adolescents with and without mental health conditions | Nature Human Behaviour",
+          "url": "https://www.nature.com/articles/s41562-025-02134-4",
+          "publisher": "www.nature.com"
+        },
+        {
+          "title": "Social Media use is Associated with, but is not a Major Cause of Mental Disorder among Adolescents | Current Addiction Reports | Springer Nature Link",
+          "url": "https://link.springer.com/article/10.1007/s40429-026-00769-5",
+          "publisher": "link.springer.com"
+        },
+        {
+          "title": "Social Media and Adolescent Mental Health: A Comprehensive Narrative Review - PMC",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12967810",
+          "publisher": "pmc.ncbi.nlm.nih.gov"
+        },
+        {
+          "title": "Social Media Addiction and Mental Health: The Growing Concern for ...",
+          "url": "https://law.stanford.edu/2024/05/20/social-media-addiction-and-mental-health-the-growing-concern-for-youth-well-being",
+          "publisher": "law.stanford.edu"
+        },
+        {
+          "title": "Social Media and Mental Health in Children and Teens",
+          "url": "https://www.hopkinsmedicine.org/health/expert-qa/social-media-and-mental-health-in-children-and-teens",
+          "publisher": "www.hopkinsmedicine.org"
+        }
+      ]
+    },
+    {
+      "id": "llm-clinical-diagnosis",
+      "question": "How effective are large language models at clinical diagnosis compared to physicians?",
+      "difficulty": "hard",
+      "domain": "ai-evaluation",
+      "uncertainty_expected": true,
+      "status": "ok",
+      "duration_seconds": 126.01,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.9548375275000001,
+      "metrics": {
+        "average_relevance": 0.81935011,
+        "high_relevance_rate": 0.6666666666666666,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.3333333333333333,
+        "overall_research_quality": 0.909675055,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.9548375275000001,
+        "llm_groundedness": 0.9,
+        "llm_completeness": 0.78,
+        "llm_uncertainty_handling": 0.9,
+        "llm_judge_overall": 0.86,
+        "llm_judge_adjusted_quality": 0.86,
+        "focus_coverage": 0.4166666666666667,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.8308333333333332,
+        "semantic_quality": 0.7077083333333333
+      },
+      "claims": [
+        "[direct_evidence] A 2026 Science study (Brodeur et al.) reported that an advanced LLM outperformed human doctors on common clinical-reasoning tasks\u2014using real emergency-department data\u2014including emergency-department decisions, identifying likely diagnoses, and selecting next management steps.",
+        "[direct_evidence] Reporting and commentary on the Science study state the model exceeded physicians across diagnostic cases, management scenarios, and ED evaluations and outperformed prior AI models and physician groups using standard resources.",
+        "[direct_evidence] Authors and commentators from the Science report explicitly cautioned that superior benchmark performance does not imply clinical readiness; they recommended human\u2013AI collaboration and rigorous real-world validation prior to wider adoption.",
+        "[direct_evidence] A 2026 Applied Sciences comparative evaluation found some LLMs performed comparably to physicians on real-world medical cases, with performance varying by specialty (example: Mistral\u2011Small3.2 24B had higher TOP-3 scores in paediatrics) and showing reduced precision for single-diagnosis tasks in some specialties.",
+        "[inference] Across the provided evidence, LLMs can match or exceed physician performance on certain clinical-reasoning benchmarks, but effectiveness varies by model, specialty, and chosen evaluation metric.",
+        "[inference] Heterogeneous study designs (curated vignettes versus real-world cases) and noted methodological problems limit generalizability; therefore it is uncertain whether benchmark superiority will translate into reliably better clinical diagnoses in routine hospital practice."
+      ],
+      "sources": [
+        {
+          "title": "Large Language Models don't reason better than physicians - yet",
+          "url": "https://www.secondopinion.media/large-language-models-don-t-reason-better-than-physicians-yet",
+          "publisher": "www.secondopinion.media"
+        },
+        {
+          "title": "[PDF] Towards accurate differential diagnosis with large language models | Semantic Scholar",
+          "url": "https://www.semanticscholar.org/paper/Towards-accurate-differential-diagnosis-with-large-McDuff-Schaekermann/76ab9bc1cbf529d1cfe5963f24069539c3199745",
+          "publisher": "www.semanticscholar.org"
+        },
+        {
+          "title": "Large Language Models Excel in Enhancing Physicians\u2019 Clinical Reasoning",
+          "url": "https://scienmag.com/large-language-models-excel-in-enhancing-physicians-clinical-reasoning-skills",
+          "publisher": "scienmag.com"
+        },
+        {
+          "title": "Large language model outperforms human doctors in clinical reasoning tasks",
+          "url": "https://www.news-medical.net/news/20260430/Large-language-model-outperforms-human-doctors-in-clinical-reasoning-tasks.aspx",
+          "publisher": "www.news-medical.net"
+        },
+        {
+          "title": "AI Model Outperforms Physicians in Clinical Reasoning - EMJ",
+          "url": "https://www.emjreviews.com/innovations/news/advanced-ai-language-model-outperforms-physicians-in-reasoning-tasks",
+          "publisher": "www.emjreviews.com"
+        }
+      ]
+    },
+    {
+      "id": "multi-agent-coordination-benefit",
+      "question": "Does decomposing a task across multiple LLM agents measurably improve output quality compared to a single well-prompted model?",
+      "difficulty": "hard",
+      "domain": "ai-systems",
+      "uncertainty_expected": true,
+      "status": "ok",
+      "duration_seconds": 158.46,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.7761151791666667,
+      "metrics": {
+        "average_relevance": 0.6044607166666667,
+        "high_relevance_rate": 0.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 0.0,
+        "low_relevance_claim_rate": 1.0,
+        "claim_evidence_overlap_rate": 0.0,
+        "overall_research_quality": 0.5522303583333333,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.7761151791666667,
+        "llm_groundedness": 0.9,
+        "llm_completeness": 0.85,
+        "llm_uncertainty_handling": 0.9,
+        "llm_judge_overall": 0.88,
+        "llm_judge_adjusted_quality": 0.88,
+        "focus_coverage": 0.4888888888888889,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.8041666666666667,
+        "semantic_quality": 0.7190972222222222
+      },
+      "claims": [
+        "[direct_evidence] Deepchecks reports that multi-agent pipelines leverage specialization and dynamic evaluation and 'can produce better, more accurate summaries' than a single-agent LLM.",
+        "[direct_evidence] Deepchecks also identifies challenges of multi-agent systems: coordination complexity, increased latency, higher resource consumption, debugging difficulty, and agent trust/alignment issues that can harm system behavior and maintainability.",
+        "[direct_evidence] Amazon Science argues task decomposition with multiple smaller, fine-tuned LLMs can improve infrastructure cost efficiency for complex applications and frames a parallel-decomposition complexity advantage (O(n/k) per subtask vs O(n) single model).",
+        "[direct_evidence] Amazon Science warns excessive decomposition risks overengineering, added coordination overhead, diminishing returns, and potential loss of novelty/creativity versus larger holistic models.",
+        "[direct_evidence] Zylos documents long-running agent failure modes relevant to quality: context-window limits, attention decay as context fills, compounding errors from early mistakes, and exponential state-management complexity across discrete sessions.",
+        "[direct_evidence] None of the provided excerpts present quantitative, controlled experiments directly comparing output quality of decomposed multi-agent pipelines to a single well-prompted model; claims of measurable improvement are therefore inferential rather than empirically demonstrated in the supplied material."
+      ],
+      "sources": [
+        {
+          "title": "Planning: Task Decomposition and Goal-Directed LLM ...",
+          "url": "https://mbrenndoerfer.com/writing/planning-task-decomposition-goal-directed-llm-agents",
+          "publisher": "mbrenndoerfer.com"
+        },
+        {
+          "title": "Long-Running AI Agents and Task Decomposition 2026",
+          "url": "https://zylos.ai/research/2026-01-16-long-running-ai-agents",
+          "publisher": "zylos.ai"
+        },
+        {
+          "title": "How task decomposition and smaller LLMs can make AI more affordable - Amazon Science",
+          "url": "https://www.amazon.science/blog/how-task-decomposition-and-smaller-llms-can-make-ai-more-affordable",
+          "publisher": "www.amazon.science"
+        },
+        {
+          "title": "2026 May AI agent paper dump. | Jiongan Mu",
+          "url": "https://jiongan.mu/notes/may-2026-ai-agent-paper-dump.html",
+          "publisher": "jiongan.mu"
+        },
+        {
+          "title": "Does task decomposition improve automatic NLG ...",
+          "url": "https://arxiv.org/html/2609.01139v1",
+          "publisher": "arxiv.org"
+        }
+      ]
+    },
+    {
+      "id": "minimum-wage-employment",
+      "question": "Do minimum wage increases reduce employment, and what does the empirical evidence show?",
+      "difficulty": "hard",
+      "domain": "contested-economics",
+      "uncertainty_expected": true,
+      "status": "ok",
+      "duration_seconds": 126.1,
+      "execution_status": "partial",
+      "completed_tasks": 2,
+      "failed_tasks": 1,
+      "claim_count": 6,
+      "source_count": 4,
+      "multi_agent_result_count": 2,
+      "overall_score": 0.6707113072222222,
+      "metrics": {
+        "average_relevance": 0.7939563399999999,
+        "high_relevance_rate": 0.3333333333333333,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.6666666666666666,
+        "overall_research_quality": 0.8969781699999999,
+        "task_success_rate": 0.6666666666666666,
+        "failure_rate": 0.3333333333333333,
+        "partial_run_rate": 1.0,
+        "overall_system_quality": 0.6707113072222222,
+        "llm_groundedness": 0.92,
+        "llm_completeness": 0.8,
+        "llm_uncertainty_handling": 0.9,
+        "llm_judge_overall": 0.88,
+        "llm_judge_adjusted_quality": 0.88,
+        "focus_coverage": 0.23611111111111108,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.80625,
+        "semantic_quality": 0.6564236111111111
+      },
+      "claims": [
+        "[direct_evidence] Cato: 'The main finding of economic theory and empirical research over the past 70 years is that minimum wage increases tend to reduce employment,' with larger disemployment where the minimum is high relative to the competitive wage and effects concentrated on least-skilled and disadvantaged workers.",
+        "[direct_evidence] EPI: 'The 90% of high-quality economic studies show that increasing the minimum wage boosts wages for low-wage workers without meaningfully increasing unemployment,' and the majority of studies find little to no evidence of employment losses for teen workers.",
+        "[direct_evidence] Cornell synthesis: using several empirical specifications it finds that 'the minimum wage reduces job growth over a period of several years' and presents theory (e.g., imperfect competition, multiple equilibria) by which higher minimums can reduce wages and employment.",
+        "[direct_evidence] Cornell also records conflicting empirical findings: the Card\u2013Krueger New Jersey fast-food study found increased employment after a minimum-wage rise, indicating some high-profile studies report positive employment effects.",
+        "[inference] The three sources disagree on the dominant empirical conclusion, implying heterogeneity in results and contested interpretation across studies.",
+        "[inference] The evidence set suggests outcomes depend on study methods, short-run versus multi-year horizons, local context, affected worker groups (e.g., low-skill vs. teens), and which studies are classified as 'high-quality.'"
+      ],
+      "sources": [
+        {
+          "title": "The Negative Effects of Minimum Wage Laws | Cato Institute",
+          "url": "https://www.cato.org/downsizing-government-essay/negative-effects-minimum-wage-laws",
+          "publisher": "www.cato.org"
+        },
+        {
+          "title": "What We Know | What does the scholarly research say about whether raising the minimum wage negatively impacts employment? | What We Know",
+          "url": "https://whatweknow.inequality.cornell.edu/topics/does-raising-the-minimum-wage-negatively-impact-employment",
+          "publisher": "whatweknow.inequality.cornell.edu"
+        },
+        {
+          "title": "Evidence Shows Increasing the Minimum Wage Is No Threat to Employment - Center for American Progress Action",
+          "url": "https://www.americanprogressaction.org/article/evidence-shows-increasing-the-minimum-wage-is-no-threat-to-employment",
+          "publisher": "www.americanprogressaction.org"
+        },
+        {
+          "title": "Myths vs. facts about the minimum wage",
+          "url": "https://www.epi.org/publication/myths-vs-facts-about-the-minimum-wage-an-faq-on-the-economics-of-increasing-wage-floors",
+          "publisher": "www.epi.org"
+        }
+      ]
+    },
+    {
+      "id": "temperature-attribution-forcings",
+      "question": "How much of recent global temperature rise can be attributed to specific forcing factors?",
+      "difficulty": "hard",
+      "domain": "climate-science",
+      "uncertainty_expected": true,
+      "status": "ok",
+      "duration_seconds": 146.88,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.7555292083333334,
+      "metrics": {
+        "average_relevance": 0.5221168333333334,
+        "high_relevance_rate": 0.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 0.0,
+        "low_relevance_claim_rate": 1.0,
+        "claim_evidence_overlap_rate": 0.0,
+        "overall_research_quality": 0.5110584166666667,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.7555292083333334,
+        "llm_groundedness": 0.85,
+        "llm_completeness": 0.3,
+        "llm_uncertainty_handling": 0.75,
+        "llm_judge_overall": 0.63,
+        "llm_judge_adjusted_quality": 0.63,
+        "focus_coverage": 0.7222222222222222,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.85,
+        "semantic_quality": 0.7888888888888889
+      },
+      "claims": [
+        "[direct_evidence] Carbon Brief: 'at least three-quarters of global temperature rise since the 1950s caused by humans.'",
+        "[direct_evidence] Carbon Brief: modellers can run climate models with each forcing individually (e.g., only CO2) to obtain a best estimate and uncertainty for that forcing\u2019s contribution; results are then analysed statistically (optimal fingerprinting).",
+        "[direct_evidence] Carbon Brief: observed warming over the last 50 years is 'dominated by man-made emissions of greenhouse gases' and similar results are found by other groups (e.g., Met Office Hadley Centre).",
+        "[direct_evidence] Carbon Brief: attribution analyses 'assume that temperature patterns are accurately simulated by the climate models' (an explicit limitation/assumption).",
+        "[direct_evidence] Blog excerpts (custommapposter.com) report a study finding accelerated warming 2015\u20132025 (0.35 \u00b0C per decade) vs. 1970\u20132015 (0.2 \u00b0C per decade) and state the study accounted for natural factors (El Ni\u00f1o, volcanoes) with high statistical confidence, but these excerpts do not give a forcing-by-forcing numerical breakdown in the supplied material.",
+        "[inference] The supplied evidence supports that attribution methods can estimate individual forcing contributions (with uncertainty) and that humans explain the majority (\u226575%) of warming since the 1950s, but it does not provide a detailed quantitative partitioning of recent (including post\u20112015) temperature rise among specific forcings (CO2, other GHGs, aerosols, natural forcings)."
+      ],
+      "sources": [
+        {
+          "title": "Analysis: What are the causes of recent record-high global temperatures? - Carbon Brief",
+          "url": "https://www.carbonbrief.org/analysis-what-are-the-causes-of-recent-record-high-global-temperatures",
+          "publisher": "www.carbonbrief.org"
+        },
+        {
+          "title": "Exploring the drivers of modern global warming",
+          "url": "https://skepticalscience.com/exploring-modern-gw-drivers.html",
+          "publisher": "skepticalscience.com"
+        },
+        {
+          "title": "Global Temperature Report for 2025 - Berkeley Earth",
+          "url": "https://berkeleyearth.org/global-temperature-report-for-2025",
+          "publisher": "berkeleyearth.org"
+        },
+        {
+          "title": "At least three-quarters of global temperature rise since the 1950s caused by humans - Carbon Brief",
+          "url": "https://www.carbonbrief.org/at-least-three-quarters-of-global-temperature-rise-since-the-1950s-caused-by-humans)",
+          "publisher": "www.carbonbrief.org"
+        },
+        {
+          "title": "Global Warming Accelerates: Shocking New Study Reveals Unprecedented Temperature Rise Since 2015 (2026)",
+          "url": "https://custommapposter.com/article/global-warming-accelerates-shocking-new-study-reveals-unprecedented-temperature-rise-since-2015/13409",
+          "publisher": "custommapposter.com"
+        }
+      ]
+    },
+    {
+      "id": "ai-coding-assistant-productivity",
+      "question": "What is the evidence on whether AI coding assistants improve developer productivity?",
+      "difficulty": "hard",
+      "domain": "contested-evidence",
+      "uncertainty_expected": true,
+      "status": "ok",
+      "duration_seconds": 141.75,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.9527537775,
+      "metrics": {
+        "average_relevance": 0.81101511,
+        "high_relevance_rate": 0.6666666666666666,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 0.8333333333333334,
+        "overall_research_quality": 0.905507555,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.9527537775,
+        "llm_groundedness": 0.88,
+        "llm_completeness": 0.78,
+        "llm_uncertainty_handling": 0.82,
+        "llm_judge_overall": 0.83,
+        "llm_judge_adjusted_quality": 0.83,
+        "focus_coverage": 0.5694444444444444,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.8666666666666667,
+        "semantic_quality": 0.7548611111111111
+      },
+      "claims": [
+        "[direct_evidence] Controlled assistant studies generally find approximately 20\u201330% coding-stage gains (though some studies report negative effects).",
+        "[direct_evidence] A McKinsey study reported developers using AI tools performed coding tasks (code generation, refactoring, documentation) 20%\u201350% faster on average compared to those not using AI tools.",
+        "[direct_evidence] Independent studies report productivity increases up to 45% for developers using AI coding assistants (measured by task speed and efficiency).",
+        "[direct_evidence_with_limitations] An ICSE 2026 study of one large industrial system (PicoScenes) reported 68.3% less feature-implementation time, 28.2% lower mean cyclomatic complexity, and 50% fewer defects when using an expert-led, AI-implemented workflow\u2014results that concern one system and a bundled method.",
+        "[direct_evidence] The strongest delivery evidence supports roughly 1.1\u20131.3\u00d7 higher release output when assistants operate inside otherwise conventional human-led workflows.",
+        "[direct_evidence] Field metrics for Copilot users include 26% more tasks completed on average and a 13.5% increase in weekly code commits."
+      ],
+      "sources": [
+        {
+          "title": "Research Shows AI Coding Assistants Can Improve Developer Productivity",
+          "url": "https://fortegrp.com/insights/ai-coding-assistants",
+          "publisher": "fortegrp.com"
+        },
+        {
+          "title": "New Research Reveals AI Coding Assistants Boost Developer ...",
+          "url": "https://itrevolution.com/articles/new-research-reveals-ai-coding-assistants-boost-developer-productivity-by-26-what-it-leaders-need-to-know",
+          "publisher": "itrevolution.com"
+        },
+        {
+          "title": "(PDF) Impact of AI Coding Assistants on Developer Productivity and ...",
+          "url": "https://www.researchgate.net/publication/399614892_Impact_of_AI_Coding_Assistants_on_Developer_Productivity_and_Code_Quality",
+          "publisher": "www.researchgate.net"
+        },
+        {
+          "title": "How Much Does AI Improve Software Development Productivity?",
+          "url": "https://reinvently.co.uk/blog/ai-coding-productivity-evidence",
+          "publisher": "reinvently.co.uk"
+        },
+        {
+          "title": "The Productivity Paradox of AI Coding Assistants - Cerbos",
+          "url": "https://www.cerbos.dev/blog/productivity-paradox-of-ai-coding-assistants",
+          "publisher": "www.cerbos.dev"
+        }
+      ]
+    },
+    {
+      "id": "llm-benchmark-contamination",
+      "question": "To what extent does training data contamination inflate reported language model benchmark scores, and how is it detected?",
+      "difficulty": "hard",
+      "domain": "ai-evaluation",
+      "uncertainty_expected": true,
+      "status": "ok",
+      "duration_seconds": 138.25,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.9550966275,
+      "metrics": {
+        "average_relevance": 0.8203865100000001,
+        "high_relevance_rate": 1.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 1.0,
+        "low_relevance_claim_rate": 0.0,
+        "claim_evidence_overlap_rate": 1.0,
+        "overall_research_quality": 0.910193255,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.9550966275,
+        "llm_groundedness": 0.95,
+        "llm_completeness": 0.7,
+        "llm_uncertainty_handling": 0.8,
+        "llm_judge_overall": 0.82,
+        "llm_judge_adjusted_quality": 0.82,
+        "focus_coverage": 0.37222222222222223,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.8941666666666667,
+        "semantic_quality": 0.7124305555555556
+      },
+      "claims": [
+        "[direct_evidence] Benchmark data contamination is defined as training exposure to test/benchmark examples and is reported to directly inflate accuracy and affect calibration and fairness.",
+        "[direct_evidence] The Llama 2 technical report found common benchmark examples in its training crawls, used n-gram analysis to identify contaminated subsets, and observed contaminated subsets showed higher accuracy than clean-only subsets.",
+        "[direct_evidence] Removing or reporting contaminated examples (providing clean-only performance) is presented in the evidence as necessary for fair reporting of model performance.",
+        "[direct_evidence] Detection methods documented in the sources include n-gram analysis, LONGEST-MATCH style matching, and measuring model surprisal/perplexity on benchmark examples versus a reference model when original training data are unavailable; contaminated models assign materially lower perplexity to test examples.",
+        "[direct_evidence] Multilingual/translated contamination can inflate performance on a source-language benchmark even if that language\u2019s examples were not directly in training; such cases often evade detection methods that operate only in the benchmark\u2019s source language.",
+        "[direct_evidence] Existing detection approaches have limitations: studies report false negatives and argue contamination's impact can be larger than previously reported; larger models are more prone to leverage contamination."
+      ],
+      "sources": [
+        {
+          "title": "ConTAM: Tackling Data Contamination in LLM Benchmarks",
+          "url": "https://www.getmaxim.ai/blog/llm-data-quality",
+          "publisher": "www.getmaxim.ai"
+        },
+        {
+          "title": "Benchmark Contamination in LLMs: Detection - Interactive",
+          "url": "https://mbrenndoerfer.com/writing/benchmark-contamination-llm-detection-mitigation",
+          "publisher": "mbrenndoerfer.com"
+        },
+        {
+          "title": "Investigating Data Contamination in Modern Benchmarks for Large Language Models",
+          "url": "https://arxiv.org/html/2311.09783v2",
+          "publisher": "arxiv.org"
+        },
+        {
+          "title": "Benchmark Data Contamination of Large Language Models",
+          "url": "https://arxiv.org/html/2406.04244v1",
+          "publisher": "arxiv.org"
+        },
+        {
+          "title": "Benchmark contamination in large language models",
+          "url": "https://research.mental-momentum.ai/r/benchmark-contamination-large-language-ureujs",
+          "publisher": "research.mental-momentum.ai"
+        }
+      ]
+    },
+    {
+      "id": "quantum-advantage-reproducibility",
+      "question": "Is there reproducible evidence for quantum advantage in practical computing tasks?",
+      "difficulty": "hard",
+      "domain": "contested-science",
+      "uncertainty_expected": true,
+      "status": "ok",
+      "duration_seconds": 133.0,
+      "execution_status": "success",
+      "completed_tasks": 3,
+      "failed_tasks": 0,
+      "claim_count": 6,
+      "source_count": 5,
+      "multi_agent_result_count": 3,
+      "overall_score": 0.7764067075,
+      "metrics": {
+        "average_relevance": 0.60562683,
+        "high_relevance_rate": 0.0,
+        "evidence_coverage": 1.0,
+        "high_relevance_claim_rate": 0.0,
+        "low_relevance_claim_rate": 1.0,
+        "claim_evidence_overlap_rate": 0.0,
+        "overall_research_quality": 0.5528134149999999,
+        "task_success_rate": 1.0,
+        "failure_rate": 0.0,
+        "partial_run_rate": 0.0,
+        "overall_system_quality": 0.7764067075,
+        "llm_groundedness": 0.92,
+        "llm_completeness": 0.78,
+        "llm_uncertainty_handling": 0.9,
+        "llm_judge_overall": 0.86,
+        "llm_judge_adjusted_quality": 0.86,
+        "focus_coverage": 0.5866666666666667,
+        "claim_source_diversity": 0.5833333333333334,
+        "evidence_breadth": 1.0,
+        "synthesis_quality": 0.8583333333333334,
+        "semantic_quality": 0.7570833333333333
+      },
+      "claims": [
+        "[direct_evidence] IBM announced three demonstrations it says mark quantum advantage, but noted verification of quantum results is difficult and that 'there\u2019s no way to 100% prove the researchers are correct.'",
+        "[direct_evidence] IBM, with University of Chicago collaborators, reported creating samples (patterns of zeros and ones) and asserted a mathematical proof that 'no classical computer can generate this pattern' within a reasonable time frame (arXiv 2026).",
+        "[direct_evidence] IBM\u2019s public definition of quantum advantage requires two criteria: (1) the correctness of the quantum output can be rigorously validated, and (2) the quantum computation demonstrates superior efficiency, cost\u2011effectiveness, or accuracy versus classical computation.",
+        "[direct_evidence] A theoretical study by researchers from Caltech, Google Quantum AI, MIT and Oratomic reports exponential quantum advantage for several data\u2011processing and machine\u2011learning tasks, arguing classical systems would need exponentially more memory or data even given unlimited time.",
+        "[direct_evidence] The same theoretical study explicitly states that experimental validation on real quantum hardware is needed to provide stronger evidence and to identify practical constraints.",
+        "[inference] Inference: While there are claimed demonstrations and theoretical separations consistent with potential quantum advantage, the combined evidence indicates that reproducible, experimentally\u2011validated quantum advantage for practical computing tasks has not yet been definitively established due to verification challenges and the need for hardware experiments."
+      ],
+      "sources": [
+        {
+          "title": "Has quantum advantage been achieved?",
+          "url": "https://arxiv.org/html/2603.09901v2",
+          "publisher": "arxiv.org"
+        },
+        {
+          "title": "The dawn of quantum advantage | IBM Quantum Computing Blog",
+          "url": "https://www.ibm.com/quantum/blog/quantum-advantage-era",
+          "publisher": "www.ibm.com"
+        },
+        {
+          "title": "Quantum computer completes verified task beyond practical reach of classical simulations",
+          "url": "https://phys.org/news/2026-07-quantum-task-classical-simulations.html",
+          "publisher": "phys.org"
+        },
+        {
+          "title": "IBM claims its quantum computers outperform classical ones",
+          "url": "https://cen.acs.org/physical-chemistry/computational-chemistry/quantum-advantage-ibm-proof/104/web/2026/08",
+          "publisher": "cen.acs.org"
+        },
+        {
+          "title": "Study Finds Exponential Quantum Advantage in Machine Learning Tasks",
+          "url": "https://thequantuminsider.com/2026/04/10/study-finds-exponential-quantum-advantage-in-machine-learning-tasks",
+          "publisher": "thequantuminsider.com"
+        }
+      ]
+    }
+  ]
+}

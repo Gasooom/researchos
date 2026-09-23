@@ -1,0 +1,163 @@
+{
+  "baseline": {
+    "git_commit": "fe01efcd312f7e3bff89fc92956da766d28a8ed3",
+    "llm_model": "gpt-5-mini",
+    "dataset_version": "1.0.0",
+    "started_at": "2026-09-22T15:57:22.625179+00:00",
+    "cases_ok": 30,
+    "cases_error": 0
+  },
+  "candidate": {
+    "git_commit": "d629756086bfed0b5ee4a1f3ad221cffe301a002",
+    "llm_model": "gpt-5-mini",
+    "dataset_version": "1.0.0",
+    "started_at": "2026-09-23T04:44:40.431055+00:00",
+    "cases_ok": 30,
+    "cases_error": 0
+  },
+  "comparable": [
+    {
+      "metric": "task_success_rate",
+      "baseline": 1.0,
+      "candidate": 0.9778,
+      "delta": -0.0222
+    },
+    {
+      "metric": "failure_rate",
+      "baseline": 0.0,
+      "candidate": 0.0222,
+      "delta": 0.0222
+    },
+    {
+      "metric": "partial_run_rate",
+      "baseline": 0.0,
+      "candidate": 0.0667,
+      "delta": 0.0667
+    },
+    {
+      "metric": "average_relevance",
+      "baseline": 0.7263,
+      "candidate": 0.7611,
+      "delta": 0.0348
+    },
+    {
+      "metric": "high_relevance_rate",
+      "baseline": 0.3331,
+      "candidate": 0.4444,
+      "delta": 0.1113
+    }
+  ],
+  "renamed_population_changed": [
+    {
+      "metric": "claim_support_rate -> high_relevance_claim_rate",
+      "baseline": 0.3461,
+      "candidate": 0.6,
+      "delta": 0.2539
+    },
+    {
+      "metric": "unsupported_claim_rate -> low_relevance_claim_rate",
+      "baseline": 0.6539,
+      "candidate": 0.4,
+      "delta": -0.2539
+    }
+  ],
+  "claim_population_changed": [
+    {
+      "metric": "claim_source_diversity",
+      "baseline": 0.9667,
+      "candidate": 0.5861,
+      "delta": -0.3806
+    },
+    {
+      "metric": "evidence_breadth",
+      "baseline": 1.0,
+      "candidate": 1.0,
+      "delta": 0.0
+    },
+    {
+      "metric": "evidence_coverage",
+      "baseline": 1.0,
+      "candidate": 1.0,
+      "delta": 0.0
+    }
+  ],
+  "claim_text_changed": [
+    {
+      "metric": "llm_groundedness",
+      "baseline": 0.828,
+      "candidate": 0.9397,
+      "delta": 0.1117
+    },
+    {
+      "metric": "llm_completeness",
+      "baseline": 0.6543,
+      "candidate": 0.8177,
+      "delta": 0.1633
+    },
+    {
+      "metric": "llm_uncertainty_handling",
+      "baseline": 0.6183,
+      "candidate": 0.8113,
+      "delta": 0.193
+    },
+    {
+      "metric": "llm_judge_overall",
+      "baseline": 0.707,
+      "candidate": 0.859,
+      "delta": 0.152
+    },
+    {
+      "metric": "llm_judge_adjusted_quality",
+      "baseline": 0.707,
+      "candidate": 0.859,
+      "delta": 0.152
+    },
+    {
+      "metric": "focus_coverage",
+      "baseline": 0.6502,
+      "candidate": 0.6119,
+      "delta": -0.0383
+    }
+  ],
+  "composite_changed": [
+    {
+      "metric": "semantic_quality",
+      "baseline": 0.8767,
+      "candidate": 0.7729,
+      "delta": -0.1038
+    },
+    {
+      "metric": "overall_research_quality",
+      "baseline": 0.6997,
+      "candidate": 0.7806,
+      "delta": 0.0809
+    },
+    {
+      "metric": "overall_system_quality",
+      "baseline": 0.8498,
+      "candidate": 0.8718,
+      "delta": 0.0219
+    }
+  ],
+  "new_in_candidate": [
+    {
+      "metric": "claim_evidence_overlap_rate",
+      "baseline": null,
+      "candidate": 0.5,
+      "delta": null
+    },
+    {
+      "metric": "high_relevance_claim_rate",
+      "baseline": null,
+      "candidate": 0.6,
+      "delta": null
+    },
+    {
+      "metric": "low_relevance_claim_rate",
+      "baseline": null,
+      "candidate": 0.4,
+      "delta": null
+    }
+  ],
+  "interpretation": "Only deltas under 'comparable' describe the same computation over the same inputs. Everything else moved for structural reasons and must not be read as improvement or regression. 'renamed_population_changed' and 'claim_population_changed' apply an unchanged formula to a different claim population: a claim used to carry one evidence item and now carries its whole task's evidence, so evidence-derived metrics move by construction. 'claim_text_changed' metrics read claim.statement, which M6 redefined from the evidence excerpt to a synthesized finding, so the evaluator is scoring different text. 'composite_changed' metrics combine both effects and cannot be attributed to either alone."
+}
