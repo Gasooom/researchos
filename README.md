@@ -123,15 +123,24 @@ surfaces both that framing and its correction without reconciling them.
 Stated plainly, because an evaluation that hides its weaknesses is worth less
 than no evaluation.
 
-**The judge is not calibrated against human judgment.** Eight cases are
-prepared for labeling in
-[`benchmark/results/2026-09-22-labels.json`](benchmark/results/2026-09-22-labels.json),
-with the human fields deliberately unfilled. What exists is a *machine*
-cross-check: an independent rubric-based pre-annotation of those 8 cases
-differed from the judge by MAE 0.135 across 32 comparisons, with the judge
-scoring higher in 27 of 32. That is directionally consistent with known judge
-leniency, but both sides are machines and n=8. It is not human validation and
-is not presented as such.
+**The judge is calibrated against human judgment on a small sample.** The
+repository owner scored all 8 cases in
+[`benchmark/results/2026-09-22-labels.json`](benchmark/results/2026-09-22-labels.json)
+against each case's rubric and the system's actual recorded output, giving
+[`scripts/summarize_benchmark.py --labels`](scripts/summarize_benchmark.py)
+32 real human-vs-judge comparisons
+([`benchmark/results/2026-09-22-calibration.json`](benchmark/results/2026-09-22-calibration.json)).
+Per-dimension mean absolute error: groundedness 0.133, completeness 0.151,
+uncertainty handling 0.124, overall score 0.121. The judge scored higher
+than the human in 25 of 32 comparisons (6 lower, 1 tied) — consistent with
+known judge leniency, and with the earlier machine-only cross-check (MAE
+0.135, judge higher 27/32) that this replaces. The bias is uneven across
+dimensions: pronounced on groundedness and completeness (mean signed delta
++0.133 / +0.119), close to neutral on uncertainty handling (+0.029, and
+negative in 4 of 8 cases). Within 0.20 of the human score: 7/8 groundedness,
+5/8 completeness, 7/8 uncertainty handling, 6/8 overall. n=8 is small — this
+supports "the judge is directionally reasonable but runs lenient, especially
+on groundedness," not a precise error bound.
 
 **Retrieval relevance is not claim support.** The metric now named
 `high_relevance_claim_rate` thresholds only on `evidence.relevance >= 0.8` —

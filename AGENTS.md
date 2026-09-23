@@ -119,7 +119,7 @@ than the architecture diagram.
       for free. Terms were written to avoid this; audited at 23/30 cases
       with zero overlap, mean 1.7%. No benchmark has been executed yet —
       that is M4.
-- [ ] M4 — Run the benchmark for real: wire the M3 dataset into
+- [x] M4 — Run the benchmark for real: wire the M3 dataset into
       `researchos_benchmark.py` / `benchmark_runner.py`, execute it against
       the live system, and capture per-metric scores (groundedness,
       completeness, uncertainty handling), the LLM-judge score
@@ -161,11 +161,22 @@ than the architecture diagram.
       (d) Not reproducible bitwise: `cap-theorem` scored 0.88 / 0.78 / 0.82
       across three live executions of identical input. The 0.78 exists only
       in a task log, not a committed artifact.
-      Outstanding: `benchmark/results/2026-09-22-labels.json` holds 8 cases
-      (3 easy / 3 moderate / 2 hard) with real output and rubric; `draft` and
-      `human` fields are deliberately null. Agreement via `calibration.py`
-      cannot be computed until labels exist. Flip this checkbox to [x] once
-      that lands.
+      Calibration closed: the repository owner scored all 8 cases in
+      `benchmark/results/2026-09-22-labels.json` against each case's rubric
+      and the actual recorded system output (not an ideal answer).
+      `scripts/summarize_benchmark.py --labels ... --out
+      2026-09-22-calibration.json` computed real agreement via
+      `HumanCalibrationService` over 32 comparisons (n=8): MAE 0.133
+      groundedness, 0.151 completeness, 0.124 uncertainty handling, 0.121
+      overall; judge higher than human in 25/32 (6 lower, 1 tied). Bias is
+      uneven — pronounced on groundedness/completeness (mean signed delta
+      +0.133 / +0.119), close to neutral on uncertainty handling (+0.029,
+      negative in 4/8 cases). README's "what these numbers do not show"
+      section rewritten to report this instead of stating the gap. The
+      earlier machine-only cross-check (MAE 0.135, judge higher 27/32) is
+      superseded by this real human data but not deleted from history —
+      `2026-09-22-summary.json` and `2026-09-22.json` are untouched; the
+      calibration output is a new file, not an overwrite.
 - [x] M5 — README overhaul: add an "Evaluation" section reporting the M4
       results as a table (metric, score, sample size), add one real
       end-to-end example (question → evidence → claims → scores), replace
