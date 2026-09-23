@@ -219,6 +219,71 @@ than the architecture diagram.
       independence applies with `LLM_MODE=openai`, which is what benchmarks use.
       A test records this boundary rather than implying system-wide
       independence. The committed 2026-09-22 benchmark predates this change.
+- [x] M7 — Post-claim-independence baseline (commit `a8768df`). Ran the full
+      30-case benchmark at commit `d629756` (M6 Stage 3):
+      `benchmark/results/2026-09-22-d629756.json` /
+      `-summary.json` (30 ok / 0 errors; the first attempt hit 11
+      consecutive transient errors around case 21, confirmed by re-running
+      one standalone immediately after — it succeeded — then completed via
+      `--resume`, the mechanism M4 added). Added
+      `app/application/evaluation/comparison.py`: groups every metric by
+      whether its delta is actually interpretable — `COMPARABLE` (same
+      computation, same inputs), `RENAMED` (M6 Stage 1 rename, equivalence
+      already proven), `CLAIM_POPULATION_CHANGED` (reads `claim.evidence`,
+      whose contents M6 Stage 3 changed), `CLAIM_TEXT_CHANGED` (reads
+      `claim.statement`, which M6 redefined from excerpt to synthesized
+      finding), `COMPOSITE_CHANGED` (mixes both effects). Refuses to compare
+      runs on different dataset versions or case sets
+      (`IncompatibleBenchmarks`). Self-caught twice before this was shown as
+      final: `claim_support_rate`→`high_relevance_claim_rate` was initially
+      miscategorized as directly comparable (caught because the live value
+      was 1.0 on every case — a structural artifact, not real); and
+      `claim_source_diversity` was initially lumped with the claim-text
+      group when code inspection showed it actually reads
+      `claim.evidence`. `scripts/compare_benchmarks.py` is the CLI.
+- [x] M8 — Agent run tracing (commit `b79838a`). Added a trace domain model
+      (`app/domain/tracing/models.py`: `AgentRun`, `TraceEvent`, `ToolCall`,
+      `ModelCall`) capturing what a pipeline run did, in what order, with
+      what arguments, what came back, and how long each step took.
+      `TraceRecorder` accumulates events; `TracingSearchProvider` /
+      `TracingLLMProvider` are transparent decorators implementing the same
+      `SearchProvider` / `LLMProvider` Protocols the real adapters do, so
+      capturing a run requires zero changes to `RetrievalAgent`,
+      `LLMAnalysisAgent`, `LLMSynthesisAgent`, or `MultiAgentCoordinator` —
+      only the providers passed into them are wrapped. Proven against the
+      real pipeline classes end to end, not stubs of the orchestration layer.
+      Naming honesty, stated in both the module docstring and
+      `docs/tracing.md`: this system's "agents" are a fixed
+      retrieval→analysis→synthesis sequence, not an autonomous tool-selecting
+      loop — `AgentRun` reflects the codebase's existing terminology, not a
+      claim of autonomous behavior. Scope, stated rather than silently
+      left out: not wired into `bootstrap/container.py` or the API; doing so
+      is a separate design decision (how to aggregate three per-request
+      tasks into one trace, whether to add a trace column to
+      `SQLiteResearchRunRepository`) deferred to its own change.
+- [x] M9 — Reproducible experiments. Added a minimal experiment abstraction:
+      `ExperimentRun` (`app/domain/experiments/models.py`, frozen) captures
+      reproducibility metadata (experiment name, git commit, dataset
+      name/version, provider, model, configuration, start time, case ids)
+      plus a metric snapshot (each metric averaged over the cases that
+      report it). `load_experiment_run`
+      (`app/application/experiments/loader.py`) builds one from a
+      `benchmark/results/*.json` file, read-only. `compare_experiment_runs`
+      (`app/application/experiments/comparison.py`) diffs two runs
+      metric-by-metric, marking each row `compared` / `missing_baseline` /
+      `missing_candidate` rather than treating an absent metric as zero, and
+      raises `IncompatibleExperiments` instead of comparing runs on
+      different dataset versions or case sets. `run_id` is derived
+      deterministically from the reproducibility fields, so the same run
+      loaded twice is identical and any differing field changes it.
+      Deliberately generic: unlike M7's `comparison.py`, this module has no
+      ResearchOS-specific knowledge of what changed between any two runs
+      (e.g. the M6 rename) — that narrative stays in M7's module, scoped to
+      that one transition; this one answers "compare any two runs" going
+      forward. `scripts/compare_experiments.py` is the CLI, smoke-tested
+      against the real `2026-09-22.json` / `2026-09-22-d629756.json`
+      artifacts. `docs/experiments.md` documents the model and explicitly
+      states what it is not.
 
 ## Working rules
 - Work on exactly ONE milestone at a time, in order. Do not start the next
